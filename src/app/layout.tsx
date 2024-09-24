@@ -1,8 +1,9 @@
 import "@/styles/globals.css";
+import "mapbox-gl/dist/mapbox-gl.css";
 
+import Providers from "@/providers";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import Providers from "@/providers";
 
 export const metadata: Metadata = {
   title: "e-astiko",
@@ -15,7 +16,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
+      <head>
+        <link
+          href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="h-screen w-screen">
         <Providers>{children}</Providers>
       </body>
     </html>

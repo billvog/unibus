@@ -1,6 +1,6 @@
 "use client";
 
-import { CitybusTokenProvider } from "@/components/CitybusTokenContext";
+import { CitybusTokenProvider } from "@/components/citybus-token-context";
 import {
   isServer,
   QueryClient,

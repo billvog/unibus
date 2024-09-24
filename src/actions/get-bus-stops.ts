@@ -13,6 +13,12 @@ type GetBusStopsResponse =
     };
 
 export async function GetBusStops(token: string): Promise<GetBusStopsResponse> {
+  if (!token) {
+    return {
+      ok: false,
+    };
+  }
+
   const url = `${CITYBUS_API_URL(114)}/stops`;
 
   const response = await fetch(url, {

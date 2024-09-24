@@ -42,3 +42,7 @@ export const CitybusTokenProvider = ({
     </CitybusTokenContext.Provider>
   );
 };
+
+export const useCitybusToken = () => {
+  return React.useContext(CitybusTokenContext);
+};
