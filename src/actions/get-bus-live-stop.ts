@@ -32,6 +32,14 @@ export async function GetBusLiveStop(
   });
 
   if (!response.ok) {
+    // API returns 404 if no router are found.
+    if (response.status === 404) {
+      return {
+        ok: true,
+        vehicles: [],
+      };
+    }
+
     return {
       ok: false,
     };

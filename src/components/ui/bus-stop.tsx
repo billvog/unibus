@@ -1,4 +1,5 @@
 import { GetBusLiveStop } from "@/actions/get-bus-live-stop";
+import { useBusStop } from "@/components/bus-stop-context";
 import { useCitybusToken } from "@/components/citybus-token-context";
 import BusVehicle from "@/components/ui/bus-vehicle";
 import { Spinner } from "@/components/ui/spinner";
@@ -8,25 +9,35 @@ import { X } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
 
+const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
+
 type BusStopProps = {
   busStop: BusStopType;
   onClose: () => void;
 };
 
 const BusStop = ({ busStop, onClose }: BusStopProps) => {
+  const { setSelectedId } = useBusStop();
   const token = useCitybusToken();
 
   const busLiveQuery = useQuery({
     queryKey: ["bus-live", busStop.code],
     queryFn: () => GetBusLiveStop(token ?? "", busStop.code),
     enabled: !!token,
+    refetchInterval: BusLiveQueryRefetchInterval,
   });
+
+  const vehicles = React.useMemo(
+    () => (busLiveQuery.data?.ok ? (busLiveQuery.data.vehicles ?? []) : []),
+    [busLiveQuery.data],
+  );
 
   React.useEffect(() => {
     if (busLiveQuery.isError || (busLiveQuery.data && !busLiveQuery.data.ok)) {
       toast.error("Failed to fetch bus live data");
+      setSelectedId(null);
     }
-  }, [busLiveQuery]);
+  }, [busLiveQuery, setSelectedId]);
 
   if (busLiveQuery.isLoading) {
     return (
@@ -37,7 +48,7 @@ const BusStop = ({ busStop, onClose }: BusStopProps) => {
   }
 
   if (!busLiveQuery.data?.ok) {
-    return <div>Error</div>;
+    return null;
   }
 
   return (
@@ -47,9 +58,13 @@ const BusStop = ({ busStop, onClose }: BusStopProps) => {
       </div>
       <h1 className="text-2xl font-bold">{busStop.name}</h1>
       <div className="flex flex-col gap-2">
-        {busLiveQuery.data?.vehicles.map((vehicle) => (
-          <BusVehicle key={vehicle.vehicleCode} vehicle={vehicle} />
-        ))}
+        {vehicles.length === 0 ? (
+          <div>Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά 😢</div>
+        ) : (
+          vehicles.map((vehicle) => (
+            <BusVehicle key={vehicle.vehicleCode} vehicle={vehicle} />
+          ))
+        )}
       </div>
     </div>
   );
