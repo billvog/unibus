@@ -2,6 +2,7 @@
 
 import { BusStopProvider } from "@/components/bus-stop-context";
 import { CitybusTokenProvider } from "@/components/citybus-token-context";
+import { Toaster } from "@/components/ui/sonner";
 import {
   isServer,
   QueryClient,
@@ -35,7 +36,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <CitybusTokenProvider>
-        <BusStopProvider>{children}</BusStopProvider>
+        <BusStopProvider>
+          {children}
+          <Toaster richColors />
+        </BusStopProvider>
       </CitybusTokenProvider>
     </QueryClientProvider>
   );

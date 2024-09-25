@@ -2,6 +2,7 @@
 
 import { BusVehicle } from "@/types/citybus";
 import { CITYBUS_API_URL } from "@/utils/constants";
+import { NextResponse } from "next/server";
 
 type GetBusLiveStopResponse =
   | {
