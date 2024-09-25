@@ -1,3 +1,4 @@
+import { useBusStop } from "@/components/bus-stop-context";
 import { env } from "@/env";
 import { BusStop } from "@/types/citybus";
 import { MapPin } from "lucide-react";
@@ -7,9 +8,12 @@ import MapGL, { Layer, MapMouseEvent, MapRef, Source } from "react-map-gl";
 
 type MapProps = {
   busStops: BusStop[];
+  onBusStopClick: (id: number) => void;
 };
 
-const Map = ({ busStops }: MapProps) => {
+const Map = ({ busStops, onBusStopClick }: MapProps) => {
+  const { selectedId } = useBusStop();
+
   const geojson = React.useMemo(
     () => ({
       type: "FeatureCollection",
@@ -55,7 +59,7 @@ const Map = ({ busStops }: MapProps) => {
       return;
     }
 
-    console.log(`Clicked on stop ${stopId}`);
+    onBusStopClick(stopId);
   }, []);
 
   React.useEffect(() => {
@@ -131,14 +135,17 @@ const Map = ({ busStops }: MapProps) => {
         />
         <Layer
           id="unclustered-point"
-          type="symbol"
+          type="circle"
           source="busStops"
           filter={["!", ["has", "point_count"]]}
-          layout={{
-            "icon-image": "custom-marker",
-            "icon-size": 0.5,
-            "icon-allow-overlap": true,
-            "icon-ignore-placement": true,
+          paint={{
+            "circle-radius": 10,
+            "circle-color": [
+              "case",
+              ["==", ["get", "id"], selectedId],
+              "#b300ff",
+              "#ff5e00",
+            ],
           }}
         />
       </Source>

@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import Providers from "@/providers";
+import Providers from "@/components/providers";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 

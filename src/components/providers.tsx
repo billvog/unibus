@@ -1,5 +1,6 @@
 "use client";
 
+import { BusStopProvider } from "@/components/bus-stop-context";
 import { CitybusTokenProvider } from "@/components/citybus-token-context";
 import {
   isServer,
@@ -33,7 +34,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CitybusTokenProvider>{children}</CitybusTokenProvider>
+      <CitybusTokenProvider>
+        <BusStopProvider>{children}</BusStopProvider>
+      </CitybusTokenProvider>
     </QueryClientProvider>
   );
 }
