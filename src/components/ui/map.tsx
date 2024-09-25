@@ -60,6 +60,14 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
     }
 
     onBusStopClick(stopId);
+
+    if (mapRef.current) {
+      const map = mapRef.current.getMap();
+      map.flyTo({
+        center: event.lngLat,
+        zoom: 16,
+      });
+    }
   }, []);
 
   React.useEffect(() => {
