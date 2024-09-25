@@ -2,16 +2,79 @@ import { env } from "@/env";
 import { BusStop } from "@/types/citybus";
 import { MapPin } from "lucide-react";
 import React from "react";
-import MapGL, { Marker } from "react-map-gl";
-import {} from "mapbox-gl";
+import { renderToString } from "react-dom/server";
+import MapGL, { Layer, MapMouseEvent, MapRef, Source } from "react-map-gl";
 
 type MapProps = {
   busStops: BusStop[];
 };
 
 const Map = ({ busStops }: MapProps) => {
+  const geojson = React.useMemo(
+    () => ({
+      type: "FeatureCollection",
+      features: busStops.map((stop) => ({
+        type: "Feature",
+        properties: {
+          id: stop.id,
+          code: stop.code,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [stop.longitude, stop.latitude],
+        },
+      })),
+    }),
+    [busStops],
+  );
+
+  const mapRef = React.useRef<MapRef>(null);
+
+  React.useEffect(() => {
+    if (mapRef.current) {
+      const map = mapRef.current.getMap();
+
+      if (map.hasImage("custom-marker")) {
+        return;
+      }
+
+      const svgString = renderToString(<MapPin />);
+      const svgDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`;
+
+      const image = new Image(50, 50);
+      image.onload = () => map.addImage("custom-marker", image);
+      image.src = svgDataUrl;
+    }
+  }, [mapRef.current]);
+
+  const onMapClick = React.useCallback((event: MapMouseEvent) => {
+    const feature = event.features?.[0];
+    const stopId = feature?.properties?.id;
+
+    if (!stopId) {
+      return;
+    }
+
+    console.log(`Clicked on stop ${stopId}`);
+  }, []);
+
+  React.useEffect(() => {
+    if (!mapRef.current) {
+      return;
+    }
+
+    const map = mapRef.current.getMap();
+
+    map.on("click", "unclustered-point", onMapClick);
+
+    return () => {
+      map.off("click", "unclustered-point", onMapClick);
+    };
+  }, [mapRef.current, onMapClick]);
+
   return (
     <MapGL
+      ref={mapRef}
       mapboxAccessToken={env.NEXT_PUBLIC_MAPBOX_TOKEN}
       initialViewState={{
         longitude: 22.4337,
@@ -21,20 +84,64 @@ const Map = ({ busStops }: MapProps) => {
       style={{ flex: 1 }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
     >
-      {busStops.map((stop) => (
-        <Marker
-          longitude={stop.longitude}
-          latitude={stop.latitude}
-          anchor="bottom"
-          onClick={() => {
-            console.log("clicked", stop.code);
+      <Source
+        id="busStops"
+        type="geojson"
+        data={geojson}
+        cluster={true}
+        clusterMaxZoom={20}
+        clusterRadius={50}
+      >
+        <Layer
+          id="clusters"
+          type="circle"
+          source="busStops"
+          filter={["has", "point_count"]}
+          paint={{
+            "circle-color": [
+              "step",
+              ["get", "point_count"],
+              "#51bbd6",
+              100,
+              "#f1f075",
+              750,
+              "#f28cb1",
+            ],
+            "circle-radius": [
+              "step",
+              ["get", "point_count"],
+              20,
+              100,
+              30,
+              750,
+              40,
+            ],
           }}
-        >
-          <div className="rounded-full bg-orange-600/90 p-2">
-            <MapPin size={24} color="white" />
-          </div>
-        </Marker>
-      ))}
+        />
+        <Layer
+          id="cluster-count"
+          type="symbol"
+          source="busStops"
+          filter={["has", "point_count"]}
+          layout={{
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 12,
+          }}
+        />
+        <Layer
+          id="unclustered-point"
+          type="symbol"
+          source="busStops"
+          filter={["!", ["has", "point_count"]]}
+          layout={{
+            "icon-image": "custom-marker",
+            "icon-size": 0.5,
+            "icon-allow-overlap": true,
+            "icon-ignore-placement": true,
+          }}
+        />
+      </Source>
     </MapGL>
   );
 };
