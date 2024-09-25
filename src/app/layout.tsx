@@ -27,7 +27,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="h-screen w-screen">
+      <body className="h-dvh w-screen overflow-hidden">
         <Providers>{children}</Providers>
       </body>
     </html>

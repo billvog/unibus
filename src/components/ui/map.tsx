@@ -63,9 +63,11 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
 
     if (mapRef.current) {
       const map = mapRef.current.getMap();
+      const zoom = map.getZoom();
+
       map.flyTo({
         center: event.lngLat,
-        zoom: 16,
+        zoom: zoom < 16 ? 16 : zoom,
       });
     }
   }, []);
