@@ -25,3 +25,18 @@ export type BusLine = {
   borderColor: string;
   routes: string[];
 };
+
+export type BusVehicle = {
+  lineCode: string;
+  lineName: string;
+  routeCode: string;
+  routeName: string;
+  latitude: number;
+  longitude: number;
+  departureMins: number;
+  departureSeconds: number;
+  vehicleCode: string;
+  lineColor: string;
+  lineTextColor: string;
+  borderColor: string;
+};
