@@ -1,9 +1,9 @@
 import { GetBusLiveStop } from "@/actions/get-bus-live-stop";
 import { useCitybusToken } from "@/components/citybus-token-context";
-import { type BusStop as BusStopType } from "@/types/citybus";
+import BusVehicle from "@/components/ui/bus-vehicle";
+import { BusStop as BusStopType } from "@/types/citybus";
 import { useQuery } from "@tanstack/react-query";
 import { X } from "lucide-react";
-import React from "react";
 
 type BusStopProps = {
   busStop: BusStopType;
@@ -28,20 +28,14 @@ const BusStop = ({ busStop, onClose }: BusStopProps) => {
   }
 
   return (
-    <div className="relative p-10">
+    <div className="relative flex max-h-[300px] flex-col gap-4 overflow-y-auto p-10">
       <div className="absolute right-0 top-0 p-4">
         <X className="cursor-pointer" onClick={onClose} />
       </div>
       <h1 className="text-2xl font-bold">{busStop.name}</h1>
-      <div>
+      <div className="flex flex-col gap-2">
         {busLiveQuery.data?.vehicles.map((vehicle) => (
-          <div key={vehicle.vehicleCode}>
-            <div>{vehicle.lineName}</div>
-            <div>{vehicle.routeName}</div>
-            <div>
-              {vehicle.departureMins}:{vehicle.departureSeconds}
-            </div>
-          </div>
+          <BusVehicle key={vehicle.vehicleCode} vehicle={vehicle} />
         ))}
       </div>
     </div>
