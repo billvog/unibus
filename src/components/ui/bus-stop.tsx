@@ -110,7 +110,7 @@ const BusStop = ({ busStop, onClose }: BusStopProps) => {
       <h1 className="text-2xl font-bold" onClick={onBusStopNameClick}>
         {busStop.name}
       </h1>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         {vehicles.length === 0 ? (
           <div>Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά 😢</div>
         ) : (
