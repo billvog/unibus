@@ -2,8 +2,15 @@ import { useBusStop } from "@/components/bus-stop-context";
 import BusLinePointsMapLayer from "@/components/ui/bus-line-points-map-layer";
 import { env } from "@/env";
 import { BusStop } from "@/types/citybus";
+import { Coordinates } from "@/types/coordinates";
 import React from "react";
-import MapGL, { Layer, MapMouseEvent, MapRef, Source } from "react-map-gl";
+import MapGL, {
+  Layer,
+  MapMouseEvent,
+  MapRef,
+  Marker,
+  Source,
+} from "react-map-gl";
 
 type MapProps = {
   busStops: BusStop[];
@@ -11,7 +18,7 @@ type MapProps = {
 };
 
 const Map = ({ busStops, onBusStopClick }: MapProps) => {
-  const { selectedStop } = useBusStop();
+  const { selectedStop, liveBusCoordinates } = useBusStop();
 
   const stopsGeojson = React.useMemo(
     () => ({
@@ -33,27 +40,54 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
 
   const mapRef = React.useRef<MapRef>(null);
 
-  const onMapClick = React.useCallback((event: MapMouseEvent) => {
-    const feature = event.features?.[0];
-    const stopId = feature?.properties?.id;
+  const mapFlyTo = React.useCallback(
+    (coordinates: Coordinates) => {
+      if (!mapRef.current) {
+        return;
+      }
 
-    if (!stopId) {
-      return;
-    }
-
-    console.log("clicked", stopId);
-    onBusStopClick(stopId);
-
-    if (mapRef.current) {
       const map = mapRef.current.getMap();
       const zoom = map.getZoom();
 
       map.flyTo({
-        center: event.lngLat,
+        center: [coordinates.longitude, coordinates.latitude],
         zoom: zoom < 16 ? 16 : zoom,
       });
-    }
-  }, []);
+    },
+    [mapRef.current],
+  );
+
+  const onMapClick = React.useCallback(
+    (event: MapMouseEvent) => {
+      const feature = event.features?.[0];
+      const stopId = feature?.properties?.id;
+
+      if (!stopId) {
+        return;
+      }
+
+      onBusStopClick(stopId);
+
+      mapFlyTo({
+        longitude: event.lngLat.lng,
+        latitude: event.lngLat.lat,
+      });
+    },
+    [mapFlyTo, onBusStopClick],
+  );
+
+  React.useEffect(() => {
+    const eventHandler = (event: Event) => {
+      const customEvent = event as CustomEvent<Coordinates>;
+      mapFlyTo(customEvent.detail);
+    };
+
+    window.addEventListener("map:fly-to", eventHandler);
+
+    return () => {
+      window.removeEventListener("map:fly-to", eventHandler);
+    };
+  }, [mapFlyTo]);
 
   React.useEffect(() => {
     if (!mapRef.current) {
@@ -81,6 +115,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
       style={{ flex: 1 }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
     >
+      {/* Draw line for selected bus stop */}
       {selectedStop &&
         selectedStop.lineCodes.map((lineCode, index) => (
           <BusLinePointsMapLayer
@@ -89,6 +124,18 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
             lineCode={lineCode}
           />
         ))}
+
+      {/* Show live bus coordinates */}
+      {liveBusCoordinates && (
+        <Marker
+          latitude={liveBusCoordinates.latitude}
+          longitude={liveBusCoordinates.longitude}
+        >
+          <div className="text-4xl">🚌</div>
+        </Marker>
+      )}
+
+      {/* Draw all bus stop */}
       <Source
         id="busStops"
         type="geojson"

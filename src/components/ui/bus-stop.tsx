@@ -4,6 +4,7 @@ import { useCitybusToken } from "@/components/citybus-token-context";
 import BusVehicle from "@/components/ui/bus-vehicle";
 import { Spinner } from "@/components/ui/spinner";
 import { BusStop as BusStopType } from "@/types/citybus";
+import { Coordinates } from "@/types/coordinates";
 import { useQuery } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import React from "react";
@@ -17,7 +18,7 @@ type BusStopProps = {
 };
 
 const BusStop = ({ busStop, onClose }: BusStopProps) => {
-  const { setSelectedStop } = useBusStop();
+  const { setSelectedStop, setLiveBusCoordinates } = useBusStop();
   const token = useCitybusToken();
 
   const busLiveQuery = useQuery({
@@ -39,6 +40,56 @@ const BusStop = ({ busStop, onClose }: BusStopProps) => {
     }
   }, [busLiveQuery, setSelectedStop]);
 
+  React.useEffect(() => {
+    if (vehicles.length === 0) {
+      return;
+    }
+
+    const firstVehicle = vehicles[0]!;
+    setLiveBusCoordinates({
+      latitude: Number(firstVehicle.latitude),
+      longitude: Number(firstVehicle.longitude),
+    });
+  }, [vehicles]);
+
+  const onBusStopNameClick = React.useCallback(() => {
+    window.dispatchEvent(
+      new CustomEvent("map:fly-to", {
+        detail: {
+          latitude: busStop.latitude,
+          longitude: busStop.longitude,
+        },
+      }),
+    );
+  }, [busStop]);
+
+  const onBusVehicleClick = React.useCallback(
+    (vehicleCode: string) => {
+      const vehicle = vehicles.find((v) => v.vehicleCode === vehicleCode);
+      if (!vehicle) {
+        return;
+      }
+
+      const coordinates: Coordinates = {
+        latitude: Number(vehicle.latitude),
+        longitude: Number(vehicle.longitude),
+      };
+
+      if (coordinates.latitude === 0 && coordinates.longitude === 0) {
+        return;
+      }
+
+      setLiveBusCoordinates(coordinates);
+
+      window.dispatchEvent(
+        new CustomEvent("map:fly-to", {
+          detail: coordinates,
+        }),
+      );
+    },
+    [vehicles],
+  );
+
   if (busLiveQuery.isLoading) {
     return (
       <div className="flex min-h-[210px] items-center justify-center p-10">
@@ -56,13 +107,19 @@ const BusStop = ({ busStop, onClose }: BusStopProps) => {
       <div className="absolute right-0 top-0 p-4">
         <X className="cursor-pointer" onClick={onClose} />
       </div>
-      <h1 className="text-2xl font-bold">{busStop.name}</h1>
+      <h1 className="text-2xl font-bold" onClick={onBusStopNameClick}>
+        {busStop.name}
+      </h1>
       <div className="flex flex-col gap-2">
         {vehicles.length === 0 ? (
           <div>Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά 😢</div>
         ) : (
           vehicles.map((vehicle) => (
-            <BusVehicle key={vehicle.vehicleCode} vehicle={vehicle} />
+            <BusVehicle
+              key={vehicle.vehicleCode}
+              vehicle={vehicle}
+              onClick={() => onBusVehicleClick(vehicle.vehicleCode)}
+            />
           ))
         )}
       </div>

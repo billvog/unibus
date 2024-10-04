@@ -38,8 +38,8 @@ export type BusVehicle = {
   lineName: string;
   routeCode: string;
   routeName: string;
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
   departureMins: number;
   departureSeconds: number;
   vehicleCode: string;
