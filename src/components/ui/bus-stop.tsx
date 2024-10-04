@@ -17,7 +17,7 @@ type BusStopProps = {
 };
 
 const BusStop = ({ busStop, onClose }: BusStopProps) => {
-  const { setSelectedId } = useBusStop();
+  const { setSelectedStop } = useBusStop();
   const token = useCitybusToken();
 
   const busLiveQuery = useQuery({
@@ -35,9 +35,9 @@ const BusStop = ({ busStop, onClose }: BusStopProps) => {
   React.useEffect(() => {
     if (busLiveQuery.isError || (busLiveQuery.data && !busLiveQuery.data.ok)) {
       toast.error("Failed to fetch bus live data");
-      setSelectedId(null);
+      setSelectedStop(null);
     }
-  }, [busLiveQuery, setSelectedId]);
+  }, [busLiveQuery, setSelectedStop]);
 
   if (busLiveQuery.isLoading) {
     return (

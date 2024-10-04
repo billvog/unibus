@@ -1,15 +1,16 @@
 "use client";
 
+import { BusStop } from "@/types/citybus";
 import React, { useState } from "react";
 
 type BusStopContextType = {
-  selectedId: number | null;
-  setSelectedId: React.Dispatch<React.SetStateAction<number | null>>;
+  selectedStop: BusStop | null;
+  setSelectedStop: React.Dispatch<React.SetStateAction<BusStop | null>>;
 };
 
 const BusStopContext = React.createContext<BusStopContextType>({
-  selectedId: null,
-  setSelectedId: () => {},
+  selectedStop: null,
+  setSelectedStop: () => {},
 });
 
 export const BusStopProvider = ({
@@ -17,13 +18,13 @@ export const BusStopProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedStop, setSelectedStop] = useState<BusStop | null>(null);
 
   return (
     <BusStopContext.Provider
       value={{
-        selectedId,
-        setSelectedId,
+        selectedStop,
+        setSelectedStop,
       }}
     >
       {children}

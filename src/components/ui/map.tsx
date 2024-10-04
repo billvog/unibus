@@ -1,9 +1,8 @@
 import { useBusStop } from "@/components/bus-stop-context";
+import BusLinePointsMapLayer from "@/components/ui/bus-line-points-map-layer";
 import { env } from "@/env";
 import { BusStop } from "@/types/citybus";
-import { MapPin } from "lucide-react";
 import React from "react";
-import { renderToString } from "react-dom/server";
 import MapGL, { Layer, MapMouseEvent, MapRef, Source } from "react-map-gl";
 
 type MapProps = {
@@ -12,9 +11,9 @@ type MapProps = {
 };
 
 const Map = ({ busStops, onBusStopClick }: MapProps) => {
-  const { selectedId } = useBusStop();
+  const { selectedStop } = useBusStop();
 
-  const geojson = React.useMemo(
+  const stopsGeojson = React.useMemo(
     () => ({
       type: "FeatureCollection",
       features: busStops.map((stop) => ({
@@ -34,23 +33,6 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
 
   const mapRef = React.useRef<MapRef>(null);
 
-  React.useEffect(() => {
-    if (mapRef.current) {
-      const map = mapRef.current.getMap();
-
-      if (map.hasImage("custom-marker")) {
-        return;
-      }
-
-      const svgString = renderToString(<MapPin />);
-      const svgDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`;
-
-      const image = new Image(50, 50);
-      image.onload = () => map.addImage("custom-marker", image);
-      image.src = svgDataUrl;
-    }
-  }, [mapRef.current]);
-
   const onMapClick = React.useCallback((event: MapMouseEvent) => {
     const feature = event.features?.[0];
     const stopId = feature?.properties?.id;
@@ -59,6 +41,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
       return;
     }
 
+    console.log("clicked", stopId);
     onBusStopClick(stopId);
 
     if (mapRef.current) {
@@ -98,10 +81,18 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
       style={{ flex: 1 }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
     >
+      {selectedStop &&
+        selectedStop.lineCodes.map((lineCode, index) => (
+          <BusLinePointsMapLayer
+            key={lineCode}
+            index={index}
+            lineCode={lineCode}
+          />
+        ))}
       <Source
         id="busStops"
         type="geojson"
-        data={geojson}
+        data={stopsGeojson}
         cluster={true}
         clusterMaxZoom={20}
         clusterRadius={50}
@@ -152,7 +143,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
             "circle-radius": 10,
             "circle-color": [
               "case",
-              ["==", ["get", "id"], selectedId],
+              ["==", ["get", "id"], selectedStop?.id ?? null],
               "#b300ff",
               "#ff5e00",
             ],

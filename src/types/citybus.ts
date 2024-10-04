@@ -26,6 +26,13 @@ export type BusLine = {
   routes: string[];
 };
 
+export type BusLinePoint = {
+  id: number;
+  sequence: number;
+  longitude: string;
+  latitude: string;
+};
+
 export type BusVehicle = {
   lineCode: string;
   lineName: string;

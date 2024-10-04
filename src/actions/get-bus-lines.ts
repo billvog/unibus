@@ -12,7 +12,7 @@ type GetBusLinesResponse =
       lines: BusLine[];
     };
 
-export async function GetLinesStops(
+export async function GetBusLinesStops(
   token: string,
 ): Promise<GetBusLinesResponse> {
   const url = `${CITYBUS_API_URL(114)}/lines`;

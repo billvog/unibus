@@ -1,5 +1,6 @@
 "use client";
 
+import { GetBusLinePoints } from "@/actions/get-bus-line-points";
 import { GetBusStops } from "@/actions/get-bus-stops";
 import { useBusStop } from "@/components/bus-stop-context";
 import { useCitybusToken } from "@/components/citybus-token-context";
@@ -10,7 +11,7 @@ import React from "react";
 
 export default function Page() {
   const token = useCitybusToken();
-  const { selectedId, setSelectedId } = useBusStop();
+  const { selectedStop, setSelectedStop } = useBusStop();
 
   const busStopsQuery = useQuery({
     queryKey: ["busStops"],
@@ -23,27 +24,22 @@ export default function Page() {
     [busStopsQuery.data],
   );
 
-  const selectedBusStop = React.useMemo(
-    () => busStops.find((stop) => stop.id === selectedId),
-    [busStops, selectedId],
-  );
-
   const onBusStopClick = React.useCallback(
     (id: number) => {
-      setSelectedId(id);
+      setSelectedStop(busStops.find((stop) => stop.id === id) ?? null);
     },
-    [setSelectedId],
+    [busStops],
   );
 
   const onBusStopClear = React.useCallback(() => {
-    setSelectedId(null);
-  }, [setSelectedId]);
+    setSelectedStop(null);
+  }, []);
 
   return (
     <div className="flex h-full w-full flex-1 flex-col">
       <Map busStops={busStops} onBusStopClick={onBusStopClick} />
-      {selectedBusStop && (
-        <BusStop busStop={selectedBusStop} onClose={onBusStopClear} />
+      {selectedStop && (
+        <BusStop busStop={selectedStop} onClose={onBusStopClear} />
       )}
     </div>
   );
