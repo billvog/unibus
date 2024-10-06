@@ -3,28 +3,22 @@ import { useBusStop } from "@/components/bus-stop-context";
 import { useCitybusToken } from "@/components/citybus-token-context";
 import BusVehicle from "@/components/ui/bus-vehicle";
 import { Spinner } from "@/components/ui/spinner";
-import { BusStop as BusStopType } from "@/types/citybus";
 import { Coordinates } from "@/types/coordinates";
 import { useQuery } from "@tanstack/react-query";
-import { X } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
+import { Drawer } from "vaul";
 
 const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 
-type BusStopProps = {
-  busStop: BusStopType;
-  onClose: () => void;
-};
-
-const BusStop = ({ busStop, onClose }: BusStopProps) => {
-  const { setSelectedStop, setLiveBusCoordinates } = useBusStop();
+const BusStopContent = () => {
+  const { selectedStop, setSelectedStop, setLiveBusCoordinates } = useBusStop();
   const token = useCitybusToken();
 
   const busLiveQuery = useQuery({
-    queryKey: ["bus-live", busStop.code],
-    queryFn: () => GetBusLiveStop(token ?? "", busStop.code),
-    enabled: !!token,
+    queryKey: ["bus-live", selectedStop?.code],
+    queryFn: () => GetBusLiveStop(token ?? "", selectedStop?.code!),
+    enabled: !!token && !!selectedStop,
     refetchInterval: BusLiveQueryRefetchInterval,
   });
 
@@ -53,15 +47,19 @@ const BusStop = ({ busStop, onClose }: BusStopProps) => {
   }, [vehicles]);
 
   const onBusStopNameClick = React.useCallback(() => {
+    if (!selectedStop) {
+      return;
+    }
+
     window.dispatchEvent(
       new CustomEvent("map:fly-to", {
         detail: {
-          latitude: busStop.latitude,
-          longitude: busStop.longitude,
+          latitude: selectedStop.latitude,
+          longitude: selectedStop.longitude,
         },
       }),
     );
-  }, [busStop]);
+  }, [selectedStop]);
 
   const onBusVehicleClick = React.useCallback(
     (vehicleCode: string) => {
@@ -92,24 +90,21 @@ const BusStop = ({ busStop, onClose }: BusStopProps) => {
 
   if (busLiveQuery.isLoading) {
     return (
-      <div className="flex min-h-[210px] items-center justify-center p-10">
+      <div className="self-center py-20">
         <Spinner />
       </div>
     );
   }
 
-  if (!busLiveQuery.data?.ok) {
+  if (!busLiveQuery.data?.ok || !selectedStop) {
     return null;
   }
 
   return (
-    <div className="relative flex max-h-[300px] min-h-[210px] flex-col gap-4 overflow-y-auto p-10">
-      <div className="absolute right-0 top-0 p-4">
-        <X className="cursor-pointer" onClick={onClose} />
-      </div>
-      <h1 className="text-2xl font-bold" onClick={onBusStopNameClick}>
-        {busStop.name}
-      </h1>
+    <>
+      <Drawer.Title className="text-2xl font-bold" onClick={onBusStopNameClick}>
+        {selectedStop.name}
+      </Drawer.Title>
       <div className="flex flex-col gap-3">
         {vehicles.length === 0 ? (
           <div>Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά 😢</div>
@@ -123,8 +118,8 @@ const BusStop = ({ busStop, onClose }: BusStopProps) => {
           ))
         )}
       </div>
-    </div>
+    </>
   );
 };
 
-export default BusStop;
+export default BusStopContent;
