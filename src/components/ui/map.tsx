@@ -1,8 +1,12 @@
 import { useBusStop } from "@/components/bus-stop-context";
 import BusLinePointsMapLayer from "@/components/ui/bus-line-points-map-layer";
+import { Button } from "@/components/ui/button";
 import { env } from "@/env";
 import { BusStop } from "@/types/citybus";
 import { Coordinates } from "@/types/coordinates";
+import * as turf from "@turf/distance";
+import { Undo2 } from "lucide-react";
+import { MapEvent } from "mapbox-gl";
 import React from "react";
 import MapGL, {
   Layer,
@@ -22,6 +26,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
   const { selectedStop, liveBusCoordinates } = useBusStop();
 
   const [hasZoomedToUser, setHasZoomedToUser] = React.useState(false);
+  const [canResetZoom, setCanResetZoom] = React.useState(false);
 
   const stopsGeojson = React.useMemo(
     () => ({
@@ -62,6 +67,19 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
     [mapRef.current],
   );
 
+  const onMapLoad = React.useCallback(() => {
+    const eventHandler = (event: Event) => {
+      const customEvent = event as CustomEvent<Coordinates>;
+      mapFlyTo(customEvent.detail);
+    };
+
+    window.addEventListener("map:fly-to", eventHandler);
+
+    return () => {
+      window.removeEventListener("map:fly-to", eventHandler);
+    };
+  }, [mapFlyTo]);
+
   const onMapClick = React.useCallback(
     (event: MapMouseEvent) => {
       const feature = event.features?.[0];
@@ -81,32 +99,29 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
     [mapFlyTo, onBusStopClick],
   );
 
-  const onMapLoad = React.useCallback(() => {
-    const eventHandler = (event: Event) => {
-      const customEvent = event as CustomEvent<Coordinates>;
-      mapFlyTo(customEvent.detail);
-    };
+  const onMapMove = React.useCallback(
+    (event: MapEvent) => {
+      if (!userLocation) {
+        setCanResetZoom(false);
+        return;
+      }
 
-    window.addEventListener("map:fly-to", eventHandler);
+      const map = event.target;
+      const mapLocation = map.getCenter();
+      const mapZoom = map.getZoom();
 
-    return () => {
-      window.removeEventListener("map:fly-to", eventHandler);
-    };
-  }, [mapFlyTo]);
+      const distance = turf.distance(
+        [mapLocation.lng, mapLocation.lat],
+        [userLocation.longitude, userLocation.latitude],
+        { units: "meters" },
+      );
 
-  React.useEffect(() => {
-    if (!mapRef.current) {
-      return;
-    }
+      const threshold = 300 * Math.pow(2, 16 - mapZoom);
 
-    const map = mapRef.current.getMap();
-
-    map.on("click", "unclustered-point", onMapClick);
-
-    return () => {
-      map.off("click", "unclustered-point", onMapClick);
-    };
-  }, [mapRef.current, onMapClick]);
+      setCanResetZoom(distance > threshold);
+    },
+    [userLocation],
+  );
 
   React.useEffect(() => {
     if (userLocation && !hasZoomedToUser) {
@@ -115,19 +130,58 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
     }
   }, [userLocation, hasZoomedToUser, mapFlyTo]);
 
+  React.useEffect(() => {
+    if (!mapRef.current) {
+      return;
+    }
+
+    const map = mapRef.current.getMap();
+    map.on("click", "unclustered-point", onMapClick);
+
+    return () => {
+      map.off("click", "unclustered-point", onMapClick);
+    };
+  }, [mapRef.current, onMapClick]);
+
+  React.useEffect(() => {
+    if (!mapRef.current) {
+      return;
+    }
+
+    const map = mapRef.current.getMap();
+    map.on("move", onMapMove);
+
+    return () => {
+      map.off("move", onMapMove);
+    };
+  }, [mapRef.current, onMapMove]);
+
   return (
     <MapGL
       ref={mapRef}
-      mapboxAccessToken={env.NEXT_PUBLIC_MAPBOX_TOKEN}
+      attributionControl={false}
       initialViewState={{
         longitude: 22.4337,
         latitude: 38.8997,
         zoom: 13,
       }}
-      style={{ flex: 1 }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
+      mapboxAccessToken={env.NEXT_PUBLIC_MAPBOX_TOKEN}
       onLoad={onMapLoad}
+      style={{ flex: 1 }}
     >
+      {/* Reset zoom button, to return map to user's location, if any */}
+      {canResetZoom && (
+        <Button
+          className="absolute bottom-4 right-4 gap-1"
+          size="sm"
+          onClick={() => userLocation && mapFlyTo(userLocation)}
+        >
+          <Undo2 size={14} />
+          <span>Reset Zoom</span>
+        </Button>
+      )}
+
       {/* Draw line for selected bus stop */}
       {selectedStop &&
         selectedStop.lineCodes.map((lineCode, index) => (
