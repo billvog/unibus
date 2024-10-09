@@ -15,10 +15,13 @@ import MapGL, {
 type MapProps = {
   busStops: BusStop[];
   onBusStopClick: (id: number) => void;
+  userLocation: Coordinates | null;
 };
 
-const Map = ({ busStops, onBusStopClick }: MapProps) => {
+const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
   const { selectedStop, liveBusCoordinates } = useBusStop();
+
+  const [hasZoomedToUser, setHasZoomedToUser] = React.useState(false);
 
   const stopsGeojson = React.useMemo(
     () => ({
@@ -43,7 +46,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
   const mapFlyTo = React.useCallback(
     (coordinates: Coordinates) => {
       if (!mapRef.current) {
-        return;
+        return false;
       }
 
       const map = mapRef.current.getMap();
@@ -53,6 +56,8 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
         center: [coordinates.longitude, coordinates.latitude],
         zoom: zoom < 16 ? 16 : zoom,
       });
+
+      return true;
     },
     [mapRef.current],
   );
@@ -76,7 +81,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
     [mapFlyTo, onBusStopClick],
   );
 
-  React.useEffect(() => {
+  const onMapLoad = React.useCallback(() => {
     const eventHandler = (event: Event) => {
       const customEvent = event as CustomEvent<Coordinates>;
       mapFlyTo(customEvent.detail);
@@ -103,6 +108,13 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
     };
   }, [mapRef.current, onMapClick]);
 
+  React.useEffect(() => {
+    if (userLocation && !hasZoomedToUser) {
+      const ok = mapFlyTo(userLocation);
+      setHasZoomedToUser(ok);
+    }
+  }, [userLocation, hasZoomedToUser, mapFlyTo]);
+
   return (
     <MapGL
       ref={mapRef}
@@ -114,6 +126,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
       }}
       style={{ flex: 1 }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
+      onLoad={onMapLoad}
     >
       {/* Draw line for selected bus stop */}
       {selectedStop &&
