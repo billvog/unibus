@@ -1,3 +1,21 @@
+function displayMinutes(minutes: number) {
+  return `${minutes} λεπτ${minutes === 1 ? "ό" : "ά"}`;
+}
+
+function displaySeconds(seconds: number, compact = false) {
+  return (
+    `${seconds} δευτ` + (compact ? "." : `ερόλεπτ${seconds === 1 ? "ο" : "α"}`)
+  );
+}
+
 export function formatTime(minutes: number, seconds: number) {
-  return `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  if (minutes > 1) {
+    return displayMinutes(minutes);
+  }
+
+  if (minutes === 1) {
+    return displayMinutes(minutes) + " και " + displaySeconds(seconds, true);
+  }
+
+  return displaySeconds(seconds);
 }
