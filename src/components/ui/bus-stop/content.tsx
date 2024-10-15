@@ -13,7 +13,7 @@ const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 
 const BusStopContent = () => {
   const { selectedStop, setSelectedStop, setLiveBusCoordinates } = useBusStop();
-  const token = useCitybusToken();
+  const { token } = useCitybusToken();
 
   const busLiveQuery = useQuery({
     queryKey: ["bus-live", selectedStop?.code],

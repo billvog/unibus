@@ -6,6 +6,7 @@ import { CITYBUS_API_URL } from "@/utils/constants";
 type GetBusStopsResponse =
   | {
       ok: false;
+      status?: number;
     }
   | {
       ok: true;
@@ -30,6 +31,7 @@ export async function GetBusStops(token: string): Promise<GetBusStopsResponse> {
   if (!response.ok) {
     return {
       ok: false,
+      status: response.status,
     };
   }
 

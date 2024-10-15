@@ -5,13 +5,14 @@ import { useBusStop } from "@/components/bus-stop-context";
 import { useCitybusToken } from "@/components/citybus-token-context";
 import BusStop from "@/components/ui/bus-stop";
 import Map from "@/components/ui/map";
+import { FullscreenSpinner } from "@/components/ui/spinner";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 
 export default function Page() {
-  const token = useCitybusToken();
+  const { token, refetchToken } = useCitybusToken();
   const { setSelectedStop } = useBusStop();
 
   const geolocation = useGeolocation();
@@ -35,6 +36,24 @@ export default function Page() {
   );
 
   React.useEffect(() => {
+    // Refetch bus stops when token changes
+    if (token && !busStopsQuery.data?.ok) {
+      busStopsQuery.refetch();
+    }
+  }, [token, busStopsQuery.data]);
+
+  React.useEffect(() => {
+    // In case server responds with 401, refetch the token
+    if (
+      busStopsQuery.data &&
+      !busStopsQuery.data.ok &&
+      busStopsQuery.data.status === 401
+    ) {
+      refetchToken();
+    }
+  }, [busStopsQuery.data]);
+
+  React.useEffect(() => {
     // Show an error message if location could not be
     // retrieved, but skip the error if the user denied
     if (
@@ -47,6 +66,7 @@ export default function Page() {
 
   return (
     <div className="flex h-full w-full flex-1 flex-col">
+      {busStopsQuery.isLoading && <FullscreenSpinner display="absolute" />}
       <Map
         busStops={busStops}
         onBusStopClick={onBusStopClick}

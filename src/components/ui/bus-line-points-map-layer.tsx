@@ -14,7 +14,7 @@ const BusLinePointsMapLayer = ({
   index,
   lineCode,
 }: BusLinePointsMapLayerProps) => {
-  const token = useCitybusToken();
+  const { token } = useCitybusToken();
 
   const lineColor = React.useMemo(() => getColor(index), [index]);
 

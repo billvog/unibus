@@ -3,10 +3,19 @@
 import { GetCitybusToken } from "@/actions/get-citybus-token";
 import { usePersistedState } from "@/hooks/usePersistedState";
 import { StorageKeys } from "@/utils/constants";
+import { VerifyJwt } from "@/utils/verify-jwt";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
-const CitybusTokenContext = React.createContext<string | null>(null);
+type CitybusTokenContextType = {
+  token: string | null;
+  refetchToken: () => void;
+};
+
+const CitybusTokenContext = React.createContext<CitybusTokenContextType>({
+  token: null,
+  refetchToken: () => {},
+});
 
 export const CitybusTokenProvider = ({
   children,
@@ -25,7 +34,14 @@ export const CitybusTokenProvider = ({
   });
 
   React.useEffect(() => {
-    if (initialized && !token) {
+    if (!initialized) {
+      return;
+    }
+
+    const isTokenValid = token && token.length > 0 && VerifyJwt(token);
+
+    // If the token is not valid, refetch it
+    if (!isTokenValid) {
       tokenQuery.refetch();
     }
   }, [token, initialized]);
@@ -37,7 +53,12 @@ export const CitybusTokenProvider = ({
   }, [tokenQuery.data]);
 
   return (
-    <CitybusTokenContext.Provider value={token}>
+    <CitybusTokenContext.Provider
+      value={{
+        token,
+        refetchToken: () => tokenQuery.refetch(),
+      }}
+    >
       {children}
     </CitybusTokenContext.Provider>
   );

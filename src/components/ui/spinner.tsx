@@ -22,9 +22,31 @@ const Spinner = ({ className, size, ...props }: SpinnerProps) => {
   );
 };
 
-const FullscreenSpinner = () => {
+const fullscreenSpinnerVariants = cva(
+  "flex h-full w-full flex-1 items-center justify-center",
+  {
+    variants: {
+      display: {
+        default: null,
+        absolute: "absolute backdrop-filter backdrop-blur-sm z-50",
+      },
+    },
+  },
+);
+
+export type FullscreenSpinnerProps = React.HTMLAttributes<HTMLDivElement> &
+  VariantProps<typeof fullscreenSpinnerVariants>;
+
+const FullscreenSpinner = ({
+  className,
+  display,
+  ...props
+}: FullscreenSpinnerProps) => {
   return (
-    <div className="flex h-full w-full flex-1 items-center justify-center">
+    <div
+      className={cn(fullscreenSpinnerVariants({ className, display }))}
+      {...props}
+    >
       <Spinner size="lg" />
     </div>
   );
