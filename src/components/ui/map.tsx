@@ -90,13 +90,8 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
       }
 
       onBusStopClick(stopId);
-
-      mapFlyTo({
-        longitude: event.lngLat.lng,
-        latitude: event.lngLat.lat,
-      });
     },
-    [mapFlyTo, onBusStopClick],
+    [onBusStopClick],
   );
 
   const onMapMove = React.useCallback(
@@ -208,7 +203,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         type="geojson"
         data={stopsGeojson}
         cluster={true}
-        clusterMaxZoom={20}
+        clusterMaxZoom={50}
         clusterRadius={50}
       >
         <Layer

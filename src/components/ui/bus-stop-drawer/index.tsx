@@ -1,5 +1,5 @@
 import { useBusStop } from "@/components/bus-stop-context";
-import BusStopContent from "@/components/ui/bus-stop/content";
+import BusStopContent from "@/components/ui/bus-stop-drawer/content";
 import { X } from "lucide-react";
 import React from "react";
 import { Drawer } from "vaul";
@@ -37,6 +37,14 @@ const BusStop = () => {
     setSelectedStop(null);
     onClose();
   }, [onClose, setSelectedStop]);
+
+  React.useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("drawer-resize", {
+        detail: { snap: open ? String(snap) : "0" },
+      }),
+    );
+  }, [snap, open]);
 
   return (
     <Drawer.Root
