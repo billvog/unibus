@@ -35,8 +35,13 @@ export default function Page() {
   );
 
   React.useEffect(() => {
-    if (geolocation.error) {
-      toast.error(geolocation.error);
+    // Show an error message if location could not be
+    // retrieved, but skip the error if the user denied
+    if (
+      geolocation.error &&
+      geolocation.error.code !== GeolocationPositionError.PERMISSION_DENIED
+    ) {
+      toast.error(geolocation.error.message);
     }
   }, [geolocation.error]);
 

@@ -1,11 +1,16 @@
 import React from "react";
 
+type GeolocationError = {
+  code: number;
+  message: string;
+};
+
 export const useGeolocation = () => {
   const [position, setPosition] = React.useState<GeolocationCoordinates | null>(
     null,
   );
 
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<GeolocationError | null>(null);
 
   const successCallback = React.useCallback((position: GeolocationPosition) => {
     setPosition(position.coords);
@@ -25,7 +30,10 @@ export const useGeolocation = () => {
         break;
     }
 
-    setError(message);
+    setError({
+      code: error.code,
+      message,
+    });
   }, []);
 
   React.useEffect(() => {
