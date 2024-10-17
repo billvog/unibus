@@ -59,24 +59,11 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
 
     map.flyTo({
       center: [coordinates.longitude, coordinates.latitude],
-      zoom: zoom < 17 ? 18 : zoom,
+      zoom: zoom < 17 ? 17 : zoom,
     });
 
     return true;
   }, []);
-
-  const onMapLoad = React.useCallback(() => {
-    const eventHandler = (event: Event) => {
-      const customEvent = event as CustomEvent<Coordinates>;
-      mapFlyTo(customEvent.detail);
-    };
-
-    window.addEventListener("map:fly-to", eventHandler);
-
-    return () => {
-      window.removeEventListener("map:fly-to", eventHandler);
-    };
-  }, [mapFlyTo]);
 
   const onMapClick = React.useCallback(
     (event: MapMouseEvent) => {
@@ -116,6 +103,29 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
     [userLocation],
   );
 
+  const onMapLoad = React.useCallback(() => {
+    if (!mapRef.current) {
+      return;
+    }
+
+    const handleMapFlyTo = (event: Event) => {
+      const customEvent = event as CustomEvent<Coordinates>;
+      mapFlyTo(customEvent.detail);
+    };
+
+    const map = mapRef.current.getMap();
+
+    map.on("move", onMapMove);
+    map.on("click", "unclustered-point", onMapClick);
+    window.addEventListener("map:fly-to", handleMapFlyTo);
+
+    return () => {
+      map.off("move", onMapMove);
+      map.off("click", "unclustered-point", onMapClick);
+      window.removeEventListener("map:fly-to", handleMapFlyTo);
+    };
+  }, [mapFlyTo, onMapMove, onMapClick]);
+
   const onResetZoom = React.useCallback(() => {
     if (!userLocation) {
       return;
@@ -137,30 +147,8 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
   }, [userLocation, hasZoomedToUser, mapFlyTo]);
 
   React.useEffect(() => {
-    if (!mapRef.current) {
-      return;
-    }
-
-    const map = mapRef.current.getMap();
-    map.on("click", "unclustered-point", onMapClick);
-
-    return () => {
-      map.off("click", "unclustered-point", onMapClick);
-    };
-  }, [onMapClick]);
-
-  React.useEffect(() => {
-    if (!mapRef.current) {
-      return;
-    }
-
-    const map = mapRef.current.getMap();
-    map.on("move", onMapMove);
-
-    return () => {
-      map.off("move", onMapMove);
-    };
-  }, [onMapMove]);
+    onMapLoad();
+  }, [onMapLoad]);
 
   return (
     <MapGL
@@ -196,6 +184,16 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
           lineCode={lineCode}
         />
       ))}
+
+      {/* Show user's location marker, if any */}
+      {userLocation && (
+        <Marker
+          latitude={userLocation.latitude}
+          longitude={userLocation.longitude}
+        >
+          <div className="text-3xl">📍</div>
+        </Marker>
+      )}
 
       {/* Show live bus coordinates */}
       {liveBusCoordinates && (
