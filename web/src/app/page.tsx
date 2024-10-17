@@ -10,12 +10,8 @@ import Map from "@/components/ui/map";
 import { FullscreenSpinner } from "@/components/ui/spinner";
 import { useCaptureAnalytics } from "@/hooks/useCaptureAnalytics";
 import { useGeolocation } from "@/hooks/useGeolocation";
-import { type Coordinates } from "@/types/coordinates";
-<<<<<<< Updated upstream
-=======
 import { MapFlyToDetail } from "@/types/events";
 import { Events } from "@/utils/constants";
->>>>>>> Stashed changes
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";

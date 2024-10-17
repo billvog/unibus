@@ -4,11 +4,8 @@ import { useCitybusToken } from "@/components/citybus-token-context";
 import BusVehicle from "@/components/ui/bus-vehicle";
 import { Spinner } from "@/components/ui/spinner";
 import { type Coordinates } from "@/types/coordinates";
-<<<<<<< Updated upstream
-=======
 import { MapFlyToDetail } from "@/types/events";
 import { Events } from "@/utils/constants";
->>>>>>> Stashed changes
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";

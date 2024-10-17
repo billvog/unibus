@@ -4,11 +4,8 @@ import { Button } from "@/components/ui/button";
 import { env } from "@/env";
 import { type BusStop } from "@/types/citybus";
 import { type Coordinates } from "@/types/coordinates";
-<<<<<<< Updated upstream
-=======
 import { MapFlyToDetail } from "@/types/events";
 import { Events } from "@/utils/constants";
->>>>>>> Stashed changes
 import * as turf from "@turf/distance";
 import { Undo2 } from "lucide-react";
 import { type MapEvent } from "mapbox-gl";
