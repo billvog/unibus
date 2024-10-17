@@ -19,9 +19,7 @@ const BusVehicle = ({ vehicle, onClick }: BusVehicleProps) => {
     <div
       className={cn(
         "flex flex-col gap-1 rounded-xl p-4",
-        hasLiveLocation
-          ? "scale-[102%] cursor-pointer bg-gray-100"
-          : "border-2",
+        hasLiveLocation ? "cursor-pointer bg-gray-100" : "border-2",
       )}
       onClick={onClick}
     >

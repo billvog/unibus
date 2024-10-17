@@ -3,7 +3,7 @@
 import { BusLine } from "@/types/citybus";
 import { CITYBUS_API_URL } from "@/utils/constants";
 
-type GetBusLinesResponse =
+export type GetBusLinesResponse =
   | {
       ok: false;
     }
@@ -12,9 +12,7 @@ type GetBusLinesResponse =
       lines: BusLine[];
     };
 
-export async function GetBusLinesStops(
-  token: string,
-): Promise<GetBusLinesResponse> {
+export async function GetBusLines(token: string): Promise<GetBusLinesResponse> {
   const url = `${CITYBUS_API_URL(114)}/lines`;
 
   const response = await fetch(url, {

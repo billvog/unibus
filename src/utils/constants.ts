@@ -7,3 +7,7 @@ export const CITYBUS_API_URL = (agencyCode: number) =>
 export const StorageKeys = {
   CitybusToken: "jwt-token",
 };
+
+export const Shortcuts = {
+  FocusSearch: "/",
+};

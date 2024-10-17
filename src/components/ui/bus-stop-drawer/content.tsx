@@ -7,11 +7,16 @@ import { Coordinates } from "@/types/coordinates";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
-import { Drawer } from "vaul";
 
 const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 
-const BusStopContent = () => {
+type BusStopContentProps = {
+  onBusVehicleClick: () => void;
+};
+
+const BusStopContent = ({
+  onBusVehicleClick: handleBusVehicleClick,
+}: BusStopContentProps) => {
   const { selectedStop, setSelectedStop, setLiveBusCoordinates } = useBusStop();
   const { token } = useCitybusToken();
 
@@ -79,18 +84,20 @@ const BusStopContent = () => {
 
       setLiveBusCoordinates(coordinates);
 
+      handleBusVehicleClick();
+
       window.dispatchEvent(
         new CustomEvent("map:fly-to", {
           detail: coordinates,
         }),
       );
     },
-    [vehicles],
+    [vehicles, handleBusVehicleClick],
   );
 
   if (busLiveQuery.isLoading) {
     return (
-      <div className="self-center py-20">
+      <div className="self-center py-14">
         <Spinner />
       </div>
     );
@@ -102,9 +109,9 @@ const BusStopContent = () => {
 
   return (
     <>
-      <Drawer.Title className="text-2xl font-bold" onClick={onBusStopNameClick}>
+      <h1 className="text-xl font-bold" onClick={onBusStopNameClick}>
         {selectedStop.name}
-      </Drawer.Title>
+      </h1>
       <div className="flex flex-col gap-3">
         {vehicles.length === 0 ? (
           <div>Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά 😢</div>

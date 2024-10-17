@@ -1,18 +1,26 @@
 "use client";
 
+import BusStop from "@/components/ui/bus-stop";
 import { Input } from "@/components/ui/input";
+import { useKeyPress } from "@/hooks/useKeyPress";
 import { cn } from "@/lib/utils";
-import { BusStop } from "@/types/citybus";
+import { BusStop as BusStopType } from "@/types/citybus";
+import { Shortcuts } from "@/utils/constants";
 import { CircleX } from "lucide-react";
 import React from "react";
 import { search } from "ss-search";
 
 type BusStopsSearchProps = {
-  busStops: BusStop[];
+  busStops: BusStopType[];
   onBusStopClick: (id: number) => void;
 };
 
-const BusStopSearch = ({ busStops, onBusStopClick }: BusStopsSearchProps) => {
+const BusStopSearch = ({
+  busStops,
+  onBusStopClick: handleBusStopClick,
+}: BusStopsSearchProps) => {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
   const [show, setShow] = React.useState(true);
   const [focused, setFocused] = React.useState(false);
 
@@ -25,8 +33,19 @@ const BusStopSearch = ({ busStops, onBusStopClick }: BusStopsSearchProps) => {
       withScore: true,
     })
       .sort((a, b) => b.score - a.score)
+      .filter((result) => result.score > 0)
       .slice(0, 5);
   }, [busStops, query]);
+
+  // Focus input on "/" key press
+  useKeyPress(
+    Shortcuts.FocusSearch,
+    React.useCallback(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, [inputRef.current]),
+  );
 
   React.useEffect(() => {
     const eventHandler = (event: Event) => {
@@ -41,24 +60,38 @@ const BusStopSearch = ({ busStops, onBusStopClick }: BusStopsSearchProps) => {
     };
   }, []);
 
+  const closeSearch = React.useCallback(() => {
+    setFocused(false);
+    setQuery("");
+  }, []);
+
+  const onBusStopClick = React.useCallback(
+    (id: number) => {
+      handleBusStopClick(id);
+      closeSearch();
+    },
+    [handleBusStopClick, closeSearch],
+  );
+
   return (
     <>
       <div
         className={cn(
-          "will-change-opacity absolute bottom-0 left-0 right-0 top-0 bg-black/20 transition-[opacity] duration-500 ease-out",
+          "will-change-opacity absolute bottom-0 left-0 right-0 top-0 bg-black/20 backdrop-blur-sm transition-[opacity] duration-500 ease-out",
           focused ? "z-20 opacity-100" : "-z-10 opacity-0",
         )}
       />
-      <div className="absolute left-0 right-0 top-0 z-30 m-8 flex flex-col items-center justify-center gap-10">
+      <div className="absolute left-0 right-0 top-0 z-30 mx-4 my-8 flex flex-col items-center justify-center gap-8">
         <div
           className={cn(
             "relative w-full max-w-lg transition-[transform,opacity] duration-500 ease-out will-change-transform",
-            show ? "scale-100 opacity-80" : "scale-95 opacity-0",
-            focused && "scale-110 opacity-100",
+            show ? "scale-95 opacity-80" : "scale-90 opacity-0",
+            focused && "scale-100 opacity-100",
           )}
         >
           <Input
-            placeholder="Αναζήτηση στάσης... 🔎"
+            ref={inputRef}
+            placeholder="Αναζήτηση στάσης... 🔍"
             onFocus={() => setFocused(true)}
             onBlur={() => query.length === 0 && setFocused(false)}
             value={query}
@@ -77,26 +110,30 @@ const BusStopSearch = ({ busStops, onBusStopClick }: BusStopsSearchProps) => {
           )}
         </div>
 
-        {results.length > 0 && (
+        {results.length > 0 ? (
           <div
             className={cn(
-              "transition-[transform,opacity] duration-500 ease-out will-change-transform",
+              "w-full max-w-lg transition-[transform,opacity] duration-500 ease-out will-change-transform",
               focused ? "scale-100 opacity-100" : "scale-90 opacity-0",
             )}
           >
-            <div className="flex flex-col gap-2">
-              {results.map(({ score, element: busStop }) => (
-                <div
+            <div className="flex flex-col gap-4">
+              {results.map(({ element: busStop }) => (
+                <BusStop
                   key={busStop.id}
-                  className="text-white"
                   onClick={() => onBusStopClick(busStop.id)}
-                >
-                  [{score}] - {busStop.code} - {busStop.name}
-                </div>
+                  busStop={busStop}
+                />
               ))}
             </div>
           </div>
-        )}
+        ) : query.length > 0 ? (
+          <div>
+            <div className="text-center text-lg font-bold text-white">
+              Δεν βρέθηκαν αποτελέσματα
+            </div>
+          </div>
+        ) : null}
       </div>
     </>
   );

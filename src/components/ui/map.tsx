@@ -59,7 +59,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
 
       map.flyTo({
         center: [coordinates.longitude, coordinates.latitude],
-        zoom: zoom < 16 ? 16 : zoom,
+        zoom: zoom < 17 ? 18 : zoom,
       });
 
       return true;
@@ -203,8 +203,8 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         type="geojson"
         data={stopsGeojson}
         cluster={true}
-        clusterMaxZoom={50}
-        clusterRadius={50}
+        clusterMaxZoom={16}
+        clusterRadius={28}
       >
         <Layer
           id="clusters"

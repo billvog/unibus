@@ -1,5 +1,6 @@
 "use client";
 
+import { GetBusLines } from "@/actions/get-bus-lines";
 import { GetBusStops } from "@/actions/get-bus-stops";
 import { useBusStop } from "@/components/bus-stop-context";
 import { useCitybusToken } from "@/components/citybus-token-context";
@@ -19,11 +20,19 @@ export default function Page() {
 
   const geolocation = useGeolocation();
 
+  const busLinesQuery = useQuery({
+    queryKey: ["busLines"],
+    queryFn: () => GetBusLines(token ?? ""),
+    enabled: !!token,
+  });
+
   const busStopsQuery = useQuery({
     queryKey: ["busStops"],
     queryFn: () => GetBusStops(token ?? ""),
     enabled: !!token,
   });
+
+  const isLoading = busLinesQuery.isLoading || busStopsQuery.isLoading;
 
   const busStops = React.useMemo(
     () => (busStopsQuery.data?.ok ? busStopsQuery.data.stops : []),
@@ -84,7 +93,7 @@ export default function Page() {
 
   return (
     <div className="relative flex h-full w-full flex-1 flex-col">
-      {busStopsQuery.isLoading && <FullscreenSpinner display="absolute" />}
+      {isLoading && <FullscreenSpinner display="absolute" />}
       {busStops.length > 0 && (
         <BusStopSearch busStops={busStops} onBusStopClick={onBusStopClick} />
       )}
