@@ -112,7 +112,7 @@ export default function Page() {
   }, [geolocation.error]);
 
   return (
-    <div className="relative flex h-full w-full flex-1 flex-col">
+    <div className="relative flex h-full w-full flex-1 flex-col overflow-hidden">
       {isLoading && <FullscreenSpinner display="absolute" />}
       {busStops.length > 0 && (
         <BusStopSearch busStops={busStops} onBusStopClick={onBusStopClick} />
