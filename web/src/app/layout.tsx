@@ -12,7 +12,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Unibus: Βρες το δρομολόγιο που σε ενδιαφέρει",
-  description: "Citybus.. but better ✨",
+  description: "Βρες το δρομολόγιο που σε ενδιαφέρει, με το Unibus.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
