@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { env } from "@/env";
 import { type BusStop } from "@/types/citybus";
 import { type Coordinates } from "@/types/coordinates";
+import { MapFlyToDetail } from "@/types/events";
 import { Events } from "@/utils/constants";
 import * as turf from "@turf/distance";
 import { Undo2 } from "lucide-react";
@@ -49,21 +50,26 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
 
   const mapRef = React.useRef<MapRef>(null);
 
-  const mapFlyTo = React.useCallback((coordinates: Coordinates) => {
-    if (!mapRef.current) {
-      return false;
-    }
+  const mapFlyTo = React.useCallback(
+    (coordinates: Coordinates, overwriteZoom?: boolean) => {
+      if (!mapRef.current) {
+        return false;
+      }
 
-    const map = mapRef.current.getMap();
-    const zoom = map.getZoom();
+      const shouldOverwriteZoom = overwriteZoom ?? true;
 
-    map.flyTo({
-      center: [coordinates.longitude, coordinates.latitude],
-      zoom: zoom < 17 ? 17 : zoom,
-    });
+      const map = mapRef.current.getMap();
+      const zoom = map.getZoom();
 
-    return true;
-  }, []);
+      map.flyTo({
+        center: [coordinates.longitude, coordinates.latitude],
+        zoom: shouldOverwriteZoom && zoom < 16 ? 17 : zoom,
+      });
+
+      return true;
+    },
+    [],
+  );
 
   const onMapClick = React.useCallback(
     (event: MapMouseEvent) => {
@@ -109,8 +115,11 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
     }
 
     const handleMapFlyTo = (event: Event) => {
-      const customEvent = event as CustomEvent<Coordinates>;
-      mapFlyTo(customEvent.detail);
+      const customEvent = event as CustomEvent<MapFlyToDetail>;
+      mapFlyTo(
+        customEvent.detail.coordinates,
+        customEvent.detail.overwriteZoom,
+      );
     };
 
     const map = mapRef.current.getMap();
@@ -211,8 +220,8 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         type="geojson"
         data={stopsGeojson}
         cluster={true}
-        clusterMaxZoom={16}
-        clusterRadius={28}
+        clusterMaxZoom={15}
+        clusterRadius={30}
       >
         <Layer
           id="clusters"

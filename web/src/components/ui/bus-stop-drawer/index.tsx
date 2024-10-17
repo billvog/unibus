@@ -10,7 +10,7 @@ const BusStop = () => {
 
   const [open, setOpen] = React.useState(false);
 
-  const snapPoints = React.useMemo(() => ["240px", 1], []);
+  const snapPoints = React.useMemo(() => ["300px", 1], []);
   const [snap, setSnap] = React.useState<number | string | null>(
     snapPoints[0]!,
   );
@@ -65,7 +65,7 @@ const BusStop = () => {
       <Drawer.Portal>
         <Drawer.Content
           aria-describedby={undefined}
-          className="fixed bottom-0 left-0 right-0 mx-[-1px] h-full max-h-[97%] bg-white"
+          className="fixed bottom-0 left-0 right-0 mx-auto h-full max-h-[90%] w-full rounded-none bg-white md:max-w-2xl md:rounded-t-2xl"
         >
           <Drawer.Title>
             <VisuallyHidden.Root>Bus Stop</VisuallyHidden.Root>

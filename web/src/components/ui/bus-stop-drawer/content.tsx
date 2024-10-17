@@ -4,6 +4,7 @@ import { useCitybusToken } from "@/components/citybus-token-context";
 import BusVehicle from "@/components/ui/bus-vehicle";
 import { Spinner } from "@/components/ui/spinner";
 import { type Coordinates } from "@/types/coordinates";
+import { MapFlyToDetail } from "@/types/events";
 import { Events } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -58,10 +59,12 @@ const BusStopContent = ({
     }
 
     window.dispatchEvent(
-      new CustomEvent("map:fly-to", {
+      new CustomEvent<MapFlyToDetail>("map:fly-to", {
         detail: {
-          latitude: selectedStop.latitude,
-          longitude: selectedStop.longitude,
+          coordinates: {
+            latitude: selectedStop.latitude,
+            longitude: selectedStop.longitude,
+          },
         },
       }),
     );
@@ -100,8 +103,10 @@ const BusStopContent = ({
       );
 
       window.dispatchEvent(
-        new CustomEvent("map:fly-to", {
-          detail: coordinates,
+        new CustomEvent<MapFlyToDetail>("map:fly-to", {
+          detail: {
+            coordinates,
+          },
         }),
       );
     },
