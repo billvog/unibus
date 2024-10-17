@@ -15,5 +15,5 @@ export const useKeyPress = (key: string, callback: () => void) => {
     return () => {
       document.removeEventListener("keydown", onKeyPress);
     };
-  }, [key]);
+  }, [key, callback]);
 };

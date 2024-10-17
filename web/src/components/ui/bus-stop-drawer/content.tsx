@@ -3,7 +3,7 @@ import { useBusStop } from "@/components/bus-stop-context";
 import { useCitybusToken } from "@/components/citybus-token-context";
 import BusVehicle from "@/components/ui/bus-vehicle";
 import { Spinner } from "@/components/ui/spinner";
-import { Coordinates } from "@/types/coordinates";
+import { type Coordinates } from "@/types/coordinates";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
@@ -22,7 +22,7 @@ const BusStopContent = ({
 
   const busLiveQuery = useQuery({
     queryKey: ["bus-live", selectedStop?.code],
-    queryFn: () => GetBusLiveStop(token ?? "", selectedStop?.code!),
+    queryFn: () => GetBusLiveStop(token ?? "", selectedStop?.code ?? ""),
     enabled: !!token && !!selectedStop,
     refetchInterval: BusLiveQueryRefetchInterval,
   });
@@ -49,7 +49,7 @@ const BusStopContent = ({
       latitude: Number(firstVehicle.latitude),
       longitude: Number(firstVehicle.longitude),
     });
-  }, [vehicles]);
+  }, [vehicles, setLiveBusCoordinates]);
 
   const onBusStopNameClick = React.useCallback(() => {
     if (!selectedStop) {
@@ -92,7 +92,7 @@ const BusStopContent = ({
         }),
       );
     },
-    [vehicles, handleBusVehicleClick],
+    [vehicles, handleBusVehicleClick, setLiveBusCoordinates],
   );
 
   if (busLiveQuery.isLoading) {

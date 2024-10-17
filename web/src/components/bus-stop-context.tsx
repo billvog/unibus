@@ -1,7 +1,7 @@
 "use client";
 
-import { BusStop } from "@/types/citybus";
-import { Coordinates } from "@/types/coordinates";
+import { type BusStop } from "@/types/citybus";
+import { type Coordinates } from "@/types/coordinates";
 import React, { useState } from "react";
 
 type BusStopContextType = {
@@ -15,9 +15,13 @@ type BusStopContextType = {
 
 const BusStopContext = React.createContext<BusStopContextType>({
   selectedStop: null,
-  setSelectedStop: () => {},
+  setSelectedStop: () => {
+    throw new Error("setSelectedStop function must be overridden");
+  },
   liveBusCoordinates: null,
-  setLiveBusCoordinates: () => {},
+  setLiveBusCoordinates: () => {
+    throw new Error("setLiveBusCoordinates function must be overridden");
+  },
 });
 
 export const BusStopProvider = ({

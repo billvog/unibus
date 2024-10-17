@@ -41,7 +41,7 @@ export const useGeolocation = () => {
       successCallback,
       errorCallback,
     );
-  }, []);
+  }, [successCallback, errorCallback]);
 
   return { position, error };
 };

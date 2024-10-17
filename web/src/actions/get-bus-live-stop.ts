@@ -1,8 +1,7 @@
 "use server";
 
-import { BusVehicle } from "@/types/citybus";
+import { type BusVehicle } from "@/types/citybus";
 import { CITYBUS_API_URL } from "@/utils/constants";
-import { NextResponse } from "next/server";
 
 type GetBusLiveStopResponse =
   | {
@@ -45,7 +44,8 @@ export async function GetBusLiveStop(
     };
   }
 
-  const data: BusVehicle[] = (await response.json()).vehicles;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const data = (await response.json()).vehicles as BusVehicle[];
 
   return {
     ok: response.ok,

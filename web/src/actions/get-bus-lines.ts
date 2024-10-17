@@ -1,6 +1,6 @@
 "use server";
 
-import { BusLine } from "@/types/citybus";
+import { type BusLine } from "@/types/citybus";
 import { CITYBUS_API_URL } from "@/utils/constants";
 
 export type GetBusLinesResponse =
@@ -27,7 +27,7 @@ export async function GetBusLines(token: string): Promise<GetBusLinesResponse> {
     };
   }
 
-  const data: BusLine[] = await response.json();
+  const data = (await response.json()) as BusLine[];
 
   return {
     ok: response.ok,

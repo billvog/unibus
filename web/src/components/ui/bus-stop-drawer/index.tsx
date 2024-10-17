@@ -10,7 +10,7 @@ const BusStop = () => {
 
   const [open, setOpen] = React.useState(false);
 
-  const snapPoints = ["240px", 1];
+  const snapPoints = React.useMemo(() => ["240px", 1], []);
   const [snap, setSnap] = React.useState<number | string | null>(
     snapPoints[0]!,
   );
@@ -41,8 +41,8 @@ const BusStop = () => {
 
   const onBusVehicleClick = React.useCallback(() => {
     // If drawer is opened at full height, collapse it
-    setSnap(snap === 1 ? snapPoints[0]! : snap);
-  }, []);
+    setSnap((s) => (s === 1 ? snapPoints[0]! : s));
+  }, [snapPoints]);
 
   React.useEffect(() => {
     window.dispatchEvent(

@@ -1,5 +1,5 @@
-import { GetBusLinesResponse } from "@/actions/get-bus-lines";
-import { BusStop as BusStopType } from "@/types/citybus";
+import { type GetBusLinesResponse } from "@/actions/get-bus-lines";
+import { type BusStop as BusStopType } from "@/types/citybus";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 

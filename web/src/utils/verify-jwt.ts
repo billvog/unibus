@@ -12,7 +12,7 @@ export const VerifyJwt = (token: string) => {
     const decoded: { exp: number } = jwtDecode(token);
     const currentTime = Date.now() / 1000;
     return decoded.exp > currentTime;
-  } catch (e) {
+  } catch {
     return false;
   }
 };

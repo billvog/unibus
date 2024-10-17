@@ -9,7 +9,7 @@ import BusStopSearch from "@/components/ui/bus-stop-search";
 import Map from "@/components/ui/map";
 import { FullscreenSpinner } from "@/components/ui/spinner";
 import { useGeolocation } from "@/hooks/useGeolocation";
-import { Coordinates } from "@/types/coordinates";
+import { type Coordinates } from "@/types/coordinates";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
@@ -59,15 +59,15 @@ export default function Page() {
         }),
       );
     },
-    [busStops],
+    [busStops, setSelectedStop],
   );
 
   React.useEffect(() => {
     // Refetch bus stops when token changes
     if (token && !busStopsQuery.data?.ok) {
-      busStopsQuery.refetch();
+      void busStopsQuery.refetch();
     }
-  }, [token, busStopsQuery.data]);
+  }, [token, busStopsQuery]);
 
   React.useEffect(() => {
     // In case server responds with 401, refetch the token
@@ -78,7 +78,7 @@ export default function Page() {
     ) {
       refetchToken();
     }
-  }, [busStopsQuery.data]);
+  }, [busStopsQuery.data, refetchToken]);
 
   React.useEffect(() => {
     // Show an error message if location could not be

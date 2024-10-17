@@ -1,6 +1,6 @@
 "use server";
 
-import { BusStop } from "@/types/citybus";
+import { type BusStop } from "@/types/citybus";
 import { CITYBUS_API_URL } from "@/utils/constants";
 
 type GetBusStopsResponse =
@@ -35,7 +35,7 @@ export async function GetBusStops(token: string): Promise<GetBusStopsResponse> {
     };
   }
 
-  const data: BusStop[] = await response.json();
+  const data = (await response.json()) as BusStop[];
 
   return {
     ok: response.ok,

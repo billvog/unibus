@@ -4,7 +4,7 @@ import BusStop from "@/components/ui/bus-stop";
 import { Input } from "@/components/ui/input";
 import { useKeyPress } from "@/hooks/useKeyPress";
 import { cn } from "@/lib/utils";
-import { BusStop as BusStopType } from "@/types/citybus";
+import { type BusStop as BusStopType } from "@/types/citybus";
 import { Shortcuts } from "@/utils/constants";
 import { CircleX } from "lucide-react";
 import React from "react";
@@ -44,7 +44,7 @@ const BusStopSearch = ({
       if (inputRef.current) {
         inputRef.current.focus();
       }
-    }, [inputRef.current]),
+    }, []),
   );
 
   React.useEffect(() => {

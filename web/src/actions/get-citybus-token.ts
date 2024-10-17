@@ -24,9 +24,9 @@ export async function GetCitybusToken(): Promise<GetCitybusTokenResponse> {
   }
 
   const regex = /const token = '([^']+)';/;
-  const match = responseText.match(regex);
+  const match = regex.exec(responseText);
 
-  if (!match || !match[1]) {
+  if (!match?.[1]) {
     return {
       ok: false,
     };

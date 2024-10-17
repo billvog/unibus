@@ -9,17 +9,17 @@ export function usePersistedState<TState>(key: string, defaultState: TState) {
   React.useEffect(() => {
     const storedState = localStorage.getItem(key);
     if (storedState) {
-      setState(JSON.parse(storedState));
+      setState(JSON.parse(storedState) as TState);
     }
 
     setInitialized(true);
-  }, []);
+  }, [key]);
 
   React.useEffect(() => {
     if (!initialized) return;
 
     localStorage.setItem(key, JSON.stringify(state));
-  }, [state, initialized]);
+  }, [key, state, initialized]);
 
   return [state, setState, initialized] as const;
 }

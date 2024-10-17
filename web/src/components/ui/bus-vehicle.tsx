@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { BusVehicle as BusVehicleType } from "@/types/citybus";
+import { type BusVehicle as BusVehicleType } from "@/types/citybus";
 import { formatTime } from "@/utils/format-time";
 import { Clock9 } from "lucide-react";
 import React from "react";

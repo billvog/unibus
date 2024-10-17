@@ -2,16 +2,16 @@ import { useBusStop } from "@/components/bus-stop-context";
 import BusLinePointsMapLayer from "@/components/ui/bus-line-points-map-layer";
 import { Button } from "@/components/ui/button";
 import { env } from "@/env";
-import { BusStop } from "@/types/citybus";
-import { Coordinates } from "@/types/coordinates";
+import { type BusStop } from "@/types/citybus";
+import { type Coordinates } from "@/types/coordinates";
 import * as turf from "@turf/distance";
 import { Undo2 } from "lucide-react";
-import { MapEvent } from "mapbox-gl";
+import { type MapEvent } from "mapbox-gl";
 import React from "react";
 import MapGL, {
   Layer,
-  MapMouseEvent,
-  MapRef,
+  type MapMouseEvent,
+  type MapRef,
   Marker,
   Source,
 } from "react-map-gl";
@@ -48,24 +48,21 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
 
   const mapRef = React.useRef<MapRef>(null);
 
-  const mapFlyTo = React.useCallback(
-    (coordinates: Coordinates) => {
-      if (!mapRef.current) {
-        return false;
-      }
+  const mapFlyTo = React.useCallback((coordinates: Coordinates) => {
+    if (!mapRef.current) {
+      return false;
+    }
 
-      const map = mapRef.current.getMap();
-      const zoom = map.getZoom();
+    const map = mapRef.current.getMap();
+    const zoom = map.getZoom();
 
-      map.flyTo({
-        center: [coordinates.longitude, coordinates.latitude],
-        zoom: zoom < 17 ? 18 : zoom,
-      });
+    map.flyTo({
+      center: [coordinates.longitude, coordinates.latitude],
+      zoom: zoom < 17 ? 18 : zoom,
+    });
 
-      return true;
-    },
-    [mapRef.current],
-  );
+    return true;
+  }, []);
 
   const onMapLoad = React.useCallback(() => {
     const eventHandler = (event: Event) => {
@@ -83,7 +80,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
   const onMapClick = React.useCallback(
     (event: MapMouseEvent) => {
       const feature = event.features?.[0];
-      const stopId = feature?.properties?.id;
+      const stopId = feature?.properties?.id as number | undefined;
 
       if (!stopId) {
         return;
@@ -136,7 +133,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
     return () => {
       map.off("click", "unclustered-point", onMapClick);
     };
-  }, [mapRef.current, onMapClick]);
+  }, [onMapClick]);
 
   React.useEffect(() => {
     if (!mapRef.current) {
@@ -149,7 +146,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
     return () => {
       map.off("move", onMapMove);
     };
-  }, [mapRef.current, onMapMove]);
+  }, [onMapMove]);
 
   return (
     <MapGL
@@ -178,14 +175,13 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
       )}
 
       {/* Draw line for selected bus stop */}
-      {selectedStop &&
-        selectedStop.lineCodes.map((lineCode, index) => (
-          <BusLinePointsMapLayer
-            key={lineCode}
-            index={index}
-            lineCode={lineCode}
-          />
-        ))}
+      {selectedStop?.lineCodes.map((lineCode, index) => (
+        <BusLinePointsMapLayer
+          key={lineCode}
+          index={index}
+          lineCode={lineCode}
+        />
+      ))}
 
       {/* Show live bus coordinates */}
       {liveBusCoordinates && (

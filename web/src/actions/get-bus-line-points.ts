@@ -1,6 +1,6 @@
 "use server";
 
-import { BusLinePoint } from "@/types/citybus";
+import { type BusLinePoint } from "@/types/citybus";
 import { CITYBUS_API_URL } from "@/utils/constants";
 
 // The response we get from Citybus API
@@ -43,7 +43,7 @@ export async function GetBusLinePoints(
     };
   }
 
-  const data: GetBusLinePointsAPIResponse = await response.json();
+  const data = (await response.json()) as GetBusLinePointsAPIResponse;
 
   return {
     ok: response.ok,

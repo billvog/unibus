@@ -2,7 +2,7 @@ import { GetBusLinePoints } from "@/actions/get-bus-line-points";
 import { useCitybusToken } from "@/components/citybus-token-context";
 import { getColor } from "@/utils/get-color";
 import { useQuery } from "@tanstack/react-query";
-import React, { useId } from "react";
+import React from "react";
 import { Layer, Source } from "react-map-gl";
 
 type BusLinePointsMapLayerProps = {

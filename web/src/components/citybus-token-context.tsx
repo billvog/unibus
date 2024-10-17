@@ -14,7 +14,9 @@ type CitybusTokenContextType = {
 
 const CitybusTokenContext = React.createContext<CitybusTokenContextType>({
   token: null,
-  refetchToken: () => {},
+  refetchToken: () => {
+    throw new Error("refetchToken function must be overridden");
+  },
 });
 
 export const CitybusTokenProvider = ({
@@ -42,21 +44,23 @@ export const CitybusTokenProvider = ({
 
     // If the token is not valid, refetch it
     if (!isTokenValid) {
-      tokenQuery.refetch();
+      void tokenQuery.refetch();
     }
-  }, [token, initialized]);
+  }, [token, initialized, tokenQuery]);
 
   React.useEffect(() => {
     if (tokenQuery.data?.ok) {
       setToken(tokenQuery.data.token);
     }
-  }, [tokenQuery.data]);
+  }, [tokenQuery.data, setToken]);
 
   return (
     <CitybusTokenContext.Provider
       value={{
         token,
-        refetchToken: () => tokenQuery.refetch(),
+        refetchToken: () => {
+          void tokenQuery.refetch();
+        },
       }}
     >
       {children}
