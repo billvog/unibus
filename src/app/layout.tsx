@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "e-astiko",
+  title: "Unibus: Βρες το δρομολόγιο που σε ενδιαφέρει",
   description: "Citybus.. but better ✨",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
@@ -22,6 +22,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.className}`}>
       <head>
+        <link
+          rel="icon"
+          type="image/png"
+          href="/favicon-48x48.png"
+          sizes="48x48"
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <meta name="apple-mobile-web-app-title" content="Unibus" />
         <link
           href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css"
           rel="stylesheet"
