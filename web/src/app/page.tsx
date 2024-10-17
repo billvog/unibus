@@ -11,7 +11,11 @@ import { FullscreenSpinner } from "@/components/ui/spinner";
 import { useCaptureAnalytics } from "@/hooks/useCaptureAnalytics";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { type Coordinates } from "@/types/coordinates";
+<<<<<<< Updated upstream
+=======
+import { MapFlyToDetail } from "@/types/events";
 import { Events } from "@/utils/constants";
+>>>>>>> Stashed changes
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
@@ -44,7 +48,7 @@ export default function Page() {
   );
 
   const onBusStopClick = React.useCallback(
-    (id: number) => {
+    (id: number, overwriteZoom?: boolean) => {
       const busStop = busStops.find((stop) => stop.id === id) ?? null;
       setSelectedStop(busStop);
 
@@ -68,10 +72,13 @@ export default function Page() {
 
       // Emit event to fly map to bus stop
       window.dispatchEvent(
-        new CustomEvent<Coordinates>("map:fly-to", {
+        new CustomEvent<MapFlyToDetail>("map:fly-to", {
           detail: {
-            latitude: busStop.latitude,
-            longitude: busStop.longitude,
+            coordinates: {
+              latitude: busStop.latitude,
+              longitude: busStop.longitude,
+            },
+            overwriteZoom,
           },
         }),
       );
@@ -116,7 +123,7 @@ export default function Page() {
       )}
       <Map
         busStops={busStops}
-        onBusStopClick={onBusStopClick}
+        onBusStopClick={(id) => onBusStopClick(id, false)}
         userLocation={geolocation.position}
       />
       <BusStopDrawer />
