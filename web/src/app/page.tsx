@@ -8,13 +8,17 @@ import BusStopDrawer from "@/components/ui/bus-stop-drawer";
 import BusStopSearch from "@/components/ui/bus-stop-search";
 import Map from "@/components/ui/map";
 import { FullscreenSpinner } from "@/components/ui/spinner";
+import { useCaptureAnalytics } from "@/hooks/useCaptureAnalytics";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { type Coordinates } from "@/types/coordinates";
+import { Events } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 
 export default function Page() {
+  useCaptureAnalytics();
+
   const { token, refetchToken } = useCitybusToken();
   const { setSelectedStop } = useBusStop();
 
@@ -48,6 +52,19 @@ export default function Page() {
       if (!busStop) {
         return;
       }
+
+      // Capture event
+      window.dispatchEvent(
+        new CustomEvent(Events.Analytics.BusStopClick, {
+          detail: {
+            from: "Map",
+            busStop: {
+              id: busStop.id,
+              name: busStop.name,
+            },
+          },
+        }),
+      );
 
       // Emit event to fly map to bus stop
       window.dispatchEvent(

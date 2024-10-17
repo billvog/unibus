@@ -2,7 +2,7 @@
 
 import { GetCitybusToken } from "@/actions/get-citybus-token";
 import { usePersistedState } from "@/hooks/usePersistedState";
-import { StorageKeys } from "@/utils/constants";
+import { Events, StorageKeys } from "@/utils/constants";
 import { VerifyJwt } from "@/utils/verify-jwt";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -45,6 +45,11 @@ export const CitybusTokenProvider = ({
     // If the token is not valid, refetch it
     if (!isTokenValid) {
       void tokenQuery.refetch();
+
+      // Capture event
+      window.dispatchEvent(
+        new CustomEvent(Events.Analytics.CitybusTokenGenerated),
+      );
     }
   }, [token, initialized, tokenQuery]);
 

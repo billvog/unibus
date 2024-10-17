@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { env } from "@/env";
 import { type BusStop } from "@/types/citybus";
 import { type Coordinates } from "@/types/coordinates";
+import { Events } from "@/utils/constants";
 import * as turf from "@turf/distance";
 import { Undo2 } from "lucide-react";
 import { type MapEvent } from "mapbox-gl";
@@ -115,10 +116,23 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
     [userLocation],
   );
 
+  const onResetZoom = React.useCallback(() => {
+    if (!userLocation) {
+      return;
+    }
+
+    mapFlyTo(userLocation);
+
+    // Capture event
+    window.dispatchEvent(new CustomEvent(Events.Analytics.MapResetZoom));
+  }, [userLocation, mapFlyTo]);
+
   React.useEffect(() => {
     if (userLocation && !hasZoomedToUser) {
-      const ok = mapFlyTo(userLocation);
-      setHasZoomedToUser(ok);
+      setTimeout(() => {
+        const ok = mapFlyTo(userLocation);
+        setHasZoomedToUser(ok);
+      }, 500);
     }
   }, [userLocation, hasZoomedToUser, mapFlyTo]);
 
@@ -167,7 +181,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         <Button
           className="absolute bottom-4 right-4 gap-1"
           size="sm"
-          onClick={() => userLocation && mapFlyTo(userLocation)}
+          onClick={onResetZoom}
         >
           <Undo2 size={14} />
           <span>Reset Zoom</span>

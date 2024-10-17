@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useKeyPress } from "@/hooks/useKeyPress";
 import { cn } from "@/lib/utils";
 import { type BusStop as BusStopType } from "@/types/citybus";
-import { Shortcuts } from "@/utils/constants";
+import { Events, Shortcuts } from "@/utils/constants";
 import { CircleX } from "lucide-react";
 import React from "react";
 import { search } from "ss-search";
@@ -67,10 +67,29 @@ const BusStopSearch = ({
 
   const onBusStopClick = React.useCallback(
     (id: number) => {
+      const busStop = busStops.find((stop) => stop.id === id);
+      if (!busStop) return;
+
       handleBusStopClick(id);
       closeSearch();
+
+      // Capture event
+      window.dispatchEvent(
+        new CustomEvent(Events.Analytics.BusStopClick, {
+          detail: {
+            from: {
+              name: "BusStopSearch",
+              query,
+            },
+            busStop: {
+              id,
+              name: busStop.name,
+            },
+          },
+        }),
+      );
     },
-    [handleBusStopClick, closeSearch],
+    [busStops, query, handleBusStopClick, closeSearch],
   );
 
   return (

@@ -1,3 +1,4 @@
+import { Events } from "@/utils/constants";
 import React from "react";
 
 type GeolocationError = {
@@ -36,12 +37,45 @@ export const useGeolocation = () => {
     });
   }, []);
 
+  const permissionChangeCallback = React.useCallback((event: Event) => {
+    const { state } = event.target as PermissionStatus;
+    if (state === "prompt") {
+      return;
+    }
+
+    // Capture event
+    window.dispatchEvent(
+      new CustomEvent(Events.Analytics.GeolocationPrompt, {
+        detail: {
+          GeolocationState: state,
+        },
+      }),
+    );
+  }, []);
+
   React.useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const removeEventListener = window.navigator.permissions
+      .query({ name: "geolocation" })
+      .then((result) => {
+        result.addEventListener("change", permissionChangeCallback);
+        return () => {
+          result.removeEventListener("change", permissionChangeCallback);
+        };
+      });
+
     window.navigator.geolocation.getCurrentPosition(
       successCallback,
       errorCallback,
     );
-  }, [successCallback, errorCallback]);
+
+    return () => {
+      void removeEventListener.then((remove) => remove());
+    };
+  }, [successCallback, errorCallback, permissionChangeCallback]);
 
   return { position, error };
 };

@@ -4,6 +4,7 @@ import { useCitybusToken } from "@/components/citybus-token-context";
 import BusVehicle from "@/components/ui/bus-vehicle";
 import { Spinner } from "@/components/ui/spinner";
 import { type Coordinates } from "@/types/coordinates";
+import { Events } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
@@ -86,13 +87,25 @@ const BusStopContent = ({
 
       handleBusVehicleClick();
 
+      // Capture event
+      window.dispatchEvent(
+        new CustomEvent(Events.Analytics.BusVehicleClick, {
+          detail: {
+            BusVehicle: {
+              vehicleCode,
+              stopCode: selectedStop?.code,
+            },
+          },
+        }),
+      );
+
       window.dispatchEvent(
         new CustomEvent("map:fly-to", {
           detail: coordinates,
         }),
       );
     },
-    [vehicles, handleBusVehicleClick, setLiveBusCoordinates],
+    [vehicles, selectedStop, handleBusVehicleClick, setLiveBusCoordinates],
   );
 
   if (busLiveQuery.isLoading) {
