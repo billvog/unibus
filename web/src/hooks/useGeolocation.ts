@@ -54,7 +54,7 @@ export const useGeolocation = () => {
   }, []);
 
   React.useEffect(() => {
-    if (typeof window === "undefined") {
+    if (typeof window === "undefined" || "navigator" in window === false) {
       return;
     }
 
@@ -65,6 +65,9 @@ export const useGeolocation = () => {
         return () => {
           result.removeEventListener("change", permissionChangeCallback);
         };
+      })
+      .catch(() => {
+        // Do nothing
       });
 
     window.navigator.geolocation.getCurrentPosition(
@@ -73,7 +76,7 @@ export const useGeolocation = () => {
     );
 
     return () => {
-      void removeEventListener.then((remove) => remove());
+      void removeEventListener.then((remove) => remove?.());
     };
   }, [successCallback, errorCallback, permissionChangeCallback]);
 
