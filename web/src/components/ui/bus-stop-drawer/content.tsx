@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import DynamicTitle from "@/components/ui/dynamic-title";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
+import { type BusTripDay } from "@/types/citybus";
 import { type Coordinates } from "@/types/coordinates";
 import { type MapFlyToDetail } from "@/types/events";
 import { Events } from "@/utils/constants";
@@ -33,6 +34,10 @@ const BusStopContent = ({
   const { token } = useCitybusToken();
 
   const [viewMode, setViewMode] = React.useState<ViewMode>("live");
+  const [selectedDay, setSelectedDay] = React.useState<BusTripDay>(() => {
+    const now = new Date();
+    return now.getDay() as BusTripDay;
+  });
 
   const prettyStopName = React.useMemo(
     () => (selectedStop ? PrettifyName(selectedStop.name) : ""),
@@ -58,7 +63,8 @@ const BusStopContent = ({
 
   const busStopScheduleQuery = useQuery({
     queryKey: ["bus-stop-schedule", selectedStop?.code, 5],
-    queryFn: () => GetBusStopSchedule(token ?? "", selectedStop?.code ?? "", 5),
+    queryFn: () =>
+      GetBusStopSchedule(token ?? "", selectedStop?.code ?? "", selectedDay),
     enabled: !!token && !!selectedStop && viewMode === "schedule",
   });
 
@@ -86,6 +92,10 @@ const BusStopContent = ({
       longitude: Number(firstVehicle.longitude),
     });
   }, [vehicles, setLiveBusCoordinates]);
+
+  React.useEffect(() => {
+    void busStopScheduleQuery.refetch();
+  }, [selectedDay, busStopScheduleQuery]);
 
   const onBusStopNameClick = React.useCallback(() => {
     if (!selectedStop) {
@@ -203,12 +213,14 @@ const BusStopContent = ({
           ))}
 
         {/* Bus Schedule */}
-        {viewMode === "schedule" &&
-          (busStopTrips.length > 0 ? (
-            <BusStopSchedule busStopTrips={busStopTrips} />
-          ) : (
-            <div>Κάτι πήγε στραβά! Προσπαθήστε ξανά 😢</div>
-          ))}
+        {viewMode === "schedule" && (
+          <BusStopSchedule
+            busStopTrips={busStopTrips}
+            selectedDay={selectedDay}
+            onDayClick={(day) => setSelectedDay(day)}
+            isRefetching={busStopScheduleQuery.isRefetching}
+          />
+        )}
       </div>
     </>
   );

@@ -21,3 +21,13 @@ export const Events = {
     GeolocationPrompt: "geolocation prompt",
   },
 };
+
+export const Days = [
+  "Δευτέρα",
+  "Τρίτη",
+  "Τετάρτη",
+  "Πέμπτη",
+  "Παρασκευή",
+  "Σάββατο",
+  "Κυριακή",
+];
