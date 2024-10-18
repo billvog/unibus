@@ -19,6 +19,7 @@ export const Events = {
     BusVehicleClick: "bus vehicle click",
     MapResetZoom: "map reset zoom",
     GeolocationPrompt: "geolocation prompt",
+    GraveErrorSendHelp: "grave error send help",
   },
 };
 

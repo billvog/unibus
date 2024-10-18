@@ -6,6 +6,7 @@ import { useBusStop } from "@/components/bus-stop-context";
 import { useCitybusToken } from "@/components/citybus-token-context";
 import BusStopDrawer from "@/components/ui/bus-stop-drawer";
 import BusStopSearch from "@/components/ui/bus-stop-search";
+import GraveError from "@/components/ui/grave-error";
 import Map from "@/components/ui/map";
 import { FullscreenSpinner } from "@/components/ui/spinner";
 import { useCaptureAnalytics } from "@/hooks/useCaptureAnalytics";
@@ -40,6 +41,11 @@ export default function Page() {
 
   const busStops = React.useMemo(
     () => (busStopsQuery.data?.ok ? busStopsQuery.data.stops : []),
+    [busStopsQuery.data],
+  );
+
+  const hasGraveError = React.useMemo(
+    () => !busStopsQuery.data?.ok && busStopsQuery.data?.status === 500,
     [busStopsQuery.data],
   );
 
@@ -110,6 +116,11 @@ export default function Page() {
       toast.error(geolocation.error.message);
     }
   }, [geolocation.error]);
+
+  // Show message if we're getting a 500 from Citybus
+  if (hasGraveError) {
+    return <GraveError />;
+  }
 
   return (
     <div className="relative flex h-full w-full flex-1 flex-col overflow-hidden">
