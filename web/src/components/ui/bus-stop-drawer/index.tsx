@@ -70,7 +70,7 @@ const BusStop = () => {
           <Drawer.Title>
             <VisuallyHidden.Root>Bus Stop</VisuallyHidden.Root>
           </Drawer.Title>
-          <div className="relative flex flex-col gap-4 overflow-y-auto p-10">
+          <div className={"relative flex h-full flex-col"}>
             {/* Resize Handle */}
             <div className="absolute top-2 h-1 w-12 flex-shrink-0 self-center rounded-full bg-gray-200" />
             {/* Close Buttons */}
@@ -78,7 +78,10 @@ const BusStop = () => {
               <X className="cursor-pointer" onClick={onCloseClick} />
             </div>
             {/* Content */}
-            <BusStopContent onBusVehicleClick={onBusVehicleClick} />
+            <BusStopContent
+              onBusVehicleClick={onBusVehicleClick}
+              canScroll={snap === 1}
+            />
           </div>
         </Drawer.Content>
       </Drawer.Portal>

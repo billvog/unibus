@@ -1,4 +1,5 @@
 import { type GetBusLinesResponse } from "@/actions/get-bus-lines";
+import BusLineCode from "@/components/ui/bus-line-code";
 import { type BusStop as BusStopType } from "@/types/citybus";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
@@ -24,7 +25,10 @@ const BusStop = ({ busStop, onClick }: BusStopProps) => {
       (line) => line.code === busStop.lineCodes[0],
     );
 
-    return busLine?.color;
+    return {
+      bgColor: busLine?.color,
+      textColor: busLine?.textColor,
+    };
   }, [busLinesData, busStop.lineCodes]);
 
   return (
@@ -34,16 +38,11 @@ const BusStop = ({ busStop, onClick }: BusStopProps) => {
     >
       <div className="flex items-center gap-2">
         <div className="text-sm font-bold text-gray-500">{busStop.code}</div>
-        <div className="flex items-center">
-          <span
-            className="flex items-center justify-center rounded-xl px-1.5 py-0 text-xs font-bold leading-normal text-white"
-            style={{
-              backgroundColor: busLineColor ?? "gray",
-            }}
-          >
-            {busStop.lineCodes[0]}
-          </span>
-        </div>
+        <BusLineCode
+          lineCode={busStop.lineCodes[0]!}
+          bgColor={busLineColor?.bgColor}
+          textColor={busLineColor?.textColor}
+        />
       </div>
       <div className="text-lg font-extrabold">{busStop.name}</div>
     </div>
