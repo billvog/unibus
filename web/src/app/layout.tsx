@@ -4,7 +4,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import Providers from "@/components/providers";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
-import PostHogPageView from "@/components/posthog-page-view";
+import dynamic from "next/dynamic";
 
 const inter = Inter({
   weight: ["500", "700", "800", "900"],
@@ -49,6 +49,13 @@ export const metadata: Metadata = {
     "δρομολογια",
   ],
 };
+
+const PostHogPageView = dynamic(
+  () => import("../components/posthog-page-view"),
+  {
+    ssr: false,
+  },
+);
 
 export default function RootLayout({
   children,
