@@ -95,7 +95,8 @@ const BusStopContent = ({
 
   React.useEffect(() => {
     void busStopScheduleQuery.refetch();
-  }, [selectedDay, busStopScheduleQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDay]);
 
   const onBusStopNameClick = React.useCallback(() => {
     if (!selectedStop) {
