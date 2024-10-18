@@ -47,7 +47,7 @@ const FullscreenSpinner = ({
       className={cn(fullscreenSpinnerVariants({ className, display }))}
       {...props}
     >
-      <Spinner size="lg" />
+      <Spinner size="lg" className="text-gray-700" />
     </div>
   );
 };
