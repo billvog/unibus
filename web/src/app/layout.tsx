@@ -13,8 +13,41 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Unibus: Βρες το δρομολόγιο που σε ενδιαφέρει",
-  description: "Βρες το δρομολόγιο που σε ενδιαφέρει, με το Unibus.",
+  description: "Σε πόση ώρα θα έρθει το αστικό; Με το Unibus, είναι απλό!",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+  alternates: {
+    canonical: "https://unibus.gr",
+  },
+  openGraph: {
+    type: "website",
+    title: "Unibus: Βρες το δρομολόγιο που σε ενδιαφέρει",
+    description: "Σε πόση ώρα θα έρθει το αστικό; Με το Unibus, είναι απλό!",
+    images: [
+      {
+        url: "https://unibus.gr/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Unibus: Βρες το δρομολόγιο που σε ενδιαφέρει",
+      },
+    ],
+  },
+  robots: "index, follow",
+  authors: [
+    {
+      name: "Vasilis Voyiadjis",
+      url: "https://github.com/billvog",
+    },
+  ],
+  keywords: [
+    "bus routes",
+    "city bus",
+    "public transport",
+    "bus schedules",
+    "Unibus",
+    "αστικο",
+    "λαμια",
+    "δρομολογια",
+  ],
 };
 
 export default function RootLayout({
