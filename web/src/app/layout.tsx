@@ -4,6 +4,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import Providers from "@/components/providers";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
+import PostHogPageView from "@/components/posthog-page-view";
 
 const inter = Inter({
   weight: ["500", "700", "800", "900"],
@@ -46,7 +47,10 @@ export default function RootLayout({
         />
       </head>
       <body className="h-dvh w-screen overflow-hidden">
-        <Providers>{children}</Providers>
+        <Providers>
+          <PostHogPageView />
+          {children}
+        </Providers>
       </body>
     </html>
   );
