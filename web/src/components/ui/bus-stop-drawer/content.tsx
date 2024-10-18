@@ -4,16 +4,21 @@ import { useBusStop } from "@/components/bus-stop-context";
 import { useCitybusToken } from "@/components/citybus-token-context";
 import BusStopSchedule from "@/components/ui/bus-stop-schedule";
 import BusVehicle from "@/components/ui/bus-vehicle";
+import { Button } from "@/components/ui/button";
+import DynamicTitle from "@/components/ui/dynamic-title";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import { type Coordinates } from "@/types/coordinates";
-import { MapFlyToDetail } from "@/types/events";
+import { type MapFlyToDetail } from "@/types/events";
 import { Events } from "@/utils/constants";
+import { PrettifyName } from "@/utils/prettify-name";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 
 const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
+
+type ViewMode = "live" | "schedule";
 
 type BusStopContentProps = {
   canScroll: boolean;
@@ -27,10 +32,17 @@ const BusStopContent = ({
   const { selectedStop, setSelectedStop, setLiveBusCoordinates } = useBusStop();
   const { token } = useCitybusToken();
 
+  const [viewMode, setViewMode] = React.useState<ViewMode>("live");
+
+  const prettyStopName = React.useMemo(
+    () => (selectedStop ? PrettifyName(selectedStop.name) : ""),
+    [selectedStop],
+  );
+
   const busLiveQuery = useQuery({
     queryKey: ["bus-live", selectedStop?.code],
     queryFn: () => GetBusLiveStop(token ?? "", selectedStop?.code ?? ""),
-    enabled: !!token && !!selectedStop,
+    enabled: !!token && !!selectedStop && viewMode === "live",
     refetchInterval: BusLiveQueryRefetchInterval,
   });
 
@@ -47,7 +59,7 @@ const BusStopContent = ({
   const busStopScheduleQuery = useQuery({
     queryKey: ["bus-stop-schedule", selectedStop?.code, 5],
     queryFn: () => GetBusStopSchedule(token ?? "", selectedStop?.code ?? "", 5),
-    enabled: !!token && !!selectedStop,
+    enabled: !!token && !!selectedStop && viewMode === "schedule",
   });
 
   const busStopTrips = React.useMemo(
@@ -135,10 +147,14 @@ const BusStopContent = ({
     [vehicles, selectedStop, handleBusVehicleClick, setLiveBusCoordinates],
   );
 
-  if (busLiveQuery.isLoading) {
+  const onViewModeToggle = React.useCallback(() => {
+    setViewMode((prev) => (prev === "live" ? "schedule" : "live"));
+  }, []);
+
+  if (busLiveQuery.isLoading || busStopScheduleQuery.isLoading) {
     return (
       <div className="self-center py-16">
-        <Spinner />
+        <Spinner className="text-gray-500" />
       </div>
     );
   }
@@ -152,12 +168,18 @@ const BusStopContent = ({
 
   return (
     <>
-      <h1
-        className="border-b-2 border-gray-100 px-10 pb-4 pt-8 text-xl font-bold"
-        onClick={onBusStopNameClick}
-      >
-        {selectedStop.name}
-      </h1>
+      <div className="flex items-center gap-4 border-b-2 border-gray-100 px-10 pb-4 pt-8">
+        <DynamicTitle title={prettyStopName} onClick={onBusStopNameClick} />
+        <Button
+          size="sm"
+          variant="outline"
+          className="gap-2"
+          onClick={onViewModeToggle}
+        >
+          <span>{viewMode === "live" ? "🗓️" : "🚍"}</span>
+          <span>{viewMode === "live" ? "Πρόγραμμα" : "Τώρα"}</span>
+        </Button>
+      </div>
       <div
         className={cn(
           "flex h-full flex-col gap-4 px-10 pb-8 pt-5",
@@ -165,22 +187,28 @@ const BusStopContent = ({
         )}
       >
         {/* Bus Live */}
-        {hasLiveVehicles && (
-          <div className="flex flex-col gap-4">
-            {vehicles.map((vehicle) => (
-              <BusVehicle
-                key={vehicle.vehicleCode}
-                vehicle={vehicle}
-                onClick={() => onBusVehicleClick(vehicle.vehicleCode)}
-              />
-            ))}
-          </div>
-        )}
+        {viewMode === "live" &&
+          (hasLiveVehicles ? (
+            <div className="flex flex-col gap-4">
+              {vehicles.map((vehicle) => (
+                <BusVehicle
+                  key={vehicle.vehicleCode}
+                  vehicle={vehicle}
+                  onClick={() => onBusVehicleClick(vehicle.vehicleCode)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div>Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά 😢</div>
+          ))}
 
         {/* Bus Schedule */}
-        {busStopTrips.length > 0 && (
-          <BusStopSchedule busStopTrips={busStopTrips} />
-        )}
+        {viewMode === "schedule" &&
+          (busStopTrips.length > 0 ? (
+            <BusStopSchedule busStopTrips={busStopTrips} />
+          ) : (
+            <div>Κάτι πήγε στραβά! Προσπαθήστε ξανά 😢</div>
+          ))}
       </div>
     </>
   );

@@ -10,7 +10,7 @@ import Map from "@/components/ui/map";
 import { FullscreenSpinner } from "@/components/ui/spinner";
 import { useCaptureAnalytics } from "@/hooks/useCaptureAnalytics";
 import { useGeolocation } from "@/hooks/useGeolocation";
-import { MapFlyToDetail } from "@/types/events";
+import { type MapFlyToDetail } from "@/types/events";
 import { Events } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { env } from "@/env";
 import { type BusStop } from "@/types/citybus";
 import { type Coordinates } from "@/types/coordinates";
-import { MapFlyToDetail } from "@/types/events";
+import { type MapFlyToDetail } from "@/types/events";
 import { Events } from "@/utils/constants";
 import * as turf from "@turf/distance";
 import { Undo2 } from "lucide-react";
@@ -273,6 +273,8 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
               "#b300ff",
               "#ff5e00",
             ],
+            "circle-stroke-color": "#fff",
+            "circle-stroke-width": 2,
           }}
         />
       </Source>

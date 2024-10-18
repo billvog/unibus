@@ -1,4 +1,4 @@
-import { Coordinates } from "@/types/coordinates";
+import { type Coordinates } from "@/types/coordinates";
 
 export type MapFlyToDetail = {
   coordinates: Coordinates;

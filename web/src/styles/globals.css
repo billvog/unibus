@@ -77,3 +77,11 @@
     scrollbar-width: none; /* Firefox */
   }
 }
+
+@layer components {
+  .dynamic-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

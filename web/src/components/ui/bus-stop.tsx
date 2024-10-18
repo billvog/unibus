@@ -1,6 +1,7 @@
 import { type GetBusLinesResponse } from "@/actions/get-bus-lines";
 import BusLineCode from "@/components/ui/bus-line-code";
 import { type BusStop as BusStopType } from "@/types/citybus";
+import { PrettifyName } from "@/utils/prettify-name";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
@@ -15,6 +16,11 @@ const BusStop = ({ busStop, onClick }: BusStopProps) => {
   const busLinesData = queryClient.getQueryData<GetBusLinesResponse>([
     "busLines",
   ]);
+
+  const prettyBusStopName = React.useMemo(
+    () => PrettifyName(busStop.name),
+    [busStop.name],
+  );
 
   const busLineColor = React.useMemo(() => {
     if (!busLinesData?.ok) {
@@ -44,7 +50,7 @@ const BusStop = ({ busStop, onClick }: BusStopProps) => {
           textColor={busLineColor?.textColor}
         />
       </div>
-      <div className="text-lg font-extrabold">{busStop.name}</div>
+      <div className="text-lg font-extrabold">{prettyBusStopName}</div>
     </div>
   );
 };
