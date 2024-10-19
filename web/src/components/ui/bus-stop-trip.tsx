@@ -1,7 +1,8 @@
-import BusLineCode from "@/components/ui/bus-line-code";
-import { type BusStopTrip as BusStopTripType } from "@/types/citybus";
-import { PrettifyName } from "@/utils/prettify-name";
 import React from "react";
+
+import BusLineCode from "@web/components/ui/bus-line-code";
+import { type BusStopTrip as BusStopTripType } from "@web/types/citybus";
+import { PrettifyName } from "@web/utils/prettify-name";
 
 type BusStopTripProps = {
   trip: BusStopTripType;

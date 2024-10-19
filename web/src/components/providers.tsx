@@ -1,9 +1,5 @@
 "use client";
 
-import { BusStopProvider } from "@/components/bus-stop-context";
-import { CitybusTokenProvider } from "@/components/citybus-token-context";
-import { Toaster } from "@/components/ui/sonner";
-import { env } from "@/env";
 import {
   isServer,
   QueryClient,
@@ -12,6 +8,11 @@ import {
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 import React from "react";
+
+import { BusStopProvider } from "@web/components/bus-stop-context";
+import { CitybusTokenProvider } from "@web/components/citybus-token-context";
+import { Toaster } from "@web/components/ui/sonner";
+import { env } from "@web/env";
 
 function makeQueryClient() {
   return new QueryClient({

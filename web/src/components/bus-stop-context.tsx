@@ -1,8 +1,9 @@
 "use client";
 
-import { type BusStop } from "@/types/citybus";
-import { type Coordinates } from "@/types/coordinates";
 import React, { useState } from "react";
+
+import { type BusStop } from "@web/types/citybus";
+import { type Coordinates } from "@web/types/coordinates";
 
 type BusStopContextType = {
   selectedStop: BusStop | null;

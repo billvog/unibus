@@ -1,7 +1,7 @@
 "use server";
 
-import { type BusLine } from "@/types/citybus";
-import { CITYBUS_API_URL } from "@/utils/constants";
+import { type BusLine } from "@web/types/citybus";
+import { CITYBUS_API_URL } from "@web/utils/constants";
 
 export type GetBusLinesResponse =
   | {

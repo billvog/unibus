@@ -1,23 +1,25 @@
 "use client";
 
-import { GetBusLines } from "@/actions/get-bus-lines";
-import { GetBusStops } from "@/actions/get-bus-stops";
-import { useBusStop } from "@/components/bus-stop-context";
-import { useCitybusToken } from "@/components/citybus-token-context";
-import BusStopDrawer from "@/components/ui/bus-stop-drawer";
-import BusStopSearch from "@/components/ui/bus-stop-search";
-import GraveError from "@/components/ui/grave-error";
-import Map from "@/components/ui/map";
-import { FullscreenSpinner } from "@/components/ui/spinner";
-import { useCaptureAnalytics } from "@/hooks/useCaptureAnalytics";
-import { useGeolocation } from "@/hooks/useGeolocation";
-import { type MapFlyToDetail } from "@/types/events";
-import { Events } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 
-export default function Page() {
+import { GetBusLines } from "@web/actions/get-bus-lines";
+import { GetBusStops } from "@web/actions/get-bus-stops";
+import { useBusStop } from "@web/components/bus-stop-context";
+import { useCitybusToken } from "@web/components/citybus-token-context";
+import BusStopDrawer from "@web/components/ui/bus-stop-drawer";
+import BusStopSearch from "@web/components/ui/bus-stop-search";
+import GraveError from "@web/components/ui/grave-error";
+import Map from "@web/components/ui/map";
+import { FullscreenSpinner } from "@web/components/ui/spinner";
+import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
+import { useGeolocation } from "@web/hooks/useGeolocation";
+import { type MapFlyToDetail } from "@web/types/events";
+import { Events } from "@web/utils/constants";
+import { trpc } from "@web/utils/trpc";
+
+function Page() {
   useCaptureAnalytics();
 
   const { token, refetchToken } = useCitybusToken();
@@ -137,3 +139,5 @@ export default function Page() {
     </div>
   );
 }
+
+export default trpc.withTRPC(Page);

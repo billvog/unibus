@@ -1,7 +1,7 @@
 "use server";
 
-import { type BusLinePoint } from "@/types/citybus";
-import { CITYBUS_API_URL } from "@/utils/constants";
+import { type BusLinePoint } from "@web/types/citybus";
+import { CITYBUS_API_URL } from "@web/utils/constants";
 
 // The response we get from Citybus API
 type GetBusLinePointsAPIResponse = {

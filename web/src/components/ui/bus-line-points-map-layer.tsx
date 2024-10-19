@@ -1,9 +1,10 @@
-import { GetBusLinePoints } from "@/actions/get-bus-line-points";
-import { useCitybusToken } from "@/components/citybus-token-context";
-import { getColor } from "@/utils/get-color";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Layer, Source } from "react-map-gl";
+
+import { GetBusLinePoints } from "@web/actions/get-bus-line-points";
+import { useCitybusToken } from "@web/components/citybus-token-context";
+import { getColor } from "@web/utils/get-color";
 
 type BusLinePointsMapLayerProps = {
   index: number;

@@ -1,6 +1,6 @@
 "use server";
 
-import { CITYBUS_WEBSITE_URL } from "@/utils/constants";
+import { CITYBUS_WEBSITE_URL } from "@web/utils/constants";
 
 type GetCitybusTokenResponse =
   | {

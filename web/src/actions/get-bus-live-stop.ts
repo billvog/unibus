@@ -1,7 +1,7 @@
 "use server";
 
-import { type BusVehicle } from "@/types/citybus";
-import { CITYBUS_API_URL } from "@/utils/constants";
+import { type BusVehicle } from "@web/types/citybus";
+import { CITYBUS_API_URL } from "@web/utils/constants";
 
 type GetBusLiveStopResponse =
   | {

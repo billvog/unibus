@@ -1,11 +1,12 @@
 "use client";
 
-import { GetCitybusToken } from "@/actions/get-citybus-token";
-import { usePersistedState } from "@/hooks/usePersistedState";
-import { Events, StorageKeys } from "@/utils/constants";
-import { VerifyJwt } from "@/utils/verify-jwt";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+
+import { GetCitybusToken } from "@web/actions/get-citybus-token";
+import { usePersistedState } from "@web/hooks/usePersistedState";
+import { Events, StorageKeys } from "@web/utils/constants";
+import { VerifyJwt } from "@web/utils/verify-jwt";
 
 type CitybusTokenContextType = {
   token: string | null;

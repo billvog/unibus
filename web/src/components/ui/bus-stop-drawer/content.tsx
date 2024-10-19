@@ -1,21 +1,22 @@
-import { GetBusLiveStop } from "@/actions/get-bus-live-stop";
-import { GetBusStopSchedule } from "@/actions/get-bus-stop-schedule";
-import { useBusStop } from "@/components/bus-stop-context";
-import { useCitybusToken } from "@/components/citybus-token-context";
-import BusStopSchedule from "@/components/ui/bus-stop-schedule";
-import BusVehicle from "@/components/ui/bus-vehicle";
-import { Button } from "@/components/ui/button";
-import DynamicTitle from "@/components/ui/dynamic-title";
-import { Spinner } from "@/components/ui/spinner";
-import { cn } from "@/lib/utils";
-import { type BusTripDay } from "@/types/citybus";
-import { type Coordinates } from "@/types/coordinates";
-import { type MapFlyToDetail } from "@/types/events";
-import { Events } from "@/utils/constants";
-import { PrettifyName } from "@/utils/prettify-name";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
+
+import { GetBusLiveStop } from "@web/actions/get-bus-live-stop";
+import { GetBusStopSchedule } from "@web/actions/get-bus-stop-schedule";
+import { useBusStop } from "@web/components/bus-stop-context";
+import { useCitybusToken } from "@web/components/citybus-token-context";
+import BusStopSchedule from "@web/components/ui/bus-stop-schedule";
+import BusVehicle from "@web/components/ui/bus-vehicle";
+import { Button } from "@web/components/ui/button";
+import DynamicTitle from "@web/components/ui/dynamic-title";
+import { Spinner } from "@web/components/ui/spinner";
+import { cn } from "@web/lib/utils";
+import { type BusTripDay } from "@web/types/citybus";
+import { type Coordinates } from "@web/types/coordinates";
+import { type MapFlyToDetail } from "@web/types/events";
+import { Events } from "@web/utils/constants";
+import { PrettifyName } from "@web/utils/prettify-name";
 
 const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 

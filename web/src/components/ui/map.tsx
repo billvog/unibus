@@ -1,11 +1,3 @@
-import { useBusStop } from "@/components/bus-stop-context";
-import BusLinePointsMapLayer from "@/components/ui/bus-line-points-map-layer";
-import { Button } from "@/components/ui/button";
-import { env } from "@/env";
-import { type BusStop } from "@/types/citybus";
-import { type Coordinates } from "@/types/coordinates";
-import { type MapFlyToDetail } from "@/types/events";
-import { Events } from "@/utils/constants";
 import * as turf from "@turf/distance";
 import { Undo2 } from "lucide-react";
 import { type MapEvent } from "mapbox-gl";
@@ -17,6 +9,15 @@ import MapGL, {
   Marker,
   Source,
 } from "react-map-gl";
+
+import { useBusStop } from "@web/components/bus-stop-context";
+import BusLinePointsMapLayer from "@web/components/ui/bus-line-points-map-layer";
+import { Button } from "@web/components/ui/button";
+import { env } from "@web/env";
+import { type BusStop } from "@web/types/citybus";
+import { type Coordinates } from "@web/types/coordinates";
+import { type MapFlyToDetail } from "@web/types/events";
+import { Events } from "@web/utils/constants";
 
 type MapProps = {
   busStops: BusStop[];

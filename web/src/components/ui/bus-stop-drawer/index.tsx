@@ -1,9 +1,10 @@
-import { useBusStop } from "@/components/bus-stop-context";
-import BusStopContent from "@/components/ui/bus-stop-drawer/content";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { X } from "lucide-react";
 import React from "react";
 import { Drawer } from "vaul";
+
+import { useBusStop } from "@web/components/bus-stop-context";
+import BusStopContent from "@web/components/ui/bus-stop-drawer/content";
 
 const BusStop = () => {
   const { selectedStop, setSelectedStop } = useBusStop();

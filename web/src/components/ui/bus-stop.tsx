@@ -1,9 +1,10 @@
-import { type GetBusLinesResponse } from "@/actions/get-bus-lines";
-import BusLineCode from "@/components/ui/bus-line-code";
-import { type BusStop as BusStopType } from "@/types/citybus";
-import { PrettifyName } from "@/utils/prettify-name";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
+
+import { type GetBusLinesResponse } from "@web/actions/get-bus-lines";
+import BusLineCode from "@web/components/ui/bus-line-code";
+import { type BusStop as BusStopType } from "@web/types/citybus";
+import { PrettifyName } from "@web/utils/prettify-name";
 
 type BusStopProps = {
   busStop: BusStopType;

@@ -1,9 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Events } from "@/utils/constants";
 import React from "react";
 import { toast } from "sonner";
+
+import { Button } from "@web/components/ui/button";
+import { Events } from "@web/utils/constants";
 
 const GraveError = () => {
   const onSendHelpClick = React.useCallback(() => {
