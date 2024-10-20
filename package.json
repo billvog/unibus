@@ -3,7 +3,10 @@
   "private": true,
   "packageManager": "pnpm@9.9.0",
   "scripts": {
-    "dev": "pnpm -F @repo/web -F @repo/api dev",
-    "lint": "pnpm -F @repo/web -F @repo/api lint"
+    "dev": "turbo dev",
+    "lint": "turbo lint"
+  },
+  "devDependencies": {
+    "turbo": "^2.2.1"
   }
 }
