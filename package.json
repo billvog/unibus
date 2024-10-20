@@ -3,6 +3,8 @@
   "private": true,
   "packageManager": "pnpm@9.9.0",
   "scripts": {
+    "dev:api": "turbo --filter=@repo/api dev",
+    "dev:web": "turbo --filter=@repo/web dev",
     "dev": "turbo dev",
     "lint": "turbo lint"
   },
