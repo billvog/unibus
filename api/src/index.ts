@@ -1,5 +1,4 @@
 import "@api/utils/axios";
-import "dotenv-safe/config";
 import Express from "express";
 
 import { addTrpc } from "@api/app-router";

@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model BusStop {
+  id         Int      @id @default(autoincrement())
+  code       String
+  name       String
+  latitude   Float
+  longitude  Float
+  lineCodes  String[]
+  routeCodes String[]
+  distance   Float
+
+  trips BusStopTrip[]
+}
+
+model BusRoute {
+  id        Int    @id @default(autoincrement())
+  code      String
+  name      String
+  direction Int
+
+  lineId Int
+  line   BusLine @relation(fields: [lineId], references: [id])
+}
+
+model BusLine {
+  id          Int    @id @default(autoincrement())
+  code        String
+  name        String
+  color       String
+  textColor   String
+  borderColor String
+
+  routes BusRoute[]
+
+  points BusLinePoint[]
+}
+
+model BusLinePoint {
+  id        Int    @id @default(autoincrement())
+  sequence  Int
+  longitude String
+  latitude  String
+
+  line   BusLine? @relation(fields: [lineId], references: [id])
+  lineId Int?
+}
+
+model BusStopTrip {
+  id         Int    @id @default(autoincrement())
+  day        Int
+  time       String
+  timeHour   Int
+  timeMinute Int
+
+  lineCode      String
+  lineColor     String
+  lineName      String
+  lineTextColor String
+  routeCode     String
+  routeName     String
+
+  stopId Int
+  stop   BusStop @relation(fields: [stopId], references: [id])
+}

@@ -1,20 +1,4 @@
 services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./api:/usr/src/api
-    env_file:
-      - .env
-      - api/.env
-    depends_on:
-      - db
-    networks:
-      - api
-    command: pnpm run dev
   db:
     image: postgres:16.4-alpine
     container_name: unibus-db
@@ -26,10 +10,5 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-    networks:
-      - api
 volumes:
   db_data:
-networks:
-  api:
-    driver: bridge
