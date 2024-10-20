@@ -1,9 +1,7 @@
-import { publicProcedure } from "@api/trpc";
+import { db } from "@api/utils/prisma";
+import { publicProcedure } from "@api/utils/trpc";
 
-export const getBusStops = publicProcedure.query(() => {
-  return [
-    { id: "1", name: "Bus Stop 1" },
-    { id: "2", name: "Bus Stop 2" },
-    { id: "3", name: "Bus Stop 3" },
-  ];
+export const getBusStops = publicProcedure.query(async () => {
+  const stops = await db.busStop.findMany();
+  return stops;
 });

@@ -1,7 +1,7 @@
 import cron from "node-cron";
 
-import { generateCitybusToken } from "@api/utils/citybus/token";
 import { fetchStaticCitybusFeed } from "@api/utils/citybus/fetch-static-feed";
+import { generateCitybusToken } from "@api/utils/citybus/token";
 
 export const registerCronJobs = async () => {
   // Generate a new Citybus token on startup

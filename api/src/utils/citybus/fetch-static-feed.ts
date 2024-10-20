@@ -94,7 +94,7 @@ export const fetchStaticCitybusFeed = async () => {
   // Fetch bus stops and store
   const { data: busStops } = await citybusClient.get<BusStopType[]>("/stops");
   for (const stop of busStops) {
-    console.log("-- Stop:", stop.code + "...");
+    console.log("-- Stop:", `${stop.code}...`);
 
     const update = {
       name: stop.name,
@@ -121,6 +121,8 @@ export const fetchStaticCitybusFeed = async () => {
       `/trips/stop/${stop.code}`
     );
 
+    // When response is 404, this is undefined.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!stopTripsResponse) {
       console.log("-- ❌ No trips found.");
       continue;

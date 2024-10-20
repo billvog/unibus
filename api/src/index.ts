@@ -13,7 +13,7 @@ function main() {
     app.set("trust proxy", 1);
   }
 
-  registerCronJobs();
+  void registerCronJobs();
 
   addTrpc(app);
 

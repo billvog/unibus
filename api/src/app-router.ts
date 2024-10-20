@@ -3,12 +3,18 @@ import cors from "cors";
 import { Express } from "express";
 
 import { env } from "@api/env";
+import { getBusLinePoints } from "@api/modules/get-bus-line-points";
+import { getBusLines } from "@api/modules/get-bus-lines";
+import { getBusStopSchedule } from "@api/modules/get-bus-stop-schedule";
 import { getBusStops } from "@api/modules/get-bus-stops";
-import { createContext, t } from "@api/trpc";
 import { IS_PROD } from "@api/utils/constants";
+import { createContext, t } from "@api/utils/trpc";
 
 export const appRouter = t.router({
   getBusStops,
+  getBusLines,
+  getBusLinePoints,
+  getBusStopSchedule,
 });
 
 export function addTrpc(app: Express) {

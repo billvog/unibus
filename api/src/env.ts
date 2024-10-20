@@ -1,5 +1,5 @@
-import { config } from "dotenv-safe";
 import { createEnv } from "@t3-oss/env-core";
+import { config } from "dotenv-safe";
 import { z } from "zod";
 
 config();
