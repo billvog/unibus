@@ -1,13 +1,9 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 
-import { GetBusLines } from "@web/actions/get-bus-lines";
-import { GetBusStops } from "@web/actions/get-bus-stops";
 import { useBusStop } from "@web/components/bus-stop-context";
-import { useCitybusToken } from "@web/components/citybus-token-context";
 import BusStopDrawer from "@web/components/ui/bus-stop-drawer";
 import BusStopSearch from "@web/components/ui/bus-stop-search";
 import GraveError from "@web/components/ui/grave-error";
@@ -22,33 +18,23 @@ import { trpc } from "@web/utils/trpc";
 function Page() {
   useCaptureAnalytics();
 
-  const { token, refetchToken } = useCitybusToken();
   const { setSelectedStop } = useBusStop();
 
   const geolocation = useGeolocation();
 
-  const busLinesQuery = useQuery({
-    queryKey: ["busLines"],
-    queryFn: () => GetBusLines(token ?? ""),
-    enabled: !!token,
-  });
-
-  const busStopsQuery = useQuery({
-    queryKey: ["busStops"],
-    queryFn: () => GetBusStops(token ?? ""),
-    enabled: !!token,
-  });
+  const busLinesQuery = trpc.getBusLines.useQuery();
+  const busStopsQuery = trpc.getBusStops.useQuery();
 
   const isLoading = busLinesQuery.isLoading || busStopsQuery.isLoading;
 
   const busStops = React.useMemo(
-    () => (busStopsQuery.data?.ok ? busStopsQuery.data.stops : []),
+    () => busStopsQuery.data ?? [],
     [busStopsQuery.data],
   );
 
   const hasGraveError = React.useMemo(
-    () => !busStopsQuery.data?.ok && busStopsQuery.data?.status === 500,
-    [busStopsQuery.data],
+    () => busStopsQuery.isError,
+    [busStopsQuery.isError],
   );
 
   const onBusStopClick = React.useCallback(
@@ -89,24 +75,6 @@ function Page() {
     },
     [busStops, setSelectedStop],
   );
-
-  React.useEffect(() => {
-    // Refetch bus stops when token changes
-    if (token && !busStopsQuery.data?.ok) {
-      void busStopsQuery.refetch();
-    }
-  }, [token, busStopsQuery]);
-
-  React.useEffect(() => {
-    // In case server responds with 401, refetch the token
-    if (
-      busStopsQuery.data &&
-      !busStopsQuery.data.ok &&
-      busStopsQuery.data.status === 401
-    ) {
-      refetchToken();
-    }
-  }, [busStopsQuery.data, refetchToken]);
 
   React.useEffect(() => {
     // Show an error message if location could not be

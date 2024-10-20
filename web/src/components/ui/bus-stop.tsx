@@ -1,10 +1,9 @@
-import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
-import { type GetBusLinesResponse } from "@web/actions/get-bus-lines";
 import BusLineCode from "@web/components/ui/bus-line-code";
 import { type BusStop as BusStopType } from "@web/types/citybus";
 import { PrettifyName } from "@web/utils/prettify-name";
+import { trpc } from "@web/utils/trpc";
 
 type BusStopProps = {
   busStop: BusStopType;
@@ -12,11 +11,12 @@ type BusStopProps = {
 };
 
 const BusStop = ({ busStop, onClick }: BusStopProps) => {
-  const queryClient = useQueryClient();
+  const { getBusLines } = trpc.useUtils();
 
-  const busLinesData = queryClient.getQueryData<GetBusLinesResponse>([
-    "busLines",
-  ]);
+  const busLinesData = React.useMemo(
+    () => getBusLines.getData(),
+    [getBusLines],
+  );
 
   const prettyBusStopName = React.useMemo(
     () => PrettifyName(busStop.name),
@@ -24,11 +24,11 @@ const BusStop = ({ busStop, onClick }: BusStopProps) => {
   );
 
   const busLineColor = React.useMemo(() => {
-    if (!busLinesData?.ok) {
+    if (!busLinesData) {
       return undefined;
     }
 
-    const busLine = busLinesData.lines.find(
+    const busLine = busLinesData.find(
       (line) => line.code === busStop.lineCodes[0],
     );
 

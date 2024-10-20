@@ -5,16 +5,13 @@ import React from "react";
 import BusStopTrip from "@web/components/ui/bus-stop-trip";
 import { Spinner } from "@web/components/ui/spinner";
 import { cn } from "@web/lib/utils";
-import {
-  type BusTripDay,
-  type BusStopTrip as BusStopTripType,
-} from "@web/types/citybus";
+import { type BusStopTrip as BusStopTripType } from "@web/types/citybus";
 import { Days } from "@web/utils/constants";
 
 type BusStopScheduleProps = {
   busStopTrips: BusStopTripType[];
-  selectedDay: BusTripDay;
-  onDayClick: (day: BusTripDay) => void;
+  selectedDay: number;
+  onDayClick: (day: number) => void;
   isRefetching: boolean;
 };
 
@@ -27,12 +24,12 @@ const BusStopSchedule = ({
   const groupedTrips = React.useMemo(() => {
     const grouped = new Map<number, BusStopTripType[]>();
     busStopTrips.forEach((trip) => {
-      if (grouped.has(trip.tripTimeHour)) {
-        grouped.get(trip.tripTimeHour)?.push(trip);
+      if (grouped.has(trip.timeHour)) {
+        grouped.get(trip.timeHour)?.push(trip);
         return;
       }
 
-      grouped.set(trip.tripTimeHour, [trip]);
+      grouped.set(trip.timeHour, [trip]);
     });
     return grouped;
   }, [busStopTrips]);
@@ -51,12 +48,12 @@ const BusStopSchedule = ({
             key={day}
             className={cn(
               "cursor-pointer rounded-lg border-2 border-gray-200 px-2 py-0.5 text-sm",
-              selectedDay === index + 1 && "bg-gray-200",
+              selectedDay === index && "bg-gray-200",
               isRefetching && "cursor-not-allowed opacity-40",
             )}
             onClick={() => {
               if (!isRefetching) {
-                onDayClick((index + 1) as BusTripDay);
+                onDayClick(index);
               }
             }}
           >

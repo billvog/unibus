@@ -48,20 +48,16 @@ export type BusVehicle = {
   borderColor: string;
 };
 
-export type BusTripDay = 1 | 2 | 3 | 4 | 5 | 6 | 7;
-
 export type BusStopTrip = {
   id: number;
-  day: BusTripDay;
+  day: number;
   lineCode: string;
   lineColor: string;
   lineName: string;
   lineTextColor: string;
   routeCode: string;
   routeName: string;
-  stopCode: string;
-  stopName: string;
-  tripTime: string;
-  tripTimeHour: number;
-  tripTimeMinute: number;
+  time: string;
+  timeHour: number;
+  timeMinute: number;
 };

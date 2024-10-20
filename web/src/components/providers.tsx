@@ -10,7 +10,6 @@ import { PostHogProvider } from "posthog-js/react";
 import React from "react";
 
 import { BusStopProvider } from "@web/components/bus-stop-context";
-import { CitybusTokenProvider } from "@web/components/citybus-token-context";
 import { Toaster } from "@web/components/ui/sonner";
 import { env } from "@web/env";
 
@@ -56,12 +55,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <PostHogProvider client={posthog}>
-        <CitybusTokenProvider>
-          <BusStopProvider>
-            {children}
-            <Toaster richColors />
-          </BusStopProvider>
-        </CitybusTokenProvider>
+        <BusStopProvider>
+          {children}
+          <Toaster richColors />
+        </BusStopProvider>
       </PostHogProvider>
     </QueryClientProvider>
   );
