@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "production"]).default("development"),
     FRONTEND_URL: z.string(),
-    PORT: z.number().default(8000),
+    PORT: z.string().default("8000"),
   },
 
   /**
