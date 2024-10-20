@@ -23,8 +23,12 @@ const config = {
       },
     ];
   },
-  // This is required to support PostHog trailing slash API requests
+  // This is required to support PostHog trailing slash API requests.
   skipTrailingSlashRedirect: true,
+  // Don't run lint during build, as it's already run in CI.
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default config;
