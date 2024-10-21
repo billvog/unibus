@@ -1,11 +1,11 @@
 "use client";
 
+import { type BusStopTrip as BusStopTripType } from "@api/types/models";
 import React from "react";
 
 import BusStopTrip from "@web/components/ui/bus-stop-trip";
 import { Spinner } from "@web/components/ui/spinner";
 import { cn } from "@web/lib/utils";
-import { type BusStopTrip as BusStopTripType } from "@web/types/citybus";
 import { Days } from "@web/utils/constants";
 
 type BusStopScheduleProps = {

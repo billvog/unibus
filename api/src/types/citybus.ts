@@ -68,3 +68,7 @@ export type GetBusLinePointsAPIResponse = {
   routeCode: string;
   routePoints: BusLinePoint[];
 }[];
+
+export type GetBusLiveStopAPIResponse = {
+  vehicles: BusVehicle[];
+};

@@ -1,7 +1,7 @@
+import { type BusStopTrip as BusStopTripType } from "@api/types/models";
 import React from "react";
 
 import BusLineCode from "@web/components/ui/bus-line-code";
-import { type BusStopTrip as BusStopTripType } from "@web/types/citybus";
 import { PrettifyName } from "@web/utils/prettify-name";
 
 type BusStopTripProps = {
@@ -22,7 +22,7 @@ const BusStopTrip = ({ trip }: BusStopTripProps) => {
           bgColor={trip.lineColor}
           textColor={trip.lineTextColor}
         />
-        <span className="text-xl font-bold">{trip.tripTime}</span>
+        <span className="text-xl font-bold">{trip.time}</span>
       </div>
       <span className="text-xs">{prettyRouteName} </span>
     </div>

@@ -1,7 +1,7 @@
+import { type BusStop as BusStopType } from "@api/types/models";
 import React from "react";
 
 import BusLineCode from "@web/components/ui/bus-line-code";
-import { type BusStop as BusStopType } from "@web/types/citybus";
 import { PrettifyName } from "@web/utils/prettify-name";
 import { trpc } from "@web/utils/trpc";
 

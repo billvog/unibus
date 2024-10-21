@@ -1,5 +1,6 @@
 "use client";
 
+import { type BusStop as BusStopType } from "@api/types/models";
 import { CircleX } from "lucide-react";
 import React from "react";
 import { search } from "ss-search";
@@ -8,7 +9,6 @@ import BusStop from "@web/components/ui/bus-stop";
 import { Input } from "@web/components/ui/input";
 import { useKeyPress } from "@web/hooks/useKeyPress";
 import { cn } from "@web/lib/utils";
-import { type BusStop as BusStopType } from "@web/types/citybus";
 import { Events, Shortcuts } from "@web/utils/constants";
 
 type BusStopsSearchProps = {

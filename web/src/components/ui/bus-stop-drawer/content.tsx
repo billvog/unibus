@@ -2,15 +2,18 @@ import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import BusStopSchedule from "@web/components/ui/bus-stop-schedule";
+import BusVehicle from "@web/components/ui/bus-vehicle";
 import { Button } from "@web/components/ui/button";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { Spinner } from "@web/components/ui/spinner";
 import { cn } from "@web/lib/utils";
+import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
+import { Events } from "@web/utils/constants";
 import { PrettifyName } from "@web/utils/prettify-name";
 import { trpc } from "@web/utils/trpc";
 
-// const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
+const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 
 type ViewMode = "live" | "schedule";
 
@@ -23,7 +26,7 @@ const BusStopContent = ({
   canScroll,
   onBusVehicleClick: handleBusVehicleClick,
 }: BusStopContentProps) => {
-  const { selectedStop, setSelectedStop, setLiveBusCoordinates } = useBusStop();
+  const { selectedStop, setLiveBusCoordinates } = useBusStop();
 
   const [viewMode, setViewMode] = React.useState<ViewMode>("live");
   const [selectedDay, setSelectedDay] = React.useState<number>(() => {
@@ -36,21 +39,13 @@ const BusStopContent = ({
     [selectedStop],
   );
 
-  // const busLiveQuery = useQuery({
-  //   queryKey: ["bus-live", selectedStop?.code],
-  //   queryFn: () => GetBusLiveStop(token ?? "", selectedStop?.code ?? ""),
-  //   enabled: !!token && !!selectedStop && viewMode === "live",
-  //   refetchInterval: BusLiveQueryRefetchInterval,
-  // });
-
-  const busLiveQuery = {
-    isLoading: false,
-    isError: false,
-    data: {
-      ok: false,
-      vehicles: [],
+  const busLiveQuery = trpc.getBusLiveStop.useQuery(
+    { stopCode: selectedStop?.code ?? "" },
+    {
+      enabled: !!selectedStop && viewMode === "live",
+      refetchInterval: BusLiveQueryRefetchInterval,
     },
-  };
+  );
 
   const vehicles = React.useMemo(
     () => (busLiveQuery.data?.ok ? (busLiveQuery.data.vehicles ?? []) : []),
@@ -78,22 +73,15 @@ const BusStopContent = ({
   );
 
   React.useEffect(() => {
-    if (busLiveQuery.isError || (busLiveQuery.data && !busLiveQuery.data.ok)) {
-      // toast.error("Failed to fetch bus live data");
-      // setSelectedStop(null);
-    }
-  }, [busLiveQuery, setSelectedStop]);
-
-  React.useEffect(() => {
     if (vehicles.length === 0) {
       return;
     }
 
     const firstVehicle = vehicles[0]!;
-    // setLiveBusCoordinates({
-    //   latitude: Number(firstVehicle.latitude),
-    //   longitude: Number(firstVehicle.longitude),
-    // });
+    setLiveBusCoordinates({
+      latitude: Number(firstVehicle.latitude),
+      longitude: Number(firstVehicle.longitude),
+    });
   }, [vehicles, setLiveBusCoordinates]);
 
   React.useEffect(() => {
@@ -120,43 +108,43 @@ const BusStopContent = ({
 
   const onBusVehicleClick = React.useCallback(
     (vehicleCode: string) => {
-      // const vehicle = vehicles.find((v) => v.vehicleCode === vehicleCode);
-      // if (!vehicle) {
-      //   return;
-      // }
-      //
-      // const coordinates: Coordinates = {
-      //   latitude: Number(vehicle.latitude),
-      //   longitude: Number(vehicle.longitude),
-      // };
-      //
-      // if (coordinates.latitude === 0 && coordinates.longitude === 0) {
-      //   return;
-      // }
-      //
-      // setLiveBusCoordinates(coordinates);
-      //
-      // handleBusVehicleClick();
-      //
-      // // Capture event
-      // window.dispatchEvent(
-      //   new CustomEvent(Events.Analytics.BusVehicleClick, {
-      //     detail: {
-      //       BusVehicle: {
-      //         vehicleCode,
-      //         stopCode: selectedStop?.code,
-      //       },
-      //     },
-      //   }),
-      // );
-      //
-      // window.dispatchEvent(
-      //   new CustomEvent<MapFlyToDetail>("map:fly-to", {
-      //     detail: {
-      //       coordinates,
-      //     },
-      //   }),
-      // );
+      const vehicle = vehicles.find((v) => v.vehicleCode === vehicleCode);
+      if (!vehicle) {
+        return;
+      }
+
+      const coordinates: Coordinates = {
+        latitude: Number(vehicle.latitude),
+        longitude: Number(vehicle.longitude),
+      };
+
+      if (coordinates.latitude === 0 && coordinates.longitude === 0) {
+        return;
+      }
+
+      setLiveBusCoordinates(coordinates);
+
+      handleBusVehicleClick();
+
+      // Capture event
+      window.dispatchEvent(
+        new CustomEvent(Events.Analytics.BusVehicleClick, {
+          detail: {
+            BusVehicle: {
+              vehicleCode,
+              stopCode: selectedStop?.code,
+            },
+          },
+        }),
+      );
+
+      window.dispatchEvent(
+        new CustomEvent<MapFlyToDetail>("map:fly-to", {
+          detail: {
+            coordinates,
+          },
+        }),
+      );
     },
     [vehicles, selectedStop, handleBusVehicleClick, setLiveBusCoordinates],
   );
@@ -198,7 +186,7 @@ const BusStopContent = ({
         )}
       >
         {/* Bus Live */}
-        {/* {viewMode === "live" &&
+        {viewMode === "live" &&
           (hasLiveVehicles ? (
             <div className="flex flex-col gap-4">
               {vehicles.map((vehicle) => (
@@ -211,7 +199,7 @@ const BusStopContent = ({
             </div>
           ) : (
             <div>Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά 😢</div>
-          ))} */}
+          ))}
 
         {/* Bus Schedule */}
         {viewMode === "schedule" && (

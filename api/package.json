@@ -2,8 +2,9 @@
   "name": "@repo/api",
   "version": "0.0.0",
   "private": true,
-  "main": "src/app-router-type.ts",
-  "types": "src/app-router-type.ts",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
   "scripts": {
     "postinstall": "prisma generate",
     "db:generate": "prisma migrate dev",

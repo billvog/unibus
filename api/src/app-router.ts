@@ -5,6 +5,7 @@ import { Express } from "express";
 import { env } from "@api/env";
 import { getBusLinePoints } from "@api/modules/get-bus-line-points";
 import { getBusLines } from "@api/modules/get-bus-lines";
+import { getBusLiveStop } from "@api/modules/get-bus-live-stop";
 import { getBusStopSchedule } from "@api/modules/get-bus-stop-schedule";
 import { getBusStops } from "@api/modules/get-bus-stops";
 import { IS_PROD } from "@api/utils/constants";
@@ -15,6 +16,7 @@ export const appRouter = t.router({
   getBusLines,
   getBusLinePoints,
   getBusStopSchedule,
+  getBusLiveStop,
 });
 
 export function addTrpc(app: Express) {

@@ -1,8 +1,8 @@
+import { type BusVehicle as BusVehicleType } from "@api/types/citybus";
 import { Clock9 } from "lucide-react";
 import React from "react";
 
 import { cn } from "@web/lib/utils";
-import { type BusVehicle as BusVehicleType } from "@web/types/citybus";
 import { formatTime } from "@web/utils/format-time";
 
 type BusVehicleProps = {
