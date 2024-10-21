@@ -12,14 +12,14 @@ type BusStopScheduleProps = {
   busStopTrips: BusStopTripType[];
   selectedDay: number;
   onDayClick: (day: number) => void;
-  isRefetching: boolean;
+  isLoading: boolean;
 };
 
 const BusStopSchedule = ({
   busStopTrips,
   selectedDay,
   onDayClick,
-  isRefetching,
+  isLoading,
 }: BusStopScheduleProps) => {
   const groupedTrips = React.useMemo(() => {
     const grouped = new Map<number, BusStopTripType[]>();
@@ -49,10 +49,10 @@ const BusStopSchedule = ({
             className={cn(
               "cursor-pointer rounded-lg border-2 border-gray-200 px-2 py-0.5 text-sm",
               selectedDay === index && "bg-gray-200",
-              isRefetching && "cursor-not-allowed opacity-40",
+              isLoading && "cursor-not-allowed opacity-40",
             )}
             onClick={() => {
-              if (!isRefetching) {
+              if (!isLoading) {
                 onDayClick(index);
               }
             }}
@@ -63,8 +63,8 @@ const BusStopSchedule = ({
       </div>
 
       {/* Bus trips */}
-      {isRefetching ? (
-        <div className="flex flex-1 justify-center py-10">
+      {isLoading ? (
+        <div className="flex flex-1 justify-center py-5">
           <Spinner className="text-gray-500" />
         </div>
       ) : groupedTrips.size > 0 ? (

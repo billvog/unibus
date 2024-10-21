@@ -84,11 +84,6 @@ const BusStopContent = ({
     });
   }, [vehicles, setLiveBusCoordinates]);
 
-  React.useEffect(() => {
-    void busStopScheduleQuery.refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDay]);
-
   const onBusStopNameClick = React.useCallback(() => {
     if (!selectedStop) {
       return;
@@ -153,15 +148,7 @@ const BusStopContent = ({
     setViewMode((prev) => (prev === "live" ? "schedule" : "live"));
   }, []);
 
-  if (busLiveQuery.isLoading || busStopScheduleQuery.isLoading) {
-    return (
-      <div className="self-center py-16">
-        <Spinner className="text-gray-500" />
-      </div>
-    );
-  }
-
-  if ((!busLiveQuery.data?.ok && !busStopScheduleQuery.data) || !selectedStop) {
+  if (!selectedStop) {
     return null;
   }
 
@@ -187,7 +174,11 @@ const BusStopContent = ({
       >
         {/* Bus Live */}
         {viewMode === "live" &&
-          (hasLiveVehicles ? (
+          (busLiveQuery.isLoading ? (
+            <div className="flex flex-1 justify-center py-5">
+              <Spinner className="text-gray-500" />
+            </div>
+          ) : hasLiveVehicles ? (
             <div className="flex flex-col gap-4">
               {vehicles.map((vehicle) => (
                 <BusVehicle
@@ -207,7 +198,7 @@ const BusStopContent = ({
             busStopTrips={busStopTrips}
             selectedDay={selectedDay}
             onDayClick={(day) => setSelectedDay(day)}
-            isRefetching={busStopScheduleQuery.isRefetching}
+            isLoading={busStopScheduleQuery.isLoading}
           />
         )}
       </div>
