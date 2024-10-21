@@ -6,17 +6,14 @@ WORKDIR /usr/src/api
 
 RUN npm i -g pnpm
 
-# Copy package.json
-COPY ./api/package.json ./
+# Copy application
 COPY pnpm-lock.yaml ..
 COPY pnpm-workspace.yaml ..
 COPY tsconfig.json ..
+COPY api/ ./
 
 # Install npm dependencies
 RUN pnpm install
-
-# Copy the rest of your application's source code
-COPY api/ ./
 
 # Compile TypeScript to JavaScript
 RUN pnpm build
@@ -28,6 +25,7 @@ WORKDIR /usr/src/api
 
 # Copy built artifacts from the builder stage
 COPY --from=builder /usr/src/api/dist ./dist
+COPY --from=builder /usr/src/api/prisma ./prisma
 
 # Copy package.json (to run the application) and any other necessary files
 COPY api/package.json ./
