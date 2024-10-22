@@ -10,10 +10,12 @@ RUN npm i -g pnpm
 COPY pnpm-lock.yaml ..
 COPY pnpm-workspace.yaml ..
 COPY tsconfig.json ..
-COPY api/ ./
 
 # Install npm dependencies
 RUN pnpm install
+
+# Copy the source code
+COPY api/ ./
 
 # Compile TypeScript to JavaScript
 RUN pnpm build
@@ -25,7 +27,7 @@ WORKDIR /usr/src/api
 
 # Copy built artifacts from the builder stage
 COPY --from=builder /usr/src/api/dist ./dist
-COPY --from=builder /usr/src/api/prisma ./prisma
+COPY --from=builder /usr/src/api/drizzle ./drizzle
 
 # Copy package.json (to run the application) and any other necessary files
 COPY api/package.json ./
