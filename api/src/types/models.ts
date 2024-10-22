@@ -5,11 +5,11 @@ import {
   busLine,
   busLinePoint,
   busRoute,
-  busStopTrip,
+  busStopTime,
 } from "@api/db/schema";
 
 export type BusStop = InferSelectModel<typeof busStop>;
 export type BusLine = InferSelectModel<typeof busLine>;
 export type BusLinePoint = InferSelectModel<typeof busLinePoint>;
 export type BusRoute = InferSelectModel<typeof busRoute>;
-export type BusStopTrip = InferSelectModel<typeof busStopTrip>;
+export type BusStopTrip = InferSelectModel<typeof busStopTime>;

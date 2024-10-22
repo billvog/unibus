@@ -1,5 +1,5 @@
 {
-  "id": "1e549564-78c7-437b-9645-3d50e37e899d",
+  "id": "ef49d5e2-89bf-4e03-8a12-99cec40309e8",
   "prevId": "ee27f10a-2836-4456-ab07-e1a2916d108b",
   "version": "7",
   "dialect": "postgresql",
@@ -120,6 +120,12 @@
         },
         "code": {
           "name": "code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
           "type": "varchar(100)",
           "primaryKey": false,
           "notNull": true
@@ -177,6 +183,12 @@
         },
         "code": {
           "name": "code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
           "type": "varchar(100)",
           "primaryKey": false,
           "notNull": true
@@ -197,6 +209,122 @@
           "nullsNotDistinct": false,
           "columns": [
             "code"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    },
+    "public.bus_stop_time": {
+      "name": "bus_stop_time",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "trip_id": {
+          "name": "trip_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "day": {
+          "name": "day",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time": {
+          "name": "time",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_hour": {
+          "name": "time_hour",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_minute": {
+          "name": "time_minute",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "line_code": {
+          "name": "line_code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "route_code": {
+          "name": "route_code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stop_id": {
+          "name": "stop_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "bus_stop_time_line_code_bus_line_code_fk": {
+          "name": "bus_stop_time_line_code_bus_line_code_fk",
+          "tableFrom": "bus_stop_time",
+          "tableTo": "bus_line",
+          "columnsFrom": [
+            "line_code"
+          ],
+          "columnsTo": [
+            "code"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "bus_stop_time_route_code_bus_route_code_fk": {
+          "name": "bus_stop_time_route_code_bus_route_code_fk",
+          "tableFrom": "bus_stop_time",
+          "tableTo": "bus_route",
+          "columnsFrom": [
+            "route_code"
+          ],
+          "columnsTo": [
+            "code"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "bus_stop_time_stop_id_bus_stop_id_fk": {
+          "name": "bus_stop_time_stop_id_bus_stop_id_fk",
+          "tableFrom": "bus_stop_time",
+          "tableTo": "bus_stop",
+          "columnsFrom": [
+            "stop_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "bus_stop_time_unique_index": {
+          "name": "bus_stop_time_unique_index",
+          "nullsNotDistinct": false,
+          "columns": [
+            "trip_id",
+            "stop_id",
+            "line_code",
+            "route_code"
           ]
         }
       },
@@ -293,105 +421,6 @@
           ],
           "columnsTo": [
             "code"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "public.bus_stop_trip": {
-      "name": "bus_stop_trip",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "day": {
-          "name": "day",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "time": {
-          "name": "time",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "time_hour": {
-          "name": "time_hour",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "time_minute": {
-          "name": "time_minute",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "line_code": {
-          "name": "line_code",
-          "type": "varchar(10)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "route_code": {
-          "name": "route_code",
-          "type": "varchar(10)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "stop_id": {
-          "name": "stop_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "bus_stop_trip_line_code_bus_line_code_fk": {
-          "name": "bus_stop_trip_line_code_bus_line_code_fk",
-          "tableFrom": "bus_stop_trip",
-          "tableTo": "bus_line",
-          "columnsFrom": [
-            "line_code"
-          ],
-          "columnsTo": [
-            "code"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "bus_stop_trip_route_code_bus_route_code_fk": {
-          "name": "bus_stop_trip_route_code_bus_route_code_fk",
-          "tableFrom": "bus_stop_trip",
-          "tableTo": "bus_route",
-          "columnsFrom": [
-            "route_code"
-          ],
-          "columnsTo": [
-            "code"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "bus_stop_trip_stop_id_bus_stop_id_fk": {
-          "name": "bus_stop_trip_stop_id_bus_stop_id_fk",
-          "tableFrom": "bus_stop_trip",
-          "tableTo": "bus_stop",
-          "columnsFrom": [
-            "stop_id"
-          ],
-          "columnsTo": [
-            "id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"

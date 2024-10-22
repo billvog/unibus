@@ -1,3 +1,13 @@
+import { db } from "@api/db";
+import {
+  busLine,
+  busLinePoint,
+  busRoute,
+  busStop,
+  busStopToLine,
+  busStopToRoute,
+  busStopTime,
+} from "@api/db/schema";
 import type {
   BusLine as BusLineType,
   BusStopTrip as BusStopTripType,
@@ -5,67 +15,66 @@ import type {
   GetBusLinePointsAPIResponse,
 } from "@api/types/citybus";
 import { citybusClient } from "@api/utils/axios";
-import { db } from "@api/utils/prisma";
 
 export const fetchStaticCitybusFeed = async () => {
   console.log("⏳ Fetching bus lines...");
 
   // Fetch bus lines and store
   const { data: busLines } = await citybusClient.get<BusLineType[]>("/lines");
-  for (const busLine of busLines) {
-    console.log("-- Line:", busLine.code);
+  for (const line of busLines) {
+    console.log("-- Line:", line.code);
 
     const update = {
-      name: busLine.name,
-      borderColor: busLine.borderColor,
-      color: busLine.color,
-      textColor: busLine.textColor,
+      name: line.name,
+      bgColor: line.color.toUpperCase(),
+      borderColor: line.borderColor.toUpperCase(),
+      textColor: line.textColor.toUpperCase(),
     };
 
     const create = {
       ...update,
-      id: busLine.id,
-      code: busLine.code,
+      id: line.id,
+      code: line.code,
     };
 
-    await db.busLine.upsert({
-      where: { id: busLine.id },
-      update,
-      create,
+    await db.insert(busLine).values(create).onConflictDoUpdate({
+      target: busLine.id,
+      set: update,
     });
 
     console.log("---- ⏳ Fetching bus line points...");
 
     const { data: pointResponse } =
       await citybusClient.get<GetBusLinePointsAPIResponse>(
-        `/lines/${busLine.code}/points`
+        `/lines/${line.code}/points`
       );
 
     const routePoints = pointResponse[0].routePoints;
     for (const point of routePoints) {
       const update = {
-        latitude: point.latitude,
-        longitude: point.longitude,
+        location: {
+          x: Number(point.longitude),
+          y: Number(point.latitude),
+        },
         sequence: point.sequence,
       };
 
       const create = {
         ...update,
         id: point.id,
-        lineId: busLine.id,
+        lineId: line.id,
       };
 
-      await db.busLinePoint.upsert({
-        where: { id: point.id },
-        update,
-        create,
+      await db.insert(busLinePoint).values(create).onConflictDoUpdate({
+        target: busLinePoint.id,
+        set: update,
       });
     }
 
     console.log("---- ✅ Bus line points fetched and stored.");
     console.log("---- ⏳ Storing bus line routes...");
 
-    for (const route of busLine.routes) {
+    for (const route of line.routes) {
       const update = {
         direction: route.direction,
         name: route.name,
@@ -74,14 +83,13 @@ export const fetchStaticCitybusFeed = async () => {
       const create = {
         ...update,
         id: route.id,
-        lineId: busLine.id,
+        lineId: line.id,
         code: route.code,
       };
 
-      await db.busRoute.upsert({
-        where: { id: route.id },
-        update,
-        create,
+      await db.insert(busRoute).values(create).onConflictDoUpdate({
+        target: busRoute.id,
+        set: update,
       });
     }
 
@@ -93,29 +101,47 @@ export const fetchStaticCitybusFeed = async () => {
 
   // Fetch bus stops and store
   const { data: busStops } = await citybusClient.get<BusStopType[]>("/stops");
+
+  const stopsCount = busStops.length;
+  let stopsProcessed = 0;
+
   for (const stop of busStops) {
-    console.log("-- Stop:", `${stop.code}...`);
+    console.log("-- Stop:", `ID: ${stop.id} <> Code: ${stop.code}...`);
+
+    stopsProcessed++;
 
     const update = {
       name: stop.name,
-      latitude: Number(stop.latitude),
-      longitude: Number(stop.longitude),
-      distance: stop.distance,
+      location: {
+        x: stop.longitude,
+        y: stop.latitude,
+      },
     };
 
     const create = {
       ...update,
       id: stop.id,
       code: stop.code,
-      lineCodes: stop.lineCodes,
-      routeCodes: stop.routeCodes,
     };
 
-    await db.busStop.upsert({
-      where: { id: stop.id },
-      update,
-      create,
+    await db.insert(busStop).values(create).onConflictDoUpdate({
+      target: busStop.id,
+      set: update,
     });
+
+    for (const routeCode of stop.routeCodes) {
+      await db.insert(busStopToRoute).values({
+        stopId: stop.id,
+        routeCode,
+      });
+    }
+
+    for (const lineCode of stop.lineCodes) {
+      await db.insert(busStopToLine).values({
+        stopId: stop.id,
+        lineCode,
+      });
+    }
 
     const stopTripsResponse = await citybusClient.get<BusStopTripType[]>(
       `/trips/stop/${stop.code}`
@@ -132,35 +158,38 @@ export const fetchStaticCitybusFeed = async () => {
 
     for (const trip of stopTrips) {
       const update = {
+        tripId: trip.id,
         day: trip.day,
         time: trip.tripTime,
         timeHour: trip.tripTimeHour,
         timeMinute: trip.tripTimeMinute,
         lineCode: trip.lineCode,
-        lineColor: trip.lineColor,
-        lineName: trip.lineName,
-        lineTextColor: trip.lineTextColor,
         routeCode: trip.routeCode,
-        routeName: trip.routeName,
+        stopId: stop.id,
       };
 
       const create = {
         ...update,
-        id: trip.id,
-        stopId: stop.id,
       };
 
-      await db.busStopTrip.upsert({
-        where: { id: trip.id },
-        update,
-        create,
-      });
+      await db
+        .insert(busStopTime)
+        .values(create)
+        .onConflictDoUpdate({
+          target: [
+            busStopTime.tripId,
+            busStopTime.stopId,
+            busStopTime.lineCode,
+            busStopTime.routeCode,
+          ],
+          set: update,
+        });
     }
 
-    console.log("-- ✅ Bus stop trips fetched and stored.");
+    console.log(
+      `-- ✅ Bus stop trips fetched and stored. (${stopsProcessed}/${stopsCount})`
+    );
   }
-
-  console.log("✅ Bus stops fetched and stored.");
 
   console.log("🚀 Everything fetched and stored.");
 };

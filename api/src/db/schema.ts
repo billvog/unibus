@@ -5,6 +5,7 @@ import {
   integer,
   geometry,
   varchar,
+  unique,
 } from "drizzle-orm/pg-core";
 
 const point = (name: string) =>
@@ -35,7 +36,7 @@ export const busLinePoint = pgTable("bus_line_point", {
 export const busRoute = pgTable("bus_route", {
   id: serial().primaryKey().notNull(),
   code: varchar("code", { length: 10 }).notNull().unique(),
-  name: varchar("code", { length: 100 }).notNull(),
+  name: varchar("name", { length: 100 }).notNull(),
   direction: integer().notNull(),
   lineId: integer("line_id")
     .notNull()
@@ -45,28 +46,40 @@ export const busRoute = pgTable("bus_route", {
 export const busStop = pgTable("bus_stop", {
   id: serial().primaryKey().notNull(),
   code: varchar("code", { length: 10 }).notNull().unique(),
-  name: varchar("code", { length: 100 }).notNull(),
+  name: varchar("name", { length: 100 }).notNull(),
   location: point("location").notNull(),
 });
 
-export const busStopTrip = pgTable("bus_stop_trip", {
-  id: serial().primaryKey().notNull(),
-  day: integer().notNull(),
-  time: text().notNull(),
-  timeHour: integer("time_hour").notNull(),
-  timeMinute: integer("time_minute").notNull(),
-  lineCode: varchar("line_code", { length: 10 })
-    .notNull()
-    .references(() => busLine.code, {
-      onDelete: "cascade",
-    }),
-  routeCode: varchar("route_code", { length: 10 })
-    .notNull()
-    .references(() => busRoute.code, { onDelete: "cascade" }),
-  stopId: integer("stop_id")
-    .notNull()
-    .references(() => busStop.id, { onDelete: "cascade" }),
-});
+export const busStopTime = pgTable(
+  "bus_stop_time",
+  {
+    id: serial().primaryKey().notNull(),
+    tripId: integer("trip_id").notNull(),
+    day: integer().notNull(),
+    time: text().notNull(),
+    timeHour: integer("time_hour").notNull(),
+    timeMinute: integer("time_minute").notNull(),
+    lineCode: varchar("line_code", { length: 10 })
+      .notNull()
+      .references(() => busLine.code, {
+        onDelete: "cascade",
+      }),
+    routeCode: varchar("route_code", { length: 10 })
+      .notNull()
+      .references(() => busRoute.code, { onDelete: "cascade" }),
+    stopId: integer("stop_id")
+      .notNull()
+      .references(() => busStop.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    busStopTimeUniqueIndex: unique("bus_stop_time_unique_index").on(
+      t.tripId,
+      t.stopId,
+      t.lineCode,
+      t.routeCode
+    ),
+  })
+);
 
 export const busStopToLine = pgTable("bus_stop_to_line", {
   stopId: integer("stop_id")
