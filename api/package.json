@@ -13,10 +13,9 @@
     "build": "tsc",
     "dev": "tsx watch ./src/index.ts",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
+    "typecheck": "tsc --noEmit",
     "fetch-static-feed": "tsx ./src/scripts/fetch-static-feed.ts"
   },
-  "license": "ISC",
-  "packageManager": "pnpm@9.9.0",
   "dependencies": {
     "@t3-oss/env-core": "^0.11.1",
     "@trpc/server": "11.0.0-rc.586",
@@ -48,5 +47,6 @@
     "eslint-plugin-import": "2.31.0",
     "tsx": "^4.19.1",
     "typescript": "^5.6.3"
-  }
+  },
+  "packageManager": "pnpm@9.12.2"
 }

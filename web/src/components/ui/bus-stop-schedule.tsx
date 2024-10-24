@@ -1,12 +1,16 @@
 "use client";
 
-import { type BusStopTrip as BusStopTripType } from "@api/types/models";
+import { type BusStopTime as BusStopTripType } from "@api/types/models";
 import React from "react";
 
 import BusStopTrip from "@web/components/ui/bus-stop-trip";
 import { Spinner } from "@web/components/ui/spinner";
 import { cn } from "@web/lib/utils";
 import { Days } from "@web/utils/constants";
+
+function formatDayIndex(day: number) {
+  return (day + 1) % 7;
+}
 
 type BusStopScheduleProps = {
   busStopTrips: BusStopTripType[];
@@ -48,12 +52,12 @@ const BusStopSchedule = ({
             key={day}
             className={cn(
               "cursor-pointer rounded-lg border-2 border-gray-200 px-2 py-0.5 text-sm",
-              selectedDay === index && "bg-gray-200",
+              selectedDay === formatDayIndex(index) && "bg-gray-200",
               isLoading && "cursor-not-allowed opacity-40",
             )}
             onClick={() => {
               if (!isLoading) {
-                onDayClick(index);
+                onDayClick(formatDayIndex(index));
               }
             }}
           >

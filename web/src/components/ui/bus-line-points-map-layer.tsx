@@ -1,3 +1,4 @@
+import { type BusLine } from "@api/types/models";
 import React from "react";
 import { Layer, Source } from "react-map-gl";
 
@@ -6,16 +7,18 @@ import { trpc } from "@web/utils/trpc";
 
 type BusLinePointsMapLayerProps = {
   index: number;
-  lineCode: string;
+  busLine: BusLine;
 };
 
 const BusLinePointsMapLayer = ({
   index,
-  lineCode,
+  busLine,
 }: BusLinePointsMapLayerProps) => {
   const lineColor = React.useMemo(() => getColor(index), [index]);
 
-  const busLinePointsQuery = trpc.getBusLinePoints.useQuery({ lineCode });
+  const busLinePointsQuery = trpc.getBusLinePoints.useQuery({
+    lineId: busLine.id,
+  });
 
   const busLinePoints = React.useMemo(
     () => busLinePointsQuery.data ?? [],
@@ -28,8 +31,8 @@ const BusLinePointsMapLayer = ({
       geometry: {
         type: "LineString",
         coordinates: busLinePoints.map((point) => [
-          Number(point.longitude),
-          Number(point.latitude),
+          Number(point.location.x),
+          Number(point.location.y),
         ]),
       },
     }),
@@ -37,7 +40,11 @@ const BusLinePointsMapLayer = ({
   );
 
   return (
-    <Source id={`busLine:${lineCode}`} type="geojson" data={linePointsGeojson}>
+    <Source
+      id={`busLine:${busLine.id}`}
+      type="geojson"
+      data={linePointsGeojson}
+    >
       <Layer
         id="busLine"
         type="line"

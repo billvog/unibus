@@ -42,7 +42,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         },
         geometry: {
           type: "Point",
-          coordinates: [stop.longitude, stop.latitude],
+          coordinates: [stop.location.x, stop.location.y],
         },
       })),
     }),
@@ -187,11 +187,11 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
       )}
 
       {/* Draw line for selected bus stop */}
-      {selectedStop?.lineCodes.map((lineCode, index) => (
+      {selectedStop?.busLines.map(({ busLine }, index) => (
         <BusLinePointsMapLayer
-          key={lineCode}
+          key={busLine.code}
           index={index}
-          lineCode={lineCode}
+          busLine={busLine}
         />
       ))}
 

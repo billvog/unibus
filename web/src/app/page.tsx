@@ -65,8 +65,8 @@ function Page() {
         new CustomEvent<MapFlyToDetail>("map:fly-to", {
           detail: {
             coordinates: {
-              latitude: busStop.latitude,
-              longitude: busStop.longitude,
+              longitude: busStop.location.x,
+              latitude: busStop.location.y,
             },
             overwriteZoom,
           },

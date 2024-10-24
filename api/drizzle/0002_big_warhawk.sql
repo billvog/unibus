@@ -1,0 +1,2 @@
+ALTER TABLE "bus_stop_to_line" ADD CONSTRAINT "bus_stop_to_line_stop_id_line_code_pk" PRIMARY KEY("stop_id","line_code");--> statement-breakpoint
+ALTER TABLE "bus_stop_to_route" ADD CONSTRAINT "bus_stop_to_route_stop_id_route_code_pk" PRIMARY KEY("stop_id","route_code");

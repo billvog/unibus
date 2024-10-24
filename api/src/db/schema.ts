@@ -6,7 +6,9 @@ import {
   geometry,
   varchar,
   unique,
+  primaryKey,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm/relations";
 
 const point = (name: string) =>
   geometry(name, {
@@ -81,20 +83,102 @@ export const busStopTime = pgTable(
   })
 );
 
-export const busStopToLine = pgTable("bus_stop_to_line", {
-  stopId: integer("stop_id")
-    .notNull()
-    .references(() => busStop.id, { onDelete: "cascade" }),
-  lineCode: varchar("line_code", { length: 10 })
-    .notNull()
-    .references(() => busLine.code, { onDelete: "cascade" }),
-});
+export const busStopToLine = pgTable(
+  "bus_stop_to_line",
+  {
+    stopId: integer("stop_id")
+      .notNull()
+      .references(() => busStop.id, { onDelete: "cascade" }),
+    lineCode: varchar("line_code", { length: 10 })
+      .notNull()
+      .references(() => busLine.code, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.stopId, t.lineCode] }),
+  })
+);
 
-export const busStopToRoute = pgTable("bus_stop_to_route", {
-  stopId: integer("stop_id")
-    .notNull()
-    .references(() => busStop.id, { onDelete: "cascade" }),
-  routeCode: varchar("route_code", { length: 10 })
-    .notNull()
-    .references(() => busRoute.code, { onDelete: "cascade" }),
-});
+export const busStopToRoute = pgTable(
+  "bus_stop_to_route",
+  {
+    stopId: integer("stop_id")
+      .notNull()
+      .references(() => busStop.id, { onDelete: "cascade" }),
+    routeCode: varchar("route_code", { length: 10 })
+      .notNull()
+      .references(() => busRoute.code, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.stopId, t.routeCode] }),
+  })
+);
+
+/**
+ * =====================================================================
+ * =========================== RELATIONS ===============================
+ * =====================================================================
+ */
+
+export const busLinePointRelations = relations(busLinePoint, ({ one }) => ({
+  busLine: one(busLine, {
+    fields: [busLinePoint.lineId],
+    references: [busLine.id],
+  }),
+}));
+
+export const busLineRelations = relations(busLine, ({ many }) => ({
+  busLinePoints: many(busLinePoint),
+  busRoutes: many(busRoute),
+  busStops: many(busStop),
+}));
+
+export const busRouteRelations = relations(busRoute, ({ one, many }) => ({
+  busLine: one(busLine, {
+    fields: [busRoute.lineId],
+    references: [busLine.id],
+  }),
+  busStops: many(busStop),
+}));
+
+export const busStopTimeRelations = relations(busStopTime, ({ one }) => ({
+  busLine: one(busLine, {
+    fields: [busStopTime.lineCode],
+    references: [busLine.code],
+  }),
+  busRoute: one(busRoute, {
+    fields: [busStopTime.routeCode],
+    references: [busRoute.code],
+  }),
+  busStop: one(busStop, {
+    fields: [busStopTime.stopId],
+    references: [busStop.id],
+  }),
+}));
+
+export const busStopRelations = relations(busStop, ({ many }) => ({
+  busStopTimes: many(busStopTime),
+  busRoutes: many(busRoute),
+  busLines: many(busStopToLine),
+}));
+
+export const busStopToLineRelations = relations(busStopToLine, ({ one }) => ({
+  busStop: one(busStop, {
+    fields: [busStopToLine.stopId],
+    references: [busStop.id],
+  }),
+  busLine: one(busLine, {
+    fields: [busStopToLine.lineCode],
+    references: [busLine.code],
+  }),
+}));
+
+export const busStopToRouteRelations = relations(busStopToRoute, ({ one }) => ({
+  busStop: one(busStop, {
+    fields: [busStopToRoute.stopId],
+    references: [busStop.id],
+  }),
+  busRoute: one(busRoute, {
+    fields: [busStopToRoute.routeCode],
+    references: [busRoute.code],
+  }),
+}));

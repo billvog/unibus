@@ -1,0 +1,459 @@
+{
+  "id": "06efa7a3-ff44-4727-a5f1-25a3a5f3b85a",
+  "prevId": "ef49d5e2-89bf-4e03-8a12-99cec40309e8",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.bus_line": {
+      "name": "bus_line",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bg_color": {
+          "name": "bg_color",
+          "type": "varchar(7)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "text_color": {
+          "name": "text_color",
+          "type": "varchar(7)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "border_color": {
+          "name": "border_color",
+          "type": "varchar(7)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "bus_line_code_unique": {
+          "name": "bus_line_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    },
+    "public.bus_line_point": {
+      "name": "bus_line_point",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "sequence": {
+          "name": "sequence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location": {
+          "name": "location",
+          "type": "geometry(point)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "line_id": {
+          "name": "line_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "bus_line_point_line_id_bus_line_id_fk": {
+          "name": "bus_line_point_line_id_bus_line_id_fk",
+          "tableFrom": "bus_line_point",
+          "tableTo": "bus_line",
+          "columnsFrom": [
+            "line_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.bus_route": {
+      "name": "bus_route",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "direction": {
+          "name": "direction",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "line_id": {
+          "name": "line_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "bus_route_line_id_bus_line_id_fk": {
+          "name": "bus_route_line_id_bus_line_id_fk",
+          "tableFrom": "bus_route",
+          "tableTo": "bus_line",
+          "columnsFrom": [
+            "line_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "bus_route_code_unique": {
+          "name": "bus_route_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    },
+    "public.bus_stop": {
+      "name": "bus_stop",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location": {
+          "name": "location",
+          "type": "geometry(point)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "bus_stop_code_unique": {
+          "name": "bus_stop_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    },
+    "public.bus_stop_time": {
+      "name": "bus_stop_time",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "trip_id": {
+          "name": "trip_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "day": {
+          "name": "day",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time": {
+          "name": "time",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_hour": {
+          "name": "time_hour",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_minute": {
+          "name": "time_minute",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "line_code": {
+          "name": "line_code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "route_code": {
+          "name": "route_code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stop_id": {
+          "name": "stop_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "bus_stop_time_line_code_bus_line_code_fk": {
+          "name": "bus_stop_time_line_code_bus_line_code_fk",
+          "tableFrom": "bus_stop_time",
+          "tableTo": "bus_line",
+          "columnsFrom": [
+            "line_code"
+          ],
+          "columnsTo": [
+            "code"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "bus_stop_time_route_code_bus_route_code_fk": {
+          "name": "bus_stop_time_route_code_bus_route_code_fk",
+          "tableFrom": "bus_stop_time",
+          "tableTo": "bus_route",
+          "columnsFrom": [
+            "route_code"
+          ],
+          "columnsTo": [
+            "code"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "bus_stop_time_stop_id_bus_stop_id_fk": {
+          "name": "bus_stop_time_stop_id_bus_stop_id_fk",
+          "tableFrom": "bus_stop_time",
+          "tableTo": "bus_stop",
+          "columnsFrom": [
+            "stop_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "bus_stop_time_unique_index": {
+          "name": "bus_stop_time_unique_index",
+          "nullsNotDistinct": false,
+          "columns": [
+            "trip_id",
+            "stop_id",
+            "line_code",
+            "route_code"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    },
+    "public.bus_stop_to_line": {
+      "name": "bus_stop_to_line",
+      "schema": "",
+      "columns": {
+        "stop_id": {
+          "name": "stop_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "line_code": {
+          "name": "line_code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "bus_stop_to_line_stop_id_bus_stop_id_fk": {
+          "name": "bus_stop_to_line_stop_id_bus_stop_id_fk",
+          "tableFrom": "bus_stop_to_line",
+          "tableTo": "bus_stop",
+          "columnsFrom": [
+            "stop_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "bus_stop_to_line_line_code_bus_line_code_fk": {
+          "name": "bus_stop_to_line_line_code_bus_line_code_fk",
+          "tableFrom": "bus_stop_to_line",
+          "tableTo": "bus_line",
+          "columnsFrom": [
+            "line_code"
+          ],
+          "columnsTo": [
+            "code"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "bus_stop_to_line_stop_id_line_code_pk": {
+          "name": "bus_stop_to_line_stop_id_line_code_pk",
+          "columns": [
+            "stop_id",
+            "line_code"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.bus_stop_to_route": {
+      "name": "bus_stop_to_route",
+      "schema": "",
+      "columns": {
+        "stop_id": {
+          "name": "stop_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "route_code": {
+          "name": "route_code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "bus_stop_to_route_stop_id_bus_stop_id_fk": {
+          "name": "bus_stop_to_route_stop_id_bus_stop_id_fk",
+          "tableFrom": "bus_stop_to_route",
+          "tableTo": "bus_stop",
+          "columnsFrom": [
+            "stop_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "bus_stop_to_route_route_code_bus_route_code_fk": {
+          "name": "bus_stop_to_route_route_code_bus_route_code_fk",
+          "tableFrom": "bus_stop_to_route",
+          "tableTo": "bus_route",
+          "columnsFrom": [
+            "route_code"
+          ],
+          "columnsTo": [
+            "code"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "bus_stop_to_route_stop_id_route_code_pk": {
+          "name": "bus_stop_to_route_stop_id_route_code_pk",
+          "columns": [
+            "stop_id",
+            "route_code"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

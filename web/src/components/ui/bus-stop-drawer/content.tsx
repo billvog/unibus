@@ -93,8 +93,8 @@ const BusStopContent = ({
       new CustomEvent<MapFlyToDetail>("map:fly-to", {
         detail: {
           coordinates: {
-            latitude: selectedStop.latitude,
-            longitude: selectedStop.longitude,
+            longitude: selectedStop.location.x,
+            latitude: selectedStop.location.y,
           },
         },
       }),
