@@ -55,6 +55,7 @@
     "@typescript-eslint/eslint-plugin": "^8.10.0",
     "@typescript-eslint/parser": "^8.10.0",
     "eslint": "catalog:",
+    "eslint-config-turbo": "^2.2.3",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-react-hooks": "^5.0.0",

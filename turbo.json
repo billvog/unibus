@@ -19,7 +19,11 @@
     },
     "dev": {
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "env": [
+        "NODE_ENV",
+        "SKIP_ENV_VALIDATION"
+      ]
     },
     "typecheck": {
       "dependsOn": [

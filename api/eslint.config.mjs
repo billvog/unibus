@@ -31,7 +31,8 @@ export default [
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
     "prettier",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "turbo"
   ),
   {
     plugins: {
