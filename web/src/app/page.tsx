@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import BusStopDrawer from "@web/components/ui/bus-stop-drawer";
+import BusStopSearch from "@web/components/ui/bus-stop-search";
 import GraveError from "@web/components/ui/grave-error";
 import Map from "@web/components/ui/map";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
@@ -77,11 +78,13 @@ function Page() {
 
   return (
     <div className="relative flex h-full w-full flex-1 flex-col overflow-hidden">
+      {/* Loading Spinner */}
       {isLoading && <FullscreenSpinner display="absolute" />}
-      {busStops.length > 0 &&
-        // <BusStopSearch busStops={busStops} onBusStopClick={onBusStopClick} />
-        null}
 
+      {/* Bus Stop Search */}
+      {busStops.length > 0 && <BusStopSearch onBusStopClick={onBusStopClick} />}
+
+      {/* Map */}
       <Map
         busStops={busStops}
         onBusStopClick={(id) => onBusStopClick(id, false)}

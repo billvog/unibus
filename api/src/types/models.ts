@@ -41,3 +41,9 @@ export type DbBusStopTime = InferSelectModel<typeof busStopTime> & {
   busRoute: DbBusRoute;
   busLine: DbBusLine;
 };
+
+// When bus stops are fetched in search
+export type DbSearchedBusStop = InferSelectModel<typeof busStop> & {
+  busLines: DbBusStopToLine[];
+  rank: number;
+};

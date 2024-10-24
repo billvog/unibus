@@ -9,10 +9,12 @@ import { getBusLiveStop } from "@api/modules/get-bus-live-stop";
 import { getBusStop } from "@api/modules/get-bus-stop";
 import { getBusStopSchedule } from "@api/modules/get-bus-stop-schedule";
 import { getBusStops } from "@api/modules/get-bus-stops";
+import { searchBusStop } from "@api/modules/search-bus-stop";
 import { IS_PROD } from "@api/utils/constants";
 import { createContext, t } from "@api/utils/trpc";
 
 export const appRouter = t.router({
+  searchBusStop,
   getBusStop,
   getBusStops,
   getBusLines,
