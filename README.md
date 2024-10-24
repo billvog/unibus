@@ -22,7 +22,7 @@ Created with [T3](https://create.t3.gg/).
 ### Backend
 
 - Express
-- Prisma / PostgreSQL
+- Drizzle / PostgreSQL
 - TRPC
 - TypeScript
 - Docker / Docker Compose
