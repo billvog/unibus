@@ -7,7 +7,7 @@ import { useBusStop } from "@web/components/bus-stop-context";
 import BusStopContent from "@web/components/ui/bus-stop-drawer/content";
 
 const BusStop = () => {
-  const { selectedStop, setSelectedStop } = useBusStop();
+  const { selectedStop, setSelectedStopId } = useBusStop();
 
   const [open, setOpen] = React.useState(false);
 
@@ -26,8 +26,8 @@ const BusStop = () => {
     setSnap(snapPoints[0]!);
 
     // Reset selected stop
-    setSelectedStop(null);
-  }, [setOpen, setSelectedStop, setSnap, snapPoints]);
+    setSelectedStopId(null);
+  }, [setOpen, setSelectedStopId, setSnap, snapPoints]);
 
   const onCloseClick = React.useCallback(() => {
     onClose();

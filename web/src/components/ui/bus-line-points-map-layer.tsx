@@ -1,4 +1,4 @@
-import { type BusLine } from "@api/types/models";
+import { type DbBusLine } from "@api/types/models";
 import React from "react";
 import { Layer, Source } from "react-map-gl";
 
@@ -7,7 +7,7 @@ import { trpc } from "@web/utils/trpc";
 
 type BusLinePointsMapLayerProps = {
   index: number;
-  busLine: BusLine;
+  busLine: DbBusLine;
 };
 
 const BusLinePointsMapLayer = ({

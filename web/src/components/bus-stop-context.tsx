@@ -1,13 +1,18 @@
 "use client";
 
-import { type BusStop } from "@api/types/models";
+import { type DbBusStop } from "@api/types/models";
 import React, { useState } from "react";
 
 import { type Coordinates } from "@web/types/coordinates";
+import { trpc } from "@web/utils/trpc";
+import { Events } from "@web/utils/constants";
 
 type BusStopContextType = {
-  selectedStop: BusStop | null;
-  setSelectedStop: React.Dispatch<React.SetStateAction<BusStop | null>>;
+  selectedStopId: DbBusStop["id"] | null;
+  setSelectedStopId: React.Dispatch<
+    React.SetStateAction<DbBusStop["id"] | null>
+  >;
+  selectedStop: DbBusStop | null;
   liveBusCoordinates: Coordinates | null;
   setLiveBusCoordinates: React.Dispatch<
     React.SetStateAction<Coordinates | null>
@@ -15,10 +20,11 @@ type BusStopContextType = {
 };
 
 const BusStopContext = React.createContext<BusStopContextType>({
-  selectedStop: null,
-  setSelectedStop: () => {
-    throw new Error("setSelectedStop function must be overridden");
+  selectedStopId: null,
+  setSelectedStopId: () => {
+    throw new Error("setSelectedStopId function must be overridden");
   },
+  selectedStop: null,
   liveBusCoordinates: null,
   setLiveBusCoordinates: () => {
     throw new Error("setLiveBusCoordinates function must be overridden");
@@ -30,9 +36,26 @@ export const BusStopProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [selectedStop, setSelectedStop] = useState<BusStop | null>(null);
+  const [selectedStopId, setSelectedStopId] = useState<DbBusStop["id"] | null>(
+    null,
+  );
   const [liveBusCoordinates, setLiveBusCoordinates] =
     useState<Coordinates | null>(null);
+
+  const busStopQuery = trpc.getBusStop.useQuery(
+    { stopId: selectedStopId ?? -1 },
+    {
+      enabled: !!selectedStopId,
+    },
+  );
+
+  const selectedStop = React.useMemo(() => {
+    if (!selectedStopId) {
+      return null;
+    }
+
+    return busStopQuery.data ?? null;
+  }, [selectedStopId, busStopQuery.data]);
 
   React.useEffect(() => {
     if (selectedStop === null) {
@@ -40,11 +63,33 @@ export const BusStopProvider = ({
     }
   }, [selectedStop]);
 
+  React.useEffect(() => {
+    if (!selectedStop) {
+      return;
+    }
+
+    // Capture event
+    window.dispatchEvent(
+      new CustomEvent(Events.Analytics.BusStopClick, {
+        detail: {
+          from: "Map",
+          busStop: {
+            id: selectedStop.id,
+            name: selectedStop.name,
+          },
+        },
+      }),
+    );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStop?.id]);
+
   return (
     <BusStopContext.Provider
       value={{
+        selectedStopId,
+        setSelectedStopId,
         selectedStop,
-        setSelectedStop,
         liveBusCoordinates,
         setLiveBusCoordinates,
       }}

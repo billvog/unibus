@@ -8,6 +8,11 @@ export const getBusLinePoints = publicProcedure
   .query(async ({ input }) => {
     const linesPoints = await db.query.busLinePoint.findMany({
       where: (points, { eq }) => eq(points.lineId, input.lineId),
+      columns: {
+        id: true,
+        location: true,
+        sequence: true,
+      },
     });
 
     return linesPoints;

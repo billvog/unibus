@@ -10,25 +10,34 @@ import {
   busStopToRoute,
 } from "@api/db/schema";
 
-export type BusLine = InferSelectModel<typeof busLine>;
+export type DbBusLine = InferSelectModel<typeof busLine>;
 
-export type BusLinePoint = InferSelectModel<typeof busLinePoint>;
+export type DbBusLinePoint = Omit<
+  InferSelectModel<typeof busLinePoint>,
+  "lineId"
+>;
 
-export type BusRoute = InferSelectModel<typeof busRoute>;
+export type DbBusRoute = InferSelectModel<typeof busRoute>;
 
-export type BusStop = InferSelectModel<typeof busStop> & {
-  busLines: BusStopToLine[];
+// When bus stops are fetched in bulk
+export type DbMassBusStop = Pick<
+  InferSelectModel<typeof busStop>,
+  "id" | "location"
+>;
+
+export type DbBusStop = InferSelectModel<typeof busStop> & {
+  busLines: DbBusStopToLine[];
 };
 
-export type BusStopToLine = InferSelectModel<typeof busStopToLine> & {
-  busLine: BusLine;
+export type DbBusStopToLine = InferSelectModel<typeof busStopToLine> & {
+  busLine: DbBusLine;
 };
 
-export type BusStopToRoute = InferSelectModel<typeof busStopToRoute> & {
-  busRoute: BusRoute;
+export type DbBusStopToRoute = InferSelectModel<typeof busStopToRoute> & {
+  busRoute: DbBusRoute;
 };
 
-export type BusStopTime = InferSelectModel<typeof busStopTime> & {
-  busRoute: BusRoute;
-  busLine: BusLine;
+export type DbBusStopTime = InferSelectModel<typeof busStopTime> & {
+  busRoute: DbBusRoute;
+  busLine: DbBusLine;
 };

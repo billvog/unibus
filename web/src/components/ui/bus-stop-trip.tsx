@@ -1,11 +1,11 @@
-import { type BusStopTime as BusSopTimeType } from "@api/types/models";
+import { type DbBusStopTime } from "@api/types/models";
 import React from "react";
 
 import BusLineCode from "@web/components/ui/bus-line-code";
 import { PrettifyName } from "@web/utils/prettify-name";
 
 type BusStopTripProps = {
-  trip: BusSopTimeType;
+  trip: DbBusStopTime;
 };
 
 const BusStopTrip = ({ trip }: BusStopTripProps) => {

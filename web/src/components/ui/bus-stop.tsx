@@ -1,11 +1,11 @@
-import { type BusStop as BusStopType } from "@api/types/models";
+import { type DbBusStop } from "@api/types/models";
 import React from "react";
 
 import BusLineCode from "@web/components/ui/bus-line-code";
 import { PrettifyName } from "@web/utils/prettify-name";
 
 type BusStopProps = {
-  busStop: BusStopType;
+  busStop: DbBusStop;
   onClick: () => void;
 };
 

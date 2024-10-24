@@ -1,8 +1,8 @@
-import { type BusLine as BusLineType } from "@api/types/models";
+import { type DbBusLine } from "@api/types/models";
 import React from "react";
 
 type BusLineCodeProps = {
-  busLine: BusLineType;
+  busLine: DbBusLine;
 };
 
 const BusLineCode = ({ busLine }: BusLineCodeProps) => {

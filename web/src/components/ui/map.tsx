@@ -1,4 +1,4 @@
-import { type BusStop } from "@api/types/models";
+import { type DbMassBusStop } from "@api/types/models";
 import * as turf from "@turf/distance";
 import { Undo2 } from "lucide-react";
 import { type MapEvent } from "mapbox-gl";
@@ -20,7 +20,7 @@ import { type MapFlyToDetail } from "@web/types/events";
 import { Events } from "@web/utils/constants";
 
 type MapProps = {
-  busStops: BusStop[];
+  busStops: DbMassBusStop[];
   onBusStopClick: (id: number) => void;
   userLocation: Coordinates | null;
 };
@@ -38,7 +38,6 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         type: "Feature",
         properties: {
           id: stop.id,
-          code: stop.code,
         },
         geometry: {
           type: "Point",

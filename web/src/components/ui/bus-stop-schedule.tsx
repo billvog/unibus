@@ -1,6 +1,6 @@
 "use client";
 
-import { type BusStopTime as BusStopTripType } from "@api/types/models";
+import { type DbBusStopTime } from "@api/types/models";
 import React from "react";
 
 import BusStopTrip from "@web/components/ui/bus-stop-trip";
@@ -13,7 +13,7 @@ function formatDayIndex(day: number) {
 }
 
 type BusStopScheduleProps = {
-  busStopTrips: BusStopTripType[];
+  busStopTrips: DbBusStopTime[];
   selectedDay: number;
   onDayClick: (day: number) => void;
   isLoading: boolean;
@@ -26,7 +26,7 @@ const BusStopSchedule = ({
   isLoading,
 }: BusStopScheduleProps) => {
   const groupedTrips = React.useMemo(() => {
-    const grouped = new Map<number, BusStopTripType[]>();
+    const grouped = new Map<number, DbBusStopTime[]>();
     busStopTrips.forEach((trip) => {
       if (grouped.has(trip.timeHour)) {
         grouped.get(trip.timeHour)?.push(trip);

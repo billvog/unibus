@@ -1,6 +1,6 @@
 "use client";
 
-import { type BusStop as BusStopType } from "@api/types/models";
+import { type DbBusStop } from "@api/types/models";
 import { CircleX } from "lucide-react";
 import React from "react";
 import { search } from "ss-search";
@@ -12,7 +12,7 @@ import { cn } from "@web/lib/utils";
 import { Events, Shortcuts } from "@web/utils/constants";
 
 type BusStopsSearchProps = {
-  busStops: BusStopType[];
+  busStops: DbBusStop[];
   onBusStopClick: (id: number) => void;
 };
 
