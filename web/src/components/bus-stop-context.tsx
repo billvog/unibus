@@ -4,8 +4,8 @@ import { type DbBusStop } from "@api/types/models";
 import React, { useState } from "react";
 
 import { type Coordinates } from "@web/types/coordinates";
-import { trpc } from "@web/utils/trpc";
 import { Events } from "@web/utils/constants";
+import { trpc } from "@web/utils/trpc";
 
 type BusStopContextType = {
   selectedStopId: DbBusStop["id"] | null;
@@ -80,8 +80,6 @@ export const BusStopProvider = ({
         },
       }),
     );
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStop?.id]);
 
   return (

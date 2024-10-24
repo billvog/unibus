@@ -3,7 +3,7 @@
 import { type DbBusStopTime } from "@api/types/models";
 import React from "react";
 
-import BusStopTrip from "@web/components/ui/bus-stop-trip";
+import BusStopTime from "@web/components/ui/bus-stop-time";
 import { Spinner } from "@web/components/ui/spinner";
 import { cn } from "@web/lib/utils";
 import { Days } from "@web/utils/constants";
@@ -40,7 +40,7 @@ const BusStopSchedule = ({
 
   React.useEffect(() => {
     const currentHour = new Date().getHours();
-    document.getElementById(`bus-stop-trip-${currentHour}`)?.scrollIntoView();
+    document.getElementById(`bus-stop-time-${currentHour}`)?.scrollIntoView();
   }, []);
 
   return (
@@ -75,7 +75,7 @@ const BusStopSchedule = ({
         Array.from(groupedTrips).map(([hour, trips]) => (
           <div
             key={hour}
-            id={`bus-stop-trip-${hour}`}
+            id={`bus-stop-time-${hour}`}
             className="flex flex-col gap-1"
           >
             <h3 className="text-2xl font-black leading-relaxed after:ml-0.5 after:align-super after:text-xs after:content-['00']">
@@ -83,7 +83,7 @@ const BusStopSchedule = ({
             </h3>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {trips.map((trip) => (
-                <BusStopTrip key={trip.id} trip={trip} />
+                <BusStopTime key={trip.id} trip={trip} />
               ))}
             </div>
           </div>

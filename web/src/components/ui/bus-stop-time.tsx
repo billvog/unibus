@@ -4,11 +4,11 @@ import React from "react";
 import BusLineCode from "@web/components/ui/bus-line-code";
 import { PrettifyName } from "@web/utils/prettify-name";
 
-type BusStopTripProps = {
+type BusStopTimeProps = {
   trip: DbBusStopTime;
 };
 
-const BusStopTrip = ({ trip }: BusStopTripProps) => {
+const BusStopTime = ({ trip }: BusStopTimeProps) => {
   const prettyRouteName = React.useMemo(
     () => PrettifyName(trip.busRoute.name),
     [trip.busRoute],
@@ -25,4 +25,4 @@ const BusStopTrip = ({ trip }: BusStopTripProps) => {
   );
 };
 
-export default BusStopTrip;
+export default BusStopTime;

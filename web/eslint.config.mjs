@@ -4,9 +4,10 @@ import js from "@eslint/js";
 import nextPlugin from "@next/eslint-plugin-next";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
-import _import from "eslint-plugin-import";
+import importPlugin from "eslint-plugin-import";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,8 +34,9 @@ export default [
   {
     plugins: {
       "@next/next": nextPlugin,
+      "react-hooks": reactHooksPlugin,
       "@typescript-eslint": typescriptEslint,
-      import: fixupPluginRules(_import),
+      import: fixupPluginRules(importPlugin),
     },
 
     languageOptions: {
