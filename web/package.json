@@ -17,10 +17,10 @@
     "@repo/api": "link:../api",
     "@t3-oss/env-nextjs": "^0.11.1",
     "@tanstack/react-query": "^5.59.15",
-    "@trpc/client": "11.0.0-rc.586",
+    "@trpc/client": "catalog:",
     "@trpc/next": "11.0.0-rc.586",
-    "@trpc/react-query": "11.0.0-rc.586",
-    "@trpc/server": "11.0.0-rc.586",
+    "@trpc/react-query": "catalog:",
+    "@trpc/server": "catalog:",
     "@turf/distance": "^7.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -39,7 +39,7 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.0.0",
-    "zod": "^3.23.8"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@types/eslint": "^9.6.1",
@@ -49,15 +49,15 @@
     "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
     "@typescript-eslint/parser": "^8.10.0",
-    "eslint": "^8.57.1",
+    "eslint": "catalog:eslint8",
     "eslint-config-next": "^14.2.15",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-prettier": "5.2.1",
     "postcss": "^8.4.47",
-    "prettier": "^3.3.3",
+    "prettier": "catalog:",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "tailwindcss": "^3.4.14",
-    "typescript": "^5.6.3"
+    "typescript": "catalog:"
   },
   "ct3aMetadata": {
     "initVersion": "7.37.0"

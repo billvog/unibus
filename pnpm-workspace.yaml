@@ -1,3 +1,17 @@
 packages:
   - "web"
   - "api"
+
+catalog:
+  "@trpc/client": ^11.0.0-rc.586
+  "@trpc/react-query": ^11.0.0-rc.586
+  "@trpc/server": ^11.0.0-rc.586
+  prettier: ^3.3.3
+  typescript: ^5.6.3
+  zod: ^3.23.8
+
+catalogs:
+  eslint9:
+    eslint: ^9.13.0
+  eslint8:
+    eslint: ^8.57.1
