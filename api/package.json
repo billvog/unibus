@@ -2,6 +2,7 @@
   "name": "@repo/api",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "exports": {
     "./*": "./src/*.ts"
   },
@@ -10,7 +11,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "dev": "tsx watch ./src/index.ts",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
     "typecheck": "tsc --noEmit",
@@ -46,6 +47,7 @@
     "eslint-config-turbo": "^2.2.3",
     "eslint-import-resolver-typescript": "3.6.3",
     "eslint-plugin-import": "2.31.0",
+    "tsc-alias": "^1.8.10",
     "tsx": "^4.19.1",
     "typescript": "catalog:"
   },

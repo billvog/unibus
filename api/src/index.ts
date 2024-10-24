@@ -10,6 +10,8 @@ import { env } from "@api/env";
 import { IS_PROD } from "@api/utils/constants";
 import { registerCronJobs } from "@api/utils/register-cron-jobs";
 
+const __dirname = import.meta.dirname;
+
 async function main() {
   const app = Express();
 

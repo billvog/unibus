@@ -7,6 +7,7 @@ WORKDIR /usr/src/api
 RUN npm i -g pnpm
 
 # Copy application
+COPY api/package.json .
 COPY pnpm-lock.yaml ..
 COPY pnpm-workspace.yaml ..
 COPY tsconfig.json ..
@@ -27,16 +28,13 @@ WORKDIR /usr/src/api
 
 # Copy built artifacts from the builder stage
 COPY --from=builder /usr/src/api/dist ./dist
-COPY --from=builder /usr/src/api/drizzle ./drizzle
+COPY --from=builder /usr/src/api/drizzle ./dist/drizzle
 
 # Copy package.json (to run the application) and any other necessary files
-COPY api/package.json ./
+COPY api/package.json .
+COPY api/.env.example .
+COPY pnpm-workspace.yaml ..
 
 RUN npm i -g pnpm
 # Install only production dependencies
 RUN pnpm install --only=production
-
-ENV NODE_ENV=production
-
-# Command to run your app
-CMD ["node", "dist/index.js"]
