@@ -41,7 +41,7 @@
     "@typescript-eslint/eslint-plugin": "8.10.0",
     "@typescript-eslint/parser": "8.10.0",
     "drizzle-kit": "^0.26.2",
-    "eslint": "catalog:eslint9",
+    "eslint": "catalog:",
     "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-typescript": "3.6.3",
     "eslint-plugin-import": "2.31.0",

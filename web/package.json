@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prebuild": "pnpm lint",
     "build": "next build",
     "dev": "next dev --turbo",
-    "lint": "next lint",
+    "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },
@@ -42,6 +43,10 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.1",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.13.0",
+    "@next/eslint-plugin-next": "^14.2.15",
     "@types/eslint": "^9.6.1",
     "@types/mapbox-gl": "^3.4.0",
     "@types/node": "^22.7.7",
@@ -49,10 +54,10 @@
     "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
     "@typescript-eslint/parser": "^8.10.0",
-    "eslint": "catalog:eslint8",
-    "eslint-config-next": "^14.2.15",
+    "eslint": "catalog:",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-prettier": "5.2.1",
+    "eslint-plugin-react-hooks": "^5.0.0",
     "postcss": "^8.4.47",
     "prettier": "catalog:",
     "prettier-plugin-tailwindcss": "^0.6.8",
