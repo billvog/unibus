@@ -5,6 +5,7 @@ import cors from "cors";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import Express from "express";
 import rateLimit from "express-rate-limit";
+import { MemcachedStore } from "rate-limit-memcached";
 
 import { addTrpc } from "@api/app-router";
 import { db } from "@api/db";
@@ -46,7 +47,11 @@ async function main() {
     rateLimit({
       windowMs: 60 * 1000,
       limit: 100,
-      legacyHeaders: false,
+      legacyHeaders: !IS_PROD, // Disable rate limit headers on prod
+      store: new MemcachedStore({
+        prefix: "rl:",
+        locations: [env.MEMCACHED_URL.replace("memcached://", "")],
+      }),
     })
   );
 

@@ -7,9 +7,10 @@ config();
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "production"]).default("development"),
-    DATABASE_URL: z.string(),
-    FRONTEND_URL: z.string(),
     PORT: z.string().default("8000"),
+    DATABASE_URL: z.string(),
+    MEMCACHED_URL: z.string(),
+    FRONTEND_URL: z.string(),
   },
 
   /**
