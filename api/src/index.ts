@@ -1,8 +1,10 @@
 import "@api/utils/axios";
 import path from "path";
 
+import cors from "cors";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import Express from "express";
+import rateLimit from "express-rate-limit";
 
 import { addTrpc } from "@api/app-router";
 import { db } from "@api/db";
@@ -27,6 +29,26 @@ async function main() {
   }
 
   void registerCronJobs();
+
+  // Disable the x-powered-by header
+  app.disable("x-powered-by");
+
+  // Enable CORS
+  app.use(
+    cors({
+      maxAge: IS_PROD ? 86400 : undefined,
+      origin: env.FRONTEND_URL,
+    })
+  );
+
+  // Limit each IP to 100 requests per minute
+  app.use(
+    rateLimit({
+      windowMs: 60 * 1000,
+      limit: 100,
+      legacyHeaders: false,
+    })
+  );
 
   addTrpc(app);
 

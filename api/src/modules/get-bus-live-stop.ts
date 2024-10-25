@@ -1,9 +1,9 @@
 import { AxiosError } from "axios";
 import { z } from "zod";
 
+import { publicProcedure } from "@api/trpc";
 import { GetBusLiveStopAPIResponse } from "@api/types/citybus";
 import { citybusClient } from "@api/utils/axios";
-import { publicProcedure } from "@api/trpc";
 
 export const getBusLiveStop = publicProcedure
   .input(z.object({ stopCode: z.string() }))
