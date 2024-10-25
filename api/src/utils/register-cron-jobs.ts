@@ -15,7 +15,7 @@ export const registerCronJobs = async () => {
 
   // Refetch the static Citybus feed every month at midnight
   cron.schedule("0 0 1 * *", () => void fetchStaticCitybusFeed(), {
-    name: "generate-citybus-token",
+    name: "fetch-static-citybus-feed",
     timezone: "Europe/Athens",
   });
 };

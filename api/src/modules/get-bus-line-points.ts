@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { db } from "@api/db";
-import { publicProcedure } from "@api/utils/trpc";
+import { publicProcedure } from "@api/trpc";
 
 export const getBusLinePoints = publicProcedure
   .input(z.object({ lineId: z.number() }))
