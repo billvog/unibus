@@ -11,7 +11,7 @@ import { getBusStopSchedule } from "@api/modules/get-bus-stop-schedule";
 import { getBusStops } from "@api/modules/get-bus-stops";
 import { searchBusStop } from "@api/modules/search-bus-stop";
 import { IS_PROD } from "@api/utils/constants";
-import { createContext, t } from "@api/utils/trpc";
+import { createContext, t } from "@api/trpc";
 
 export const appRouter = t.router({
   searchBusStop,
