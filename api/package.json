@@ -1,0 +1,55 @@
+{
+  "name": "@repo/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
+    "dev": "tsx watch ./src/index.ts",
+    "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
+    "typecheck": "tsc --noEmit",
+    "fetch-static-feed": "tsx ./src/scripts/fetch-static-feed.ts"
+  },
+  "dependencies": {
+    "@t3-oss/env-core": "^0.11.1",
+    "@trpc/server": "11.0.0-rc.586",
+    "axios": "^1.7.7",
+    "axios-rate-limit": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv-safe": "^9.1.0",
+    "drizzle-orm": "^0.35.3",
+    "express": "^4.21.1",
+    "jwt-decode": "^4.0.0",
+    "node-cron": "^3.0.3",
+    "pg": "^8.13.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^1.2.1",
+    "@types/cors": "^2.8.17",
+    "@types/dotenv-safe": "^8.1.6",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.7",
+    "@types/node-cron": "^3.0.11",
+    "@types/pg": "^8.11.10",
+    "@typescript-eslint/eslint-plugin": "8.10.0",
+    "@typescript-eslint/parser": "8.10.0",
+    "drizzle-kit": "^0.26.2",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-config-turbo": "^2.2.3",
+    "eslint-import-resolver-typescript": "3.6.3",
+    "eslint-plugin-import": "2.31.0",
+    "tsc-alias": "^1.8.10",
+    "tsx": "^4.19.1",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@9.12.2"
+}

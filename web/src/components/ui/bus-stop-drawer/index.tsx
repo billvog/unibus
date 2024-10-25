@@ -1,12 +1,13 @@
-import { useBusStop } from "@/components/bus-stop-context";
-import BusStopContent from "@/components/ui/bus-stop-drawer/content";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { X } from "lucide-react";
 import React from "react";
 import { Drawer } from "vaul";
 
+import { useBusStop } from "@web/components/bus-stop-context";
+import BusStopContent from "@web/components/ui/bus-stop-drawer/content";
+
 const BusStop = () => {
-  const { selectedStop, setSelectedStop } = useBusStop();
+  const { selectedStop, setSelectedStopId } = useBusStop();
 
   const [open, setOpen] = React.useState(false);
 
@@ -19,25 +20,18 @@ const BusStop = () => {
     setOpen(!!selectedStop);
   }, [selectedStop]);
 
-  const onOpenChange = React.useCallback(
-    (value: boolean) => {
-      if (!value) {
-        setSelectedStop(null);
-      }
-
-      setOpen(value);
-    },
-    [setOpen, setSelectedStop],
-  );
-
   const onClose = React.useCallback(() => {
+    // Reset drawer state
     setOpen(false);
-  }, [setOpen]);
+    setSnap(snapPoints[0]!);
+
+    // Reset selected stop
+    setSelectedStopId(null);
+  }, [setOpen, setSelectedStopId, setSnap, snapPoints]);
 
   const onCloseClick = React.useCallback(() => {
-    setSelectedStop(null);
     onClose();
-  }, [onClose, setSelectedStop]);
+  }, [onClose]);
 
   const onBusVehicleClick = React.useCallback(() => {
     // If drawer is opened at full height, collapse it
@@ -55,10 +49,11 @@ const BusStop = () => {
   return (
     <Drawer.Root
       open={open}
-      onOpenChange={onOpenChange}
+      onClose={onClose}
+      onOpenChange={(value) => setOpen(value)}
       snapPoints={snapPoints}
       activeSnapPoint={snap}
-      setActiveSnapPoint={setSnap}
+      setActiveSnapPoint={(value) => setSnap(value)}
       modal={false}
     >
       <Drawer.Overlay className="-z-10" />

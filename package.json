@@ -1,9 +1,15 @@
 {
   "name": "unibus-monorepo",
   "private": true,
-  "packageManager": "pnpm@9.9.0",
+  "packageManager": "pnpm@9.12.2",
   "scripts": {
-    "dev": "pnpm --filter=@repo/web dev",
-    "lint": "pnpm --filter=@repo/web lint"
+    "dev:api": "turbo --filter=@repo/api dev",
+    "dev:web": "turbo --filter=@repo/web dev",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck"
+  },
+  "devDependencies": {
+    "turbo": "^2.2.3"
   }
 }

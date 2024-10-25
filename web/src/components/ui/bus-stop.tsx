@@ -1,41 +1,19 @@
-import { type GetBusLinesResponse } from "@/actions/get-bus-lines";
-import BusLineCode from "@/components/ui/bus-line-code";
-import { type BusStop as BusStopType } from "@/types/citybus";
-import { PrettifyName } from "@/utils/prettify-name";
-import { useQueryClient } from "@tanstack/react-query";
+import { type DbBusStop } from "@api/types/models";
 import React from "react";
 
+import BusLineCode from "@web/components/ui/bus-line-code";
+import { PrettifyName } from "@web/utils/prettify-name";
+
 type BusStopProps = {
-  busStop: BusStopType;
+  busStop: DbBusStop;
   onClick: () => void;
 };
 
 const BusStop = ({ busStop, onClick }: BusStopProps) => {
-  const queryClient = useQueryClient();
-
-  const busLinesData = queryClient.getQueryData<GetBusLinesResponse>([
-    "busLines",
-  ]);
-
   const prettyBusStopName = React.useMemo(
     () => PrettifyName(busStop.name),
     [busStop.name],
   );
-
-  const busLineColor = React.useMemo(() => {
-    if (!busLinesData?.ok) {
-      return undefined;
-    }
-
-    const busLine = busLinesData.lines.find(
-      (line) => line.code === busStop.lineCodes[0],
-    );
-
-    return {
-      bgColor: busLine?.color,
-      textColor: busLine?.textColor,
-    };
-  }, [busLinesData, busStop.lineCodes]);
 
   return (
     <div
@@ -44,11 +22,11 @@ const BusStop = ({ busStop, onClick }: BusStopProps) => {
     >
       <div className="flex items-center gap-2">
         <div className="text-sm font-bold text-gray-500">{busStop.code}</div>
-        <BusLineCode
-          lineCode={busStop.lineCodes[0]!}
-          bgColor={busLineColor?.bgColor}
-          textColor={busLineColor?.textColor}
-        />
+        <div className="flex items-center gap-1">
+          {busStop.busLines.map(({ busLine }) => (
+            <BusLineCode key={busLine.id} busLine={busLine} />
+          ))}
+        </div>
       </div>
       <div className="text-lg font-extrabold">{prettyBusStopName}</div>
     </div>

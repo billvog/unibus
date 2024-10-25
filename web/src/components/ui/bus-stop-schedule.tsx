@@ -1,44 +1,46 @@
 "use client";
 
-import BusStopTrip from "@/components/ui/bus-stop-trip";
-import { Spinner } from "@/components/ui/spinner";
-import { cn } from "@/lib/utils";
-import {
-  type BusTripDay,
-  type BusStopTrip as BusStopTripType,
-} from "@/types/citybus";
-import { Days } from "@/utils/constants";
+import { type DbBusStopTime } from "@api/types/models";
 import React from "react";
 
+import BusStopTime from "@web/components/ui/bus-stop-time";
+import { Spinner } from "@web/components/ui/spinner";
+import { cn } from "@web/lib/utils";
+import { Days } from "@web/utils/constants";
+
+function formatDayIndex(day: number) {
+  return (day + 1) % 7;
+}
+
 type BusStopScheduleProps = {
-  busStopTrips: BusStopTripType[];
-  selectedDay: BusTripDay;
-  onDayClick: (day: BusTripDay) => void;
-  isRefetching: boolean;
+  busStopTrips: DbBusStopTime[];
+  selectedDay: number;
+  onDayClick: (day: number) => void;
+  isLoading: boolean;
 };
 
 const BusStopSchedule = ({
   busStopTrips,
   selectedDay,
   onDayClick,
-  isRefetching,
+  isLoading,
 }: BusStopScheduleProps) => {
   const groupedTrips = React.useMemo(() => {
-    const grouped = new Map<number, BusStopTripType[]>();
+    const grouped = new Map<number, DbBusStopTime[]>();
     busStopTrips.forEach((trip) => {
-      if (grouped.has(trip.tripTimeHour)) {
-        grouped.get(trip.tripTimeHour)?.push(trip);
+      if (grouped.has(trip.timeHour)) {
+        grouped.get(trip.timeHour)?.push(trip);
         return;
       }
 
-      grouped.set(trip.tripTimeHour, [trip]);
+      grouped.set(trip.timeHour, [trip]);
     });
     return grouped;
   }, [busStopTrips]);
 
   React.useEffect(() => {
     const currentHour = new Date().getHours();
-    document.getElementById(`bus-stop-trip-${currentHour}`)?.scrollIntoView();
+    document.getElementById(`bus-stop-time-${currentHour}`)?.scrollIntoView();
   }, []);
 
   return (
@@ -50,12 +52,12 @@ const BusStopSchedule = ({
             key={day}
             className={cn(
               "cursor-pointer rounded-lg border-2 border-gray-200 px-2 py-0.5 text-sm",
-              selectedDay === index + 1 && "bg-gray-200",
-              isRefetching && "cursor-not-allowed opacity-40",
+              selectedDay === formatDayIndex(index) && "bg-gray-200",
+              isLoading && "cursor-not-allowed opacity-40",
             )}
             onClick={() => {
-              if (!isRefetching) {
-                onDayClick((index + 1) as BusTripDay);
+              if (!isLoading) {
+                onDayClick(formatDayIndex(index));
               }
             }}
           >
@@ -65,15 +67,15 @@ const BusStopSchedule = ({
       </div>
 
       {/* Bus trips */}
-      {isRefetching ? (
-        <div className="flex flex-1 justify-center py-10">
+      {isLoading ? (
+        <div className="flex flex-1 justify-center py-5">
           <Spinner className="text-gray-500" />
         </div>
       ) : groupedTrips.size > 0 ? (
         Array.from(groupedTrips).map(([hour, trips]) => (
           <div
             key={hour}
-            id={`bus-stop-trip-${hour}`}
+            id={`bus-stop-time-${hour}`}
             className="flex flex-col gap-1"
           >
             <h3 className="text-2xl font-black leading-relaxed after:ml-0.5 after:align-super after:text-xs after:content-['00']">
@@ -81,7 +83,7 @@ const BusStopSchedule = ({
             </h3>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {trips.map((trip) => (
-                <BusStopTrip key={trip.id} trip={trip} />
+                <BusStopTime key={trip.id} trip={trip} />
               ))}
             </div>
           </div>

@@ -1,22 +1,21 @@
 "use client";
 
-import BusStop from "@/components/ui/bus-stop";
-import { Input } from "@/components/ui/input";
-import { useKeyPress } from "@/hooks/useKeyPress";
-import { cn } from "@/lib/utils";
-import { type BusStop as BusStopType } from "@/types/citybus";
-import { Events, Shortcuts } from "@/utils/constants";
 import { CircleX } from "lucide-react";
 import React from "react";
-import { search } from "ss-search";
+import { useDebounce } from "use-debounce";
+
+import BusStop from "@web/components/ui/bus-stop";
+import { Input } from "@web/components/ui/input";
+import { useKeyPress } from "@web/hooks/useKeyPress";
+import { cn } from "@web/lib/utils";
+import { Events, Shortcuts } from "@web/utils/constants";
+import { trpc } from "@web/utils/trpc";
 
 type BusStopsSearchProps = {
-  busStops: BusStopType[];
   onBusStopClick: (id: number) => void;
 };
 
 const BusStopSearch = ({
-  busStops,
   onBusStopClick: handleBusStopClick,
 }: BusStopsSearchProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -25,17 +24,16 @@ const BusStopSearch = ({
   const [focused, setFocused] = React.useState(false);
 
   const [query, setQuery] = React.useState("");
+  const [debouncedQuery] = useDebounce(query, 400);
 
-  const results = React.useMemo(() => {
-    if (busStops.length === 0 || query.length === 0) return [];
+  const searchQuery = trpc.searchBusStop.useQuery(
+    { term: debouncedQuery },
+    {
+      enabled: debouncedQuery.length > 1,
+    },
+  );
 
-    return search(busStops, ["code", "name"], query, {
-      withScore: true,
-    })
-      .sort((a, b) => b.score - a.score)
-      .filter((result) => result.score > 0)
-      .slice(0, 5);
-  }, [busStops, query]);
+  const busStops = searchQuery.data ?? [];
 
   // Focus input on "/" key press
   useKeyPress(
@@ -129,7 +127,7 @@ const BusStopSearch = ({
           )}
         </div>
 
-        {results.length > 0 ? (
+        {busStops.length > 0 ? (
           <div
             className={cn(
               "w-full max-w-lg transition-[transform,opacity] duration-500 ease-out will-change-transform",
@@ -137,7 +135,7 @@ const BusStopSearch = ({
             )}
           >
             <div className="flex flex-col gap-4">
-              {results.map(({ element: busStop }) => (
+              {busStops.map((busStop) => (
                 <BusStop
                   key={busStop.id}
                   onClick={() => onBusStopClick(busStop.id)}

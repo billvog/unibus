@@ -1,11 +1,4 @@
-import { useBusStop } from "@/components/bus-stop-context";
-import BusLinePointsMapLayer from "@/components/ui/bus-line-points-map-layer";
-import { Button } from "@/components/ui/button";
-import { env } from "@/env";
-import { type BusStop } from "@/types/citybus";
-import { type Coordinates } from "@/types/coordinates";
-import { type MapFlyToDetail } from "@/types/events";
-import { Events } from "@/utils/constants";
+import { type DbMassBusStop } from "@api/types/models";
 import * as turf from "@turf/distance";
 import { Undo2 } from "lucide-react";
 import { type MapEvent } from "mapbox-gl";
@@ -18,8 +11,16 @@ import MapGL, {
   Source,
 } from "react-map-gl";
 
+import { useBusStop } from "@web/components/bus-stop-context";
+import BusLinePointsMapLayer from "@web/components/ui/bus-line-points-map-layer";
+import { Button } from "@web/components/ui/button";
+import { env } from "@web/env";
+import { type Coordinates } from "@web/types/coordinates";
+import { type MapFlyToDetail } from "@web/types/events";
+import { Events } from "@web/utils/constants";
+
 type MapProps = {
-  busStops: BusStop[];
+  busStops: DbMassBusStop[];
   onBusStopClick: (id: number) => void;
   userLocation: Coordinates | null;
 };
@@ -37,11 +38,10 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         type: "Feature",
         properties: {
           id: stop.id,
-          code: stop.code,
         },
         geometry: {
           type: "Point",
-          coordinates: [stop.longitude, stop.latitude],
+          coordinates: [stop.location.x, stop.location.y],
         },
       })),
     }),
@@ -186,11 +186,11 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
       )}
 
       {/* Draw line for selected bus stop */}
-      {selectedStop?.lineCodes.map((lineCode, index) => (
+      {selectedStop?.busLines.map(({ busLine }, index) => (
         <BusLinePointsMapLayer
-          key={lineCode}
+          key={busLine.code}
           index={index}
-          lineCode={lineCode}
+          busLine={busLine}
         />
       ))}
 

@@ -1,32 +1,27 @@
-import { GetBusLinePoints } from "@/actions/get-bus-line-points";
-import { useCitybusToken } from "@/components/citybus-token-context";
-import { getColor } from "@/utils/get-color";
-import { useQuery } from "@tanstack/react-query";
+import { type DbBusLine } from "@api/types/models";
 import React from "react";
 import { Layer, Source } from "react-map-gl";
 
+import { getColor } from "@web/utils/get-color";
+import { trpc } from "@web/utils/trpc";
+
 type BusLinePointsMapLayerProps = {
   index: number;
-  lineCode: string;
+  busLine: DbBusLine;
 };
 
 const BusLinePointsMapLayer = ({
   index,
-  lineCode,
+  busLine,
 }: BusLinePointsMapLayerProps) => {
-  const { token } = useCitybusToken();
-
   const lineColor = React.useMemo(() => getColor(index), [index]);
 
-  const busLinePointsQuery = useQuery({
-    queryKey: ["busLine", lineCode, "points"],
-    queryFn: () => GetBusLinePoints(token!, lineCode),
-    enabled: !!token && !!lineCode,
+  const busLinePointsQuery = trpc.getBusLinePoints.useQuery({
+    lineId: busLine.id,
   });
 
   const busLinePoints = React.useMemo(
-    () =>
-      busLinePointsQuery.data?.ok ? busLinePointsQuery.data.linePoints : [],
+    () => busLinePointsQuery.data ?? [],
     [busLinePointsQuery.data],
   );
 
@@ -36,8 +31,8 @@ const BusLinePointsMapLayer = ({
       geometry: {
         type: "LineString",
         coordinates: busLinePoints.map((point) => [
-          Number(point.longitude),
-          Number(point.latitude),
+          Number(point.location.x),
+          Number(point.location.y),
         ]),
       },
     }),
@@ -45,7 +40,11 @@ const BusLinePointsMapLayer = ({
   );
 
   return (
-    <Source id={`busLine:${lineCode}`} type="geojson" data={linePointsGeojson}>
+    <Source
+      id={`busLine:${busLine.id}`}
+      type="geojson"
+      data={linePointsGeojson}
+    >
       <Layer
         id="busLine"
         type="line"

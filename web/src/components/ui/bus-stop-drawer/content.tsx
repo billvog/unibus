@@ -1,21 +1,17 @@
-import { GetBusLiveStop } from "@/actions/get-bus-live-stop";
-import { GetBusStopSchedule } from "@/actions/get-bus-stop-schedule";
-import { useBusStop } from "@/components/bus-stop-context";
-import { useCitybusToken } from "@/components/citybus-token-context";
-import BusStopSchedule from "@/components/ui/bus-stop-schedule";
-import BusVehicle from "@/components/ui/bus-vehicle";
-import { Button } from "@/components/ui/button";
-import DynamicTitle from "@/components/ui/dynamic-title";
-import { Spinner } from "@/components/ui/spinner";
-import { cn } from "@/lib/utils";
-import { type BusTripDay } from "@/types/citybus";
-import { type Coordinates } from "@/types/coordinates";
-import { type MapFlyToDetail } from "@/types/events";
-import { Events } from "@/utils/constants";
-import { PrettifyName } from "@/utils/prettify-name";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { toast } from "sonner";
+
+import { useBusStop } from "@web/components/bus-stop-context";
+import BusStopSchedule from "@web/components/ui/bus-stop-schedule";
+import BusVehicle from "@web/components/ui/bus-vehicle";
+import { Button } from "@web/components/ui/button";
+import DynamicTitle from "@web/components/ui/dynamic-title";
+import { Spinner } from "@web/components/ui/spinner";
+import { cn } from "@web/lib/utils";
+import { type Coordinates } from "@web/types/coordinates";
+import { type MapFlyToDetail } from "@web/types/events";
+import { Events } from "@web/utils/constants";
+import { PrettifyName } from "@web/utils/prettify-name";
+import { trpc } from "@web/utils/trpc";
 
 const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 
@@ -30,13 +26,12 @@ const BusStopContent = ({
   canScroll,
   onBusVehicleClick: handleBusVehicleClick,
 }: BusStopContentProps) => {
-  const { selectedStop, setSelectedStop, setLiveBusCoordinates } = useBusStop();
-  const { token } = useCitybusToken();
+  const { selectedStop, setLiveBusCoordinates } = useBusStop();
 
   const [viewMode, setViewMode] = React.useState<ViewMode>("live");
-  const [selectedDay, setSelectedDay] = React.useState<BusTripDay>(() => {
+  const [selectedDay, setSelectedDay] = React.useState<number>(() => {
     const now = new Date();
-    return now.getDay() as BusTripDay;
+    return now.getDay();
   });
 
   const prettyStopName = React.useMemo(
@@ -44,12 +39,13 @@ const BusStopContent = ({
     [selectedStop],
   );
 
-  const busLiveQuery = useQuery({
-    queryKey: ["bus-live", selectedStop?.code],
-    queryFn: () => GetBusLiveStop(token ?? "", selectedStop?.code ?? ""),
-    enabled: !!token && !!selectedStop && viewMode === "live",
-    refetchInterval: BusLiveQueryRefetchInterval,
-  });
+  const busLiveQuery = trpc.getBusLiveStop.useQuery(
+    { stopCode: selectedStop?.code ?? "" },
+    {
+      enabled: !!selectedStop && viewMode === "live",
+      refetchInterval: BusLiveQueryRefetchInterval,
+    },
+  );
 
   const vehicles = React.useMemo(
     () => (busLiveQuery.data?.ok ? (busLiveQuery.data.vehicles ?? []) : []),
@@ -61,25 +57,20 @@ const BusStopContent = ({
     [busLiveQuery.data],
   );
 
-  const busStopScheduleQuery = useQuery({
-    queryKey: ["bus-stop-schedule", selectedStop?.code, 5],
-    queryFn: () =>
-      GetBusStopSchedule(token ?? "", selectedStop?.code ?? "", selectedDay),
-    enabled: !!token && !!selectedStop && viewMode === "schedule",
-  });
-
-  const busStopTrips = React.useMemo(
-    () =>
-      busStopScheduleQuery.data?.ok ? busStopScheduleQuery.data.trips : [],
-    [busStopScheduleQuery.data],
+  const busStopScheduleQuery = trpc.getBusStopSchedule.useQuery(
+    {
+      stopId: selectedStop?.id ?? 0,
+      day: selectedDay,
+    },
+    {
+      enabled: !!selectedStop && viewMode === "schedule",
+    },
   );
 
-  React.useEffect(() => {
-    if (busLiveQuery.isError || (busLiveQuery.data && !busLiveQuery.data.ok)) {
-      toast.error("Failed to fetch bus live data");
-      setSelectedStop(null);
-    }
-  }, [busLiveQuery, setSelectedStop]);
+  const busStopTrips = React.useMemo(
+    () => busStopScheduleQuery.data ?? [],
+    [busStopScheduleQuery.data],
+  );
 
   React.useEffect(() => {
     if (vehicles.length === 0) {
@@ -93,11 +84,6 @@ const BusStopContent = ({
     });
   }, [vehicles, setLiveBusCoordinates]);
 
-  React.useEffect(() => {
-    void busStopScheduleQuery.refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDay]);
-
   const onBusStopNameClick = React.useCallback(() => {
     if (!selectedStop) {
       return;
@@ -107,8 +93,8 @@ const BusStopContent = ({
       new CustomEvent<MapFlyToDetail>("map:fly-to", {
         detail: {
           coordinates: {
-            latitude: selectedStop.latitude,
-            longitude: selectedStop.longitude,
+            longitude: selectedStop.location.x,
+            latitude: selectedStop.location.y,
           },
         },
       }),
@@ -162,18 +148,7 @@ const BusStopContent = ({
     setViewMode((prev) => (prev === "live" ? "schedule" : "live"));
   }, []);
 
-  if (busLiveQuery.isLoading || busStopScheduleQuery.isLoading) {
-    return (
-      <div className="self-center py-16">
-        <Spinner className="text-gray-500" />
-      </div>
-    );
-  }
-
-  if (
-    (!busLiveQuery.data?.ok && !busStopScheduleQuery.data?.ok) ||
-    !selectedStop
-  ) {
+  if (!selectedStop) {
     return null;
   }
 
@@ -199,7 +174,11 @@ const BusStopContent = ({
       >
         {/* Bus Live */}
         {viewMode === "live" &&
-          (hasLiveVehicles ? (
+          (busLiveQuery.isLoading ? (
+            <div className="flex flex-1 justify-center py-5">
+              <Spinner className="text-gray-500" />
+            </div>
+          ) : hasLiveVehicles ? (
             <div className="flex flex-col gap-4">
               {vehicles.map((vehicle) => (
                 <BusVehicle
@@ -219,7 +198,7 @@ const BusStopContent = ({
             busStopTrips={busStopTrips}
             selectedDay={selectedDay}
             onDayClick={(day) => setSelectedDay(day)}
-            isRefetching={busStopScheduleQuery.isRefetching}
+            isLoading={busStopScheduleQuery.isLoading}
           />
         )}
       </div>

@@ -1,110 +1,64 @@
 "use client";
 
-import { GetBusLines } from "@/actions/get-bus-lines";
-import { GetBusStops } from "@/actions/get-bus-stops";
-import { useBusStop } from "@/components/bus-stop-context";
-import { useCitybusToken } from "@/components/citybus-token-context";
-import BusStopDrawer from "@/components/ui/bus-stop-drawer";
-import BusStopSearch from "@/components/ui/bus-stop-search";
-import GraveError from "@/components/ui/grave-error";
-import Map from "@/components/ui/map";
-import { FullscreenSpinner } from "@/components/ui/spinner";
-import { useCaptureAnalytics } from "@/hooks/useCaptureAnalytics";
-import { useGeolocation } from "@/hooks/useGeolocation";
-import { type MapFlyToDetail } from "@/types/events";
-import { Events } from "@/utils/constants";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 
-export default function Page() {
-  useCaptureAnalytics();
+import { useBusStop } from "@web/components/bus-stop-context";
+import BusStopDrawer from "@web/components/ui/bus-stop-drawer";
+import BusStopSearch from "@web/components/ui/bus-stop-search";
+import GraveError from "@web/components/ui/grave-error";
+import Map from "@web/components/ui/map";
+import { FullscreenSpinner } from "@web/components/ui/spinner";
+import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
+import { useGeolocation } from "@web/hooks/useGeolocation";
+import { type MapFlyToDetail } from "@web/types/events";
+import { trpc } from "@web/utils/trpc";
 
-  const { token, refetchToken } = useCitybusToken();
-  const { setSelectedStop } = useBusStop();
+function Page() {
+  useCaptureAnalytics();
 
   const geolocation = useGeolocation();
 
-  const busLinesQuery = useQuery({
-    queryKey: ["busLines"],
-    queryFn: () => GetBusLines(token ?? ""),
-    enabled: !!token,
-  });
+  const { setSelectedStopId } = useBusStop();
 
-  const busStopsQuery = useQuery({
-    queryKey: ["busStops"],
-    queryFn: () => GetBusStops(token ?? ""),
-    enabled: !!token,
-  });
+  const busStopsQuery = trpc.getBusStops.useQuery();
 
-  const isLoading = busLinesQuery.isLoading || busStopsQuery.isLoading;
+  const isLoading = busStopsQuery.isLoading;
 
   const busStops = React.useMemo(
-    () => (busStopsQuery.data?.ok ? busStopsQuery.data.stops : []),
+    () => busStopsQuery.data ?? [],
     [busStopsQuery.data],
   );
 
   const hasGraveError = React.useMemo(
-    () => !busStopsQuery.data?.ok && busStopsQuery.data?.status === 500,
-    [busStopsQuery.data],
+    () => busStopsQuery.isError,
+    [busStopsQuery.isError],
   );
 
   const onBusStopClick = React.useCallback(
     (id: number, overwriteZoom?: boolean) => {
-      const busStop = busStops.find((stop) => stop.id === id) ?? null;
-      setSelectedStop(busStop);
+      setSelectedStopId(id);
 
-      // If bus stop is not found, don't continue
+      const busStop = busStops.find((stop) => stop.id === id) ?? null;
       if (!busStop) {
         return;
       }
-
-      // Capture event
-      window.dispatchEvent(
-        new CustomEvent(Events.Analytics.BusStopClick, {
-          detail: {
-            from: "Map",
-            busStop: {
-              id: busStop.id,
-              name: busStop.name,
-            },
-          },
-        }),
-      );
 
       // Emit event to fly map to bus stop
       window.dispatchEvent(
         new CustomEvent<MapFlyToDetail>("map:fly-to", {
           detail: {
             coordinates: {
-              latitude: busStop.latitude,
-              longitude: busStop.longitude,
+              longitude: busStop.location.x,
+              latitude: busStop.location.y,
             },
             overwriteZoom,
           },
         }),
       );
     },
-    [busStops, setSelectedStop],
+    [busStops, setSelectedStopId],
   );
-
-  React.useEffect(() => {
-    // Refetch bus stops when token changes
-    if (token && !busStopsQuery.data?.ok) {
-      void busStopsQuery.refetch();
-    }
-  }, [token, busStopsQuery]);
-
-  React.useEffect(() => {
-    // In case server responds with 401, refetch the token
-    if (
-      busStopsQuery.data &&
-      !busStopsQuery.data.ok &&
-      busStopsQuery.data.status === 401
-    ) {
-      refetchToken();
-    }
-  }, [busStopsQuery.data, refetchToken]);
 
   React.useEffect(() => {
     // Show an error message if location could not be
@@ -124,10 +78,13 @@ export default function Page() {
 
   return (
     <div className="relative flex h-full w-full flex-1 flex-col overflow-hidden">
+      {/* Loading Spinner */}
       {isLoading && <FullscreenSpinner display="absolute" />}
-      {busStops.length > 0 && (
-        <BusStopSearch busStops={busStops} onBusStopClick={onBusStopClick} />
-      )}
+
+      {/* Bus Stop Search */}
+      {busStops.length > 0 && <BusStopSearch onBusStopClick={onBusStopClick} />}
+
+      {/* Map */}
       <Map
         busStops={busStops}
         onBusStopClick={(id) => onBusStopClick(id, false)}
@@ -137,3 +94,5 @@ export default function Page() {
     </div>
   );
 }
+
+export default Page;

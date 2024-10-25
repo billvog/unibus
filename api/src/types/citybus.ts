@@ -23,7 +23,7 @@ export type BusLine = {
   color: string;
   textColor: string;
   borderColor: string;
-  routes: string[];
+  routes: BusRoute[];
 };
 
 export type BusLinePoint = {
@@ -48,11 +48,9 @@ export type BusVehicle = {
   borderColor: string;
 };
 
-export type BusTripDay = 1 | 2 | 3 | 4 | 5 | 6 | 7;
-
 export type BusStopTrip = {
   id: number;
-  day: BusTripDay;
+  day: number;
   lineCode: string;
   lineColor: string;
   lineName: string;
@@ -64,4 +62,13 @@ export type BusStopTrip = {
   tripTime: string;
   tripTimeHour: number;
   tripTimeMinute: number;
+};
+
+export type GetBusLinePointsAPIResponse = {
+  routeCode: string;
+  routePoints: BusLinePoint[];
+}[];
+
+export type GetBusLiveStopAPIResponse = {
+  vehicles: BusVehicle[];
 };

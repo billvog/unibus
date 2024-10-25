@@ -1,10 +1,11 @@
-import "@/styles/globals.css";
+import "@web/styles/globals.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import Providers from "@/components/providers";
 import { type Metadata } from "next";
-import { Inter } from "next/font/google";
 import dynamic from "next/dynamic";
+import { Inter } from "next/font/google";
+
+import Providers from "@web/components/providers";
 
 const inter = Inter({
   weight: ["500", "700", "800", "900"],

@@ -1,21 +1,20 @@
+import { type DbBusLine } from "@api/types/models";
 import React from "react";
 
 type BusLineCodeProps = {
-  lineCode: string;
-  bgColor: string | undefined;
-  textColor: string | undefined;
+  busLine: DbBusLine;
 };
 
-const BusLineCode = ({ bgColor, lineCode, textColor }: BusLineCodeProps) => {
+const BusLineCode = ({ busLine }: BusLineCodeProps) => {
   return (
     <span
       className="flex items-center justify-center rounded-lg px-1.5 py-0.5 text-xs font-bold"
       style={{
-        color: textColor ?? "white",
-        backgroundColor: bgColor ?? "gray",
+        color: busLine.textColor ?? "white",
+        backgroundColor: busLine.bgColor ?? "gray",
       }}
     >
-      {lineCode}
+      {busLine.code}
     </span>
   );
 };
