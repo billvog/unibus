@@ -176,12 +176,12 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
       {/* Reset zoom button, to return map to user's location, if any */}
       {canResetZoom && (
         <Button
-          className="absolute bottom-4 right-4 gap-1"
+          className="absolute bottom-5 right-5 gap-1"
           size="sm"
           onClick={onResetZoom}
         >
           <Undo2 size={14} />
-          <span>Reset Zoom</span>
+          <span>Επαναφορά</span>
         </Button>
       )}
 
