@@ -5,6 +5,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - .github/workflows/deploy-api.yml
+      - "api/**"
+      - .dockerignore
+      - Dockerfile
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - tsconfig.json
 
 jobs:
   deploy:
