@@ -47,7 +47,7 @@ async function main() {
     rateLimit({
       windowMs: 60 * 1000,
       limit: 100,
-      legacyHeaders: !IS_PROD, // Disable rate limit headers on prod
+      // legacyHeaders: !IS_PROD, // Disable rate limit headers on prod
       store: new MemcachedStore({
         prefix: "rl:",
         locations: [env.MEMCACHED_URL.replace("memcached://", "")],
