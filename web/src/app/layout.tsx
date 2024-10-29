@@ -12,23 +12,28 @@ const inter = Inter({
   subsets: ["latin", "greek"],
 });
 
-export const metadata: Metadata = {
+const marketing = {
   title: "Unibus: Βρες το δρομολόγιο που σε ενδιαφέρει",
-  description: "Σε πόση ώρα θα έρθει το αστικό; Με το Unibus, είναι απλό!",
+  description: "Μέσα μαζικής μεταφοράς, χωρίς την ταλαιπωρία ― Με το Unibus.",
+};
+
+export const metadata: Metadata = {
+  title: marketing.title,
+  description: marketing.description,
   icons: [{ rel: "icon", url: "/favicon.ico" }],
   alternates: {
     canonical: "https://unibus.gr",
   },
   openGraph: {
     type: "website",
-    title: "Unibus: Βρες το δρομολόγιο που σε ενδιαφέρει",
-    description: "Σε πόση ώρα θα έρθει το αστικό; Με το Unibus, είναι απλό!",
+    title: marketing.title,
+    description: marketing.description,
     images: [
       {
-        url: "https://unibus.gr/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Unibus: Βρες το δρομολόγιο που σε ενδιαφέρει",
+        url: "/og-image.png",
+        width: 1667,
+        height: 875,
+        alt: marketing.title,
       },
     ],
   },
