@@ -1,13 +1,18 @@
-# Unibus
+<p>
+  <img src="https://github.com/billvog/unibus/blob/main/web/public/og-image.png" alt="Unibus: Public transit, without the buzz." />
+</p>
 
-An application created to help people in Lamia, where I attend UNI, and later all Greece, find buses and move around the city with ease.
+Unibus focuses on Greece's public transit network, to help people move throughout the city with ease and speed.
+
+We make the hard work of assembling the puzzle to get from point A to point B, while combining transit, and we make it look stupidly easy.
 
 ## Features
 
-- 🗺️ Map with bus stops.
+- 🚏 Map with Bus Stops.
 - 📍 Geolocation Web API, to help you pick a stop near you.
-- ✨ Great UI/UX (far better than [citybus.gr](https://lamia.citybus.gr/el/stops)).
-- 🔔 Notifications, to never miss a bus ever again.
+- ✨ Great UI/UX.
+- 🛣️ On the fly generated routes, that lead to your destination, combining transit, if needed.
+- 🧭 Directions between waypoints.
 
 ## Technical Stack
 
@@ -20,6 +25,8 @@ Created with [T3](https://create.t3.gg/).
 - TRPC / React Query
 
 ### Backend
+
+Deployed using [Dokku](https://dokku.com/).
 
 - Express
 - Drizzle / PostgreSQL
