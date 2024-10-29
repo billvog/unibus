@@ -1,5 +1,8 @@
 <p>
-  <img src="https://github.com/billvog/unibus/blob/main/web/public/og-image.png" alt="Unibus: Public transit, without the buzz." />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/billvog/unibus/blob/main/web/public/og-image-dark.png">
+    <img src="https://github.com/billvog/unibus/blob/main/web/public/og-image.png" alt="Unibus: Public transit, without the buzz." />
+  </picture>
 </p>
 
 Unibus focuses on Greece's public transit network, to help people move throughout the city with ease and speed.
