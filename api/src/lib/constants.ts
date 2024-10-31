@@ -2,10 +2,10 @@ import { env } from "@api/env";
 
 export const IsProd = env.NODE_ENV === "production";
 
-export const CITYBUS_WEBSITE_URL = (city: string) =>
+export const GetCitybusWebsiteURL = (city: string) =>
   `https://${city}.citybus.gr/el`;
 
-export const CITYBUS_API_URL = (agencyCode: number) =>
+export const GetCitybusAPIURL = (agencyCode: number) =>
   `https://rest.citybus.gr/api/v1/el/${agencyCode}`;
 
 export const Cookies = {
