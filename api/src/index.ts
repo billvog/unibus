@@ -30,7 +30,7 @@ async function main() {
     app.set("trust proxy", 1);
   }
 
-  void registerCronJobs();
+  registerCronJobs();
 
   // Disable the x-powered-by header
   app.disable("x-powered-by");

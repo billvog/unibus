@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { z } from "zod";
 
 import { citybusClient } from "@api/lib/axios";
-import { publicProcedure } from "@api/trpc";
+import { publicProcedure } from "@api/lib/trpc";
 import { GetBusLiveStopAPIResponse } from "@api/types/citybus";
 
 export const getBusLiveStop = publicProcedure

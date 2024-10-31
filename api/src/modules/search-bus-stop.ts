@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { db } from "@api/db";
 import { busLine, busStop, busStopToLine } from "@api/db/schema";
-import { publicProcedure } from "@api/trpc";
+import { publicProcedure } from "@api/lib/trpc";
 import { DbSearchedBusStop } from "@api/types/models";
 
 export const searchBusStop = publicProcedure

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { db } from "@api/db";
-import { publicProcedure } from "@api/trpc";
+import { publicProcedure } from "@api/lib/trpc";
 
 export const getBusStopSchedule = publicProcedure
   .input(z.object({ stopId: z.number(), day: z.number() }))

@@ -3,7 +3,7 @@ import cron from "node-cron";
 import { fetchStaticCitybusFeed } from "@api/lib/citybus/fetch-static-feed";
 import { generateCitybusToken } from "@api/lib/citybus/token";
 
-export const registerCronJobs = async () => {
+export const registerCronJobs = () => {
   // Generate a new Citybus token every day at midnight
   cron.schedule("0 0 * * *", () => void generateCitybusToken(), {
     runOnInit: true,
