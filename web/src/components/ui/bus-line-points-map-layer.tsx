@@ -2,8 +2,8 @@ import { type DbBusLine } from "@api/types/models";
 import React from "react";
 import { Layer, Source } from "react-map-gl";
 
-import { getColor } from "@web/utils/get-color";
-import { trpc } from "@web/utils/trpc";
+import { getColor } from "@web/lib/get-color";
+import { trpc } from "@web/lib/trpc";
 
 type BusLinePointsMapLayerProps = {
   index: number;

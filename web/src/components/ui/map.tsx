@@ -15,9 +15,9 @@ import { useBusStop } from "@web/components/bus-stop-context";
 import BusLinePointsMapLayer from "@web/components/ui/bus-line-points-map-layer";
 import { Button } from "@web/components/ui/button";
 import { env } from "@web/env";
+import { Events } from "@web/lib/constants";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
-import { Events } from "@web/utils/constants";
 
 type MapProps = {
   busStops: DbMassBusStop[];

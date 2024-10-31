@@ -7,9 +7,9 @@ import { useDebounce } from "use-debounce";
 import BusStop from "@web/components/ui/bus-stop";
 import { Input } from "@web/components/ui/input";
 import { useKeyPress } from "@web/hooks/useKeyPress";
+import { Events, Shortcuts } from "@web/lib/constants";
+import { trpc } from "@web/lib/trpc";
 import { cn } from "@web/lib/utils";
-import { Events, Shortcuts } from "@web/utils/constants";
-import { trpc } from "@web/utils/trpc";
 
 type BusStopsSearchProps = {
   onBusStopClick: (id: number) => void;

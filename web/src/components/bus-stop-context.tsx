@@ -3,9 +3,9 @@
 import { type DbBusStop } from "@api/types/models";
 import React, { useState } from "react";
 
+import { Events } from "@web/lib/constants";
+import { trpc } from "@web/lib/trpc";
 import { type Coordinates } from "@web/types/coordinates";
-import { Events } from "@web/utils/constants";
-import { trpc } from "@web/utils/trpc";
 
 type BusStopContextType = {
   selectedStopId: DbBusStop["id"] | null;

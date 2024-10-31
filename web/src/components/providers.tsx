@@ -13,7 +13,7 @@ import React from "react";
 import { BusStopProvider } from "@web/components/bus-stop-context";
 import { Toaster } from "@web/components/ui/sonner";
 import { env } from "@web/env";
-import { trpc } from "@web/utils/trpc";
+import { trpc } from "@web/lib/trpc";
 
 function makeQueryClient() {
   return new QueryClient({

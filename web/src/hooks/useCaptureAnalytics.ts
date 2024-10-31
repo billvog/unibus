@@ -2,7 +2,7 @@ import { type Properties } from "posthog-js";
 import { usePostHog } from "posthog-js/react";
 import { useEffect } from "react";
 
-import { Events } from "@web/utils/constants";
+import { Events } from "@web/lib/constants";
 
 const AnalyticsEventKeys = Object.values(Events.Analytics);
 

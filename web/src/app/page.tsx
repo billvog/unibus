@@ -11,8 +11,8 @@ import Map from "@web/components/ui/map";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
 import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
 import { useGeolocation } from "@web/hooks/useGeolocation";
+import { trpc } from "@web/lib/trpc";
 import { type MapFlyToDetail } from "@web/types/events";
-import { trpc } from "@web/utils/trpc";
 
 function Page() {
   useCaptureAnalytics();

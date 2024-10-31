@@ -6,12 +6,12 @@
     "dev": "turbo dev",
     "dev:api": "turbo --filter=@repo/api dev",
     "dev:web": "turbo --filter=@repo/web dev",
-    "lint": "turbo lint",
-    "lint:api": "turbo --filter=@repo/api lint",
-    "lint:web": "turbo --filter=@repo/web lint",
-    "typecheck": "turbo typecheck",
-    "typecheck:api": "turbo --filter=@repo/api typecheck",
-    "typecheck:web": "turbo --filter=@repo/web typecheck"
+    "lint": "turbo lint --",
+    "lint:api": "turbo --filter=@repo/api lint --",
+    "lint:web": "turbo --filter=@repo/web lint --",
+    "typecheck": "turbo typecheck --",
+    "typecheck:api": "turbo --filter=@repo/api typecheck --",
+    "typecheck:web": "turbo --filter=@repo/web typecheck --"
   },
   "devDependencies": {
     "turbo": "^2.2.3"

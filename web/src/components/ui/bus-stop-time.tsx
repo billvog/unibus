@@ -2,7 +2,7 @@ import { type DbBusStopTime } from "@api/types/models";
 import React from "react";
 
 import BusLineCode from "@web/components/ui/bus-line-code";
-import { PrettifyName } from "@web/utils/prettify-name";
+import { PrettifyName } from "@web/lib/prettify-name";
 
 type BusStopTimeProps = {
   trip: DbBusStopTime;

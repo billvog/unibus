@@ -6,12 +6,12 @@ import BusVehicle from "@web/components/ui/bus-vehicle";
 import { Button } from "@web/components/ui/button";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { Spinner } from "@web/components/ui/spinner";
+import { Events } from "@web/lib/constants";
+import { PrettifyName } from "@web/lib/prettify-name";
+import { trpc } from "@web/lib/trpc";
 import { cn } from "@web/lib/utils";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
-import { Events } from "@web/utils/constants";
-import { PrettifyName } from "@web/utils/prettify-name";
-import { trpc } from "@web/utils/trpc";
 
 const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 
