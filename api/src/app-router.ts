@@ -1,7 +1,7 @@
 import * as trpcExpress from "@trpc/server/adapters/express";
 import { Express } from "express";
 
-import { createContext, t } from "@api/lib/trpc";
+import { createContext, protectedProcedure, t } from "@api/lib/trpc";
 import { getBusLinePoints } from "@api/modules/get-bus-line-points";
 import { getBusLines } from "@api/modules/get-bus-lines";
 import { getBusLiveStop } from "@api/modules/get-bus-live-stop";
@@ -18,6 +18,7 @@ export const appRouter = t.router({
   getBusLinePoints,
   getBusStopSchedule,
   getBusLiveStop,
+  guarded: protectedProcedure.query(() => "Hello, world!"),
 });
 
 export function addTrpc(app: Express) {

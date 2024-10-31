@@ -1,21 +1,60 @@
 import {
+  integer,
   pgTable,
+  primaryKey,
   serial,
   text,
-  integer,
-  geometry,
-  varchar,
   unique,
-  primaryKey,
+  uuid,
+  varchar,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm/relations";
 
-const point = (name: string) =>
-  geometry(name, {
-    type: "point",
-    mode: "xy",
-    srid: 4326,
-  });
+import { point, timestamps, uuidPrimaryKey } from "@api/db/fields";
+
+/* 
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │ Authentication Models                                                   │
+  └─────────────────────────────────────────────────────────────────────────┘
+ */
+
+export const user = pgTable("user", {
+  id: uuidPrimaryKey(),
+  name: varchar("name", { length: 100 }).notNull(),
+  email: varchar("email", { length: 100 }).notNull().unique(),
+  refreshTokenVersion: integer("refresh_token_version").default(1).notNull(),
+  ...timestamps,
+});
+
+export const userAccount = pgTable(
+  "user_account",
+  {
+    id: uuidPrimaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    providerId: varchar("provider_id", { length: 100 }).notNull(),
+    providerAccountId: varchar("provider_account_id", {
+      length: 100,
+    })
+      .notNull()
+      .unique(),
+    ...timestamps,
+  },
+  (t) => ({
+    userAccountUniqueIndex: unique("user_account_unique_index").on(
+      t.userId,
+      t.providerId,
+      t.providerAccountId
+    ),
+  })
+);
+
+/* 
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │ Bus Models                                                              │
+  └─────────────────────────────────────────────────────────────────────────┘
+ */
 
 export const busLine = pgTable("bus_line", {
   id: serial().primaryKey().notNull(),
@@ -113,10 +152,27 @@ export const busStopToRoute = pgTable(
   })
 );
 
-/**
- * =====================================================================
- * =========================== RELATIONS ===============================
- * =====================================================================
+/* 
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │ User Relations                                                          │
+  └─────────────────────────────────────────────────────────────────────────┘
+ */
+
+export const userRelations = relations(user, ({ many }) => ({
+  userAccounts: many(userAccount),
+}));
+
+export const userAccountRelations = relations(userAccount, ({ one }) => ({
+  user: one(user, {
+    fields: [userAccount.userId],
+    references: [user.id],
+  }),
+}));
+
+/* 
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │ Bus Relations                                                           │
+  └─────────────────────────────────────────────────────────────────────────┘
  */
 
 export const busLinePointRelations = relations(busLinePoint, ({ one }) => ({

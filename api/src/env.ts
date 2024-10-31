@@ -2,11 +2,14 @@ import { createEnv } from "@t3-oss/env-core";
 import { config } from "dotenv-safe";
 import { z } from "zod";
 
-config();
+config({
+  allowEmptyValues: true,
+});
 
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "production"]).default("development"),
+    DOMAIN: z.string().optional(),
     PORT: z.string().default("8000"),
     // Services
     DATABASE_URL: z.string(),
@@ -14,9 +17,13 @@ export const env = createEnv({
     // URLs
     FRONTEND_URL: z.string(),
     BACKEND_URL: z.string(),
+    // Auth Token
+    ACCESS_TOKEN_SECRET: z.string(),
+    REFRESH_TOKEN_SECRET: z.string(),
     // OAuth
     OAUTH_GOOGLE_CLIENT_ID: z.string(),
     OAUTH_GOOGLE_CLIENT_SECRET: z.string(),
+    OAUTH_GOOGLE_SCOPES: z.string(),
   },
 
   /**
