@@ -48,7 +48,7 @@ export const useGeolocation = () => {
     window.dispatchEvent(
       new CustomEvent(Events.Analytics.GeolocationPrompt, {
         detail: {
-          GeolocationState: state,
+          geolocationState: state,
         },
       }),
     );

@@ -125,7 +125,7 @@ const BusStopContent = ({
       window.dispatchEvent(
         new CustomEvent(Events.Analytics.BusVehicleClick, {
           detail: {
-            BusVehicle: {
+            busVehicle: {
               vehicleCode,
               stopCode: selectedStop?.code,
             },
