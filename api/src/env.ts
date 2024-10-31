@@ -8,9 +8,15 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "production"]).default("development"),
     PORT: z.string().default("8000"),
+    // Services
     DATABASE_URL: z.string(),
     MEMCACHED_URL: z.string(),
+    // URLs
     FRONTEND_URL: z.string(),
+    BACKEND_URL: z.string(),
+    // OAuth
+    OAUTH_GOOGLE_CLIENT_ID: z.string(),
+    OAUTH_GOOGLE_CLIENT_SECRET: z.string(),
   },
 
   /**

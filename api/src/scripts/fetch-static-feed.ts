@@ -1,5 +1,5 @@
-import { fetchStaticCitybusFeed } from "@api/utils/citybus/fetch-static-feed";
-import { generateCitybusToken } from "@api/utils/citybus/token";
+import { fetchStaticCitybusFeed } from "@api/lib/citybus/fetch-static-feed";
+import { generateCitybusToken } from "@api/lib/citybus/token";
 
 void (async () => {
   await generateCitybusToken();

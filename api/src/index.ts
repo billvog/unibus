@@ -1,4 +1,4 @@
-import "@api/utils/axios";
+import "@api/lib/axios";
 import path from "path";
 
 import cors from "cors";
@@ -10,8 +10,9 @@ import { MemcachedStore } from "rate-limit-memcached";
 import { addTrpc } from "@api/app-router";
 import { db } from "@api/db";
 import { env } from "@api/env";
-import { IS_PROD } from "@api/utils/constants";
-import { registerCronJobs } from "@api/utils/register-cron-jobs";
+import { IS_PROD } from "@api/lib/constants";
+import { addPassport } from "@api/lib/passport";
+import { registerCronJobs } from "@api/lib/register-cron-jobs";
 
 const __dirname = import.meta.dirname;
 
@@ -55,8 +56,11 @@ async function main() {
     })
   );
 
+  // Register our modules
   addTrpc(app);
+  addPassport(app);
 
+  // Start the server
   app.listen(env.PORT, () => {
     console.log(`🚀 Server started at ${env.PORT}`);
   });

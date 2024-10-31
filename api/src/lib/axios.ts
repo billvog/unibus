@@ -1,11 +1,8 @@
 import axios, { AxiosError } from "axios";
 import rateLimit from "axios-rate-limit";
 
-import {
-  generateCitybusToken,
-  getCitybusToken,
-} from "@api/utils/citybus/token";
-import { CITYBUS_API_URL } from "@api/utils/constants";
+import { generateCitybusToken, getCitybusToken } from "@api/lib/citybus/token";
+import { CITYBUS_API_URL } from "@api/lib/constants";
 
 const citybusClient = rateLimit(
   axios.create({

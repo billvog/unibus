@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { CITYBUS_WEBSITE_URL } from "@api/utils/constants";
+import { CITYBUS_WEBSITE_URL } from "@api/lib/constants";
 
 let citybusToken = "";
 
