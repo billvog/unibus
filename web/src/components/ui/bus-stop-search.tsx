@@ -58,6 +58,17 @@ const BusStopSearch = ({
     };
   }, []);
 
+  const openSearch = React.useCallback(() => {
+    // Enter focused state
+    setFocused(true);
+    // Wait for the animation to finish, then focus the input
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 400);
+  }, []);
+
   const closeSearch = React.useCallback(() => {
     setFocused(false);
     setQuery("");
@@ -106,6 +117,13 @@ const BusStopSearch = ({
             focused && "scale-100 opacity-100",
           )}
         >
+          {/* To fight with the animation glitch on mobile devices. */}
+          {!focused && (
+            <div
+              className="absolute bottom-0 left-0 right-0 top-0 z-20 cursor-text"
+              onClick={openSearch}
+            />
+          )}
           <Input
             ref={inputRef}
             placeholder="Αναζήτηση στάσης... 🔍"
