@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleX } from "lucide-react";
+import { CircleUserRound, CircleX } from "lucide-react";
 import React from "react";
 import { useDebounce } from "use-debounce";
 
@@ -112,37 +112,51 @@ const BusStopSearch = ({
       <div className="absolute left-0 right-0 top-0 z-30 mx-4 my-8 flex flex-col items-center justify-center gap-8">
         <div
           className={cn(
-            "relative w-full max-w-lg transition-[transform,opacity] duration-500 ease-out will-change-transform",
+            "flex w-full max-w-lg items-center gap-4 transition-[transform,opacity,gap] duration-500 ease-out will-change-transform",
             show ? "scale-95 opacity-80" : "scale-90 opacity-0",
-            focused && "scale-100 opacity-100",
+            focused && "scale-100 gap-0 opacity-100",
           )}
         >
-          {/* To fight with the animation glitch on mobile devices. */}
-          {!focused && (
-            <div
-              className="absolute bottom-0 left-0 right-0 top-0 z-20 cursor-text"
-              onClick={openSearch}
+          <div className={cn("relative w-full")}>
+            {/* To fight with the animation glitch on mobile devices. */}
+            {!focused && (
+              <div
+                className="absolute bottom-0 left-0 right-0 top-0 z-20 cursor-text"
+                onClick={openSearch}
+              />
+            )}
+            {/* Search Input */}
+            <Input
+              ref={inputRef}
+              placeholder="Αναζήτηση στάσης... 🔍"
+              onFocus={() => setFocused(true)}
+              onBlur={() => query.length === 0 && setFocused(false)}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
-          )}
-          <Input
-            ref={inputRef}
-            placeholder="Αναζήτηση στάσης... 🔍"
-            onFocus={() => setFocused(true)}
-            onBlur={() => query.length === 0 && setFocused(false)}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          {focused && query.length > 0 && (
-            <button
-              className="absolute bottom-0 right-0 top-0 my-1 mr-2 flex items-center justify-center rounded-full p-1 text-gray-400"
-              onClick={() => {
-                setQuery("");
-                setFocused(false);
-              }}
-            >
-              <CircleX size={18} />
-            </button>
-          )}
+            {/* Search Close Button */}
+            {focused && query.length > 0 && (
+              <button
+                className="absolute bottom-0 right-0 top-0 my-1 mr-2 flex items-center justify-center rounded-full p-1 text-gray-400"
+                onClick={() => {
+                  setQuery("");
+                  setFocused(false);
+                }}
+              >
+                <CircleX size={18} />
+              </button>
+            )}
+          </div>
+
+          {/* User Account */}
+          <div
+            className={cn(
+              "scale-100 cursor-pointer opacity-100",
+              focused && "opacity-0",
+            )}
+          >
+            <CircleUserRound size={focused ? 0 : 28} />
+          </div>
         </div>
 
         {busStops.length > 0 ? (
