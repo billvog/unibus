@@ -18,7 +18,9 @@ export const appRouter = t.router({
   getBusLinePoints,
   getBusStopSchedule,
   getBusLiveStop,
-  guarded: protectedProcedure.query(() => "Hello, world!"),
+  me: protectedProcedure.query(({ ctx }) => {
+    return ctx.maybeUser;
+  }),
 });
 
 export function addTrpc(app: Express) {

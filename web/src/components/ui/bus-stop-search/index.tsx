@@ -5,6 +5,7 @@ import React from "react";
 import { useDebounce } from "use-debounce";
 
 import BusStop from "@web/components/ui/bus-stop";
+import UserDropdown from "@web/components/ui/bus-stop-search/user-dropdown";
 import { Input } from "@web/components/ui/input";
 import { useKeyPress } from "@web/hooks/useKeyPress";
 import { Events, Shortcuts } from "@web/lib/constants";
@@ -149,14 +150,16 @@ const BusStopSearch = ({
           </div>
 
           {/* User Account */}
-          <div
-            className={cn(
-              "scale-100 cursor-pointer border-l-2 border-gray-200 opacity-100",
-              focused ? "opacity-0" : "p-2.5",
-            )}
-          >
-            <CircleUserRound size={focused ? 0 : 24} />
-          </div>
+          <UserDropdown>
+            <div
+              className={cn(
+                "scale-100 border-l-2 border-gray-200 opacity-100",
+                focused ? "opacity-0" : "p-2.5",
+              )}
+            >
+              <CircleUserRound size={focused ? 0 : 24} />
+            </div>
+          </UserDropdown>
         </div>
 
         {busStops.length > 0 ? (
