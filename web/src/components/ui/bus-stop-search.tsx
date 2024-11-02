@@ -66,7 +66,7 @@ const BusStopSearch = ({
       if (inputRef.current) {
         inputRef.current.focus();
       }
-    }, 400);
+    }, 300);
   }, []);
 
   const closeSearch = React.useCallback(() => {
@@ -105,19 +105,19 @@ const BusStopSearch = ({
     <>
       <div
         className={cn(
-          "will-change-opacity absolute bottom-0 left-0 right-0 top-0 bg-black/20 backdrop-blur-sm transition-[opacity] duration-500 ease-out",
+          "will-change-opacity absolute bottom-0 left-0 right-0 top-0 bg-black/20 backdrop-blur-sm transition-[opacity] duration-300 ease-out",
           focused ? "z-20 opacity-100" : "-z-10 opacity-0",
         )}
       />
       <div className="absolute left-0 right-0 top-0 z-30 mx-4 my-8 flex flex-col items-center justify-center gap-8">
         <div
           className={cn(
-            "flex w-full max-w-lg items-center gap-4 transition-[transform,opacity,gap] duration-500 ease-out will-change-transform",
-            show ? "scale-95 opacity-80" : "scale-90 opacity-0",
-            focused && "scale-100 gap-0 opacity-100",
+            "flex w-full max-w-lg items-center gap-4 rounded-xl bg-white ring-1 ring-gray-200 transition-[transform,opacity,gap] duration-300 ease-out will-change-transform",
+            show ? "scale-95 opacity-95" : "scale-90 opacity-0",
+            focused && "scale-100 gap-0 ring-0",
           )}
         >
-          <div className={cn("relative w-full")}>
+          <div className="relative w-full rounded-lg p-1">
             {/* To fight with the animation glitch on mobile devices. */}
             {!focused && (
               <div
@@ -137,7 +137,7 @@ const BusStopSearch = ({
             {/* Search Close Button */}
             {focused && query.length > 0 && (
               <button
-                className="absolute bottom-0 right-0 top-0 my-1 mr-2 flex items-center justify-center rounded-full p-1 text-gray-400"
+                className="absolute bottom-0 right-0 top-0 my-1 mr-4 flex items-center justify-center rounded-full p-1 text-gray-400"
                 onClick={() => {
                   setQuery("");
                   setFocused(false);
@@ -151,18 +151,18 @@ const BusStopSearch = ({
           {/* User Account */}
           <div
             className={cn(
-              "scale-100 cursor-pointer opacity-100",
-              focused && "opacity-0",
+              "scale-100 cursor-pointer border-l-2 border-gray-200 opacity-100",
+              focused ? "opacity-0" : "p-2.5",
             )}
           >
-            <CircleUserRound size={focused ? 0 : 28} />
+            <CircleUserRound size={focused ? 0 : 24} />
           </div>
         </div>
 
         {busStops.length > 0 ? (
           <div
             className={cn(
-              "w-full max-w-lg transition-[transform,opacity] duration-500 ease-out will-change-transform",
+              "w-full max-w-lg transition-[transform,opacity] duration-300 ease-out will-change-transform",
               focused ? "scale-100 opacity-100" : "scale-90 opacity-0",
             )}
           >
