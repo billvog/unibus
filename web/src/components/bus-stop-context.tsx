@@ -42,7 +42,7 @@ export const BusStopProvider = ({
   const [liveBusCoordinates, setLiveBusCoordinates] =
     useState<Coordinates | null>(null);
 
-  const busStopQuery = trpc.getBusStop.useQuery(
+  const busStopQuery = trpc.busStop.get.useQuery(
     { stopId: selectedStopId ?? -1 },
     {
       enabled: !!selectedStopId,

@@ -16,6 +16,7 @@ import BusLinePointsMapLayer from "@web/components/ui/bus-line-points-map-layer"
 import { Button } from "@web/components/ui/button";
 import { env } from "@web/env";
 import { Events } from "@web/lib/constants";
+import { trpc } from "@web/lib/trpc";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
 
@@ -31,10 +32,11 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
   const [hasZoomedToUser, setHasZoomedToUser] = React.useState(false);
   const [canResetZoom, setCanResetZoom] = React.useState(false);
 
-  const stopsGeojson = React.useMemo(
-    () => ({
-      type: "FeatureCollection",
-      features: busStops.map((stop) => ({
+  const { data: favoriteBusStops } = trpc.busStop.favorites.useQuery();
+
+  const stopsGeojson = React.useMemo(() => {
+    const stopsToGeojson = (stops: DbMassBusStop[]) =>
+      stops.map((stop) => ({
         type: "Feature",
         properties: {
           id: stop.id,
@@ -43,10 +45,25 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
           type: "Point",
           coordinates: [stop.location.x, stop.location.y],
         },
-      })),
-    }),
-    [busStops],
-  );
+      }));
+
+    return {
+      all: {
+        type: "FeatureCollection",
+        features: stopsToGeojson(
+          favoriteBusStops
+            ? busStops.filter((stop) => !favoriteBusStops.includes(stop.id))
+            : busStops,
+        ),
+      },
+      favorites: favoriteBusStops && {
+        type: "FeatureCollection",
+        features: stopsToGeojson(
+          busStops.filter((stop) => favoriteBusStops.includes(stop.id)),
+        ),
+      },
+    };
+  }, [busStops, favoriteBusStops]);
 
   const mapRef = React.useRef<MapRef>(null);
 
@@ -126,11 +143,13 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
 
     map.on("move", onMapMove);
     map.on("click", "unclustered-point", onMapClick);
+    map.on("click", "unclustered-point.favorite", onMapClick);
     window.addEventListener("map:fly-to", handleMapFlyTo);
 
     return () => {
       map.off("move", onMapMove);
       map.off("click", "unclustered-point", onMapClick);
+      map.off("click", "unclustered-point.favorite", onMapClick);
       window.removeEventListener("map:fly-to", handleMapFlyTo);
     };
   }, [mapFlyTo, onMapMove, onMapClick]);
@@ -214,11 +233,37 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         </Marker>
       )}
 
-      {/* Draw all bus stop */}
+      {/* Draw favorite bus stops (unclustered) */}
+      {stopsGeojson.favorites && (
+        <Source
+          id="bus-stops.favorite"
+          type="geojson"
+          data={stopsGeojson.favorites}
+        >
+          <Layer
+            id="unclustered-point.favorite"
+            type="circle"
+            source="bus-stops.favorite"
+            paint={{
+              "circle-radius": 10,
+              "circle-color": [
+                "case",
+                ["==", ["get", "id"], selectedStop?.id ?? null],
+                "#6d76aa",
+                "#ffc400",
+              ],
+              "circle-stroke-color": "#fff",
+              "circle-stroke-width": 2,
+            }}
+          />
+        </Source>
+      )}
+
+      {/* Draw all bus stops */}
       <Source
-        id="busStops"
+        id="bus-stops"
         type="geojson"
-        data={stopsGeojson}
+        data={stopsGeojson.all}
         cluster={true}
         clusterMaxZoom={15}
         clusterRadius={30}
@@ -226,7 +271,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         <Layer
           id="clusters"
           type="circle"
-          source="busStops"
+          source="bus-stops"
           filter={["has", "point_count"]}
           paint={{
             "circle-color": [
@@ -252,7 +297,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         <Layer
           id="cluster-count"
           type="symbol"
-          source="busStops"
+          source="bus-stops"
           filter={["has", "point_count"]}
           layout={{
             "text-field": "{point_count_abbreviated}",
@@ -263,7 +308,7 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
         <Layer
           id="unclustered-point"
           type="circle"
-          source="busStops"
+          source="bus-stops"
           filter={["!", ["has", "point_count"]]}
           paint={{
             "circle-radius": 10,

@@ -8,13 +8,13 @@ import {
   busStopToRoute,
   busStopTime,
 } from "@api/db/schema";
+import { citybusClient } from "@api/lib/axios";
 import type {
   BusLine as BusLineType,
   BusStopTrip as BusStopTripType,
   BusStop as BusStopType,
   GetBusLinePointsAPIResponse,
 } from "@api/types/citybus";
-import { citybusClient } from "@api/utils/axios";
 
 export const fetchStaticCitybusFeed = async () => {
   console.log("⏳ Fetching bus lines...");

@@ -9,6 +9,7 @@ import BusStopSearch from "@web/components/ui/bus-stop-search";
 import GraveError from "@web/components/ui/grave-error";
 import Map from "@web/components/ui/map";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
+import { useUser } from "@web/components/user-context";
 import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
 import { useGeolocation } from "@web/hooks/useGeolocation";
 import { trpc } from "@web/lib/trpc";
@@ -20,6 +21,13 @@ function Page() {
   const geolocation = useGeolocation();
 
   const { setSelectedStopId } = useBusStop();
+  const { user } = useUser();
+
+  // Fetch user's favorite bus stops.
+  // We're are going to access these through cache.
+  trpc.busStop.favorites.useQuery(undefined, {
+    enabled: !!user,
+  });
 
   const busStopsQuery = trpc.getBusStops.useQuery();
 
