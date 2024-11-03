@@ -12,6 +12,7 @@ import {
 } from "@web/components/ui/dropdown-menu";
 import { useUser } from "@web/components/user-context";
 import { trpc } from "@web/lib/trpc";
+import { cn } from "@web/lib/utils";
 
 type UserDropdownProps = {
   children: React.ReactNode;
@@ -36,7 +37,11 @@ const UserDropdown = ({ children }: UserDropdownProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger
+        className={cn(user ? "text-zinc-700" : "text-zinc-400")}
+      >
+        {children}
+      </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {user ? (
           <>

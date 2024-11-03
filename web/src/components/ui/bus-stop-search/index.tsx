@@ -153,8 +153,8 @@ const BusStopSearch = ({
           <UserDropdown>
             <div
               className={cn(
-                "scale-100 border-l-2 border-gray-200 opacity-100",
-                focused ? "opacity-0" : "p-2.5",
+                "will-change-opacity scale-100 border-l-2 border-gray-200 transition-opacity duration-300 ease-out",
+                focused ? "opacity-0" : "p-2.5 opacity-100",
               )}
             >
               <CircleUserRound size={focused ? 0 : 24} />
