@@ -68,7 +68,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                       {loading && (
                         <Spinner
                           size="default"
-                          className={cn(children && "mr-2")}
+                          className={cn(size !== "icon" && children && "mr-2")}
                         />
                       )}
                       {
@@ -94,7 +94,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         <>
           {loading && (
-            <Spinner size="default" className={cn(children && "mr-2")} />
+            <Spinner
+              size="default"
+              className={cn(size !== "icon" && children && "mr-2")}
+            />
           )}
           {children}
         </>

@@ -13,6 +13,8 @@ import { trpc } from "@web/lib/trpc";
 import { cn } from "@web/lib/utils";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
+import FavoriteButton from "@web/components/ui/bus-stop-drawer/action-button/favorite";
+import { useUser } from "@web/components/user-context";
 
 const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 
@@ -27,6 +29,7 @@ const BusStopContent = ({
   isFullyOpen,
   onBusVehicleClick: handleBusVehicleClick,
 }: BusStopContentProps) => {
+  const { user } = useUser();
   const { selectedStop, setLiveBusCoordinates } = useBusStop();
 
   const [viewMode, setViewMode] = React.useState<ViewMode>("live");
@@ -174,12 +177,9 @@ const BusStopContent = ({
             isCompact={!isFullyOpen}
             onClick={onViewModeToggle}
           />
-          <ActionButton
-            icon={<Star size={18} className="text-yellow-400" />}
-            label={"Προσθήκη στα αγαπημένα"}
-            isCompact={!isFullyOpen}
-            onClick={() => {}}
-          />
+          {user && (
+            <FavoriteButton isFullyOpen={isFullyOpen} busStop={selectedStop} />
+          )}
         </div>
       </div>
       <div

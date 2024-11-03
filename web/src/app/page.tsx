@@ -13,6 +13,7 @@ import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
 import { useGeolocation } from "@web/hooks/useGeolocation";
 import { trpc } from "@web/lib/trpc";
 import { type MapFlyToDetail } from "@web/types/events";
+import { useUser } from "@web/components/user-context";
 
 function Page() {
   useCaptureAnalytics();
@@ -20,6 +21,13 @@ function Page() {
   const geolocation = useGeolocation();
 
   const { setSelectedStopId } = useBusStop();
+  const { user } = useUser();
+
+  // Fetch user's favorite bus stops.
+  // We're are going to access these through cache.
+  trpc.busStop.favorites.useQuery(undefined, {
+    enabled: !!user,
+  });
 
   const busStopsQuery = trpc.getBusStops.useQuery();
 
