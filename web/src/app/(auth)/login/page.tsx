@@ -1,5 +1,6 @@
 import { type Metadata } from "next";
 
+import ErrorMessage from "@web/app/(auth)/login/_components/error-message";
 import OAuthButton from "@web/app/(auth)/login/_components/oauth-button";
 import {
   Card,
@@ -26,6 +27,7 @@ const Page = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
+        <ErrorMessage />
         <div>
           <OAuthButton providerId="google" providerName="Google" />
         </div>

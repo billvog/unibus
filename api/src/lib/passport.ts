@@ -81,7 +81,10 @@ export function addPassport(app: Express) {
   app.get(
     "/oauth/google/callback",
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    passport.authenticate("google", { session: false }),
+    passport.authenticate("google", {
+      session: false,
+      failureRedirect: `${env.FRONTEND_URL}/login?status=failed`,
+    }),
     function (req, res) {
       // Send auth cookies and redirect to frontend.
       sendAuthCookies(res, req.user as DbUser);
