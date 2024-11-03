@@ -2,11 +2,11 @@
 
 import { CircleAlert } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 
 import { Alert, AlertTitle, AlertDescription } from "@web/components/ui/alert";
 
-const ErrorMessage = () => {
+function Message() {
   const searchParams = useSearchParams();
   const status = searchParams.get("status");
 
@@ -23,6 +23,14 @@ const ErrorMessage = () => {
   }
 
   return null;
+}
+
+const ErrorMessage = () => {
+  return (
+    <Suspense>
+      <Message />
+    </Suspense>
+  );
 };
 
 export default ErrorMessage;
