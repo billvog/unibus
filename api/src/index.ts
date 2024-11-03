@@ -13,6 +13,7 @@ import { db } from "@api/db";
 import { env } from "@api/env";
 import { IsProd } from "@api/lib/constants";
 import { addPassport } from "@api/lib/passport";
+import { posthog } from "@api/lib/posthog";
 import { registerCronJobs } from "@api/lib/register-cron-jobs";
 
 const __dirname = import.meta.dirname;
@@ -66,9 +67,25 @@ async function main() {
   addPassport(app);
 
   // Start the server
-  app.listen(env.PORT, () => {
+  const server = app.listen(env.PORT, () => {
     console.log(`🚀 Server started at ${env.PORT}`);
   });
+
+  // Register shutdown handlers.
+  async function handleExit() {
+    // Shutdown PostHog
+    await posthog.shutdown();
+    // Close the server, and exit the process.
+    server.close(() => {
+      process.exit(0);
+    });
+  }
+
+  /* eslint-disable @typescript-eslint/no-misused-promises */
+  process.on("SIGINT", handleExit);
+  process.on("SIGQUIT", handleExit);
+  process.on("SIGTERM", handleExit);
+  /* eslint-enable @typescript-eslint/no-misused-promises */
 }
 
 void main();

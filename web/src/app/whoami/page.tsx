@@ -1,10 +1,11 @@
+import { type Metadata } from "next";
+
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@web/components/ui/card";
-import { Metadata } from "next";
 
 const description =
   "Τι είναι το Unibus και ποιός είναι ο δημιουργός του; Μάθε περισσότερα για τον Vasilis Voyiadjis.";

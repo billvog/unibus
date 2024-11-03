@@ -4,7 +4,11 @@ export const Shortcuts = {
 
 export const Events = {
   Analytics: {
+    LoginClick: "login click",
+    Logout: "logout",
+    OAuthLoginClick: "oauth login click",
     BusStopClick: "bus stop click",
+    BusStopFavorite: "bus stop favorite",
     BusVehicleClick: "bus vehicle click",
     MapResetZoom: "map reset zoom",
     GeolocationPrompt: "geolocation prompt",

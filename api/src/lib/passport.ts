@@ -6,6 +6,7 @@ import { db } from "@api/db";
 import { user, userAccount } from "@api/db/schema";
 import { env } from "@api/env";
 import { sendAuthCookies } from "@api/lib/auth-tokens";
+import { posthog } from "@api/lib/posthog";
 import { DbUser } from "@api/types/models";
 
 export function addPassport(app: Express) {
@@ -86,8 +87,22 @@ export function addPassport(app: Express) {
       failureRedirect: `${env.FRONTEND_URL}/login?status=failed`,
     }),
     function (req, res) {
+      // Get user from request.
+      const user = req.user as DbUser;
+
+      // Capture event.
+      posthog.capture({
+        distinctId: user.id,
+        event: "user login",
+        properties: {
+          providerId: "google",
+        },
+      });
+
       // Send auth cookies and redirect to frontend.
-      sendAuthCookies(res, req.user as DbUser);
+      sendAuthCookies(res, user);
+
+      // Redirect to frontend.
       res.redirect(env.FRONTEND_URL);
     }
   );

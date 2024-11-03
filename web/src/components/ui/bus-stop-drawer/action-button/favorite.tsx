@@ -4,6 +4,7 @@ import React from "react";
 import { toast } from "sonner";
 
 import ActionButton from "@web/components/ui/bus-stop-drawer/action-button";
+import { Events } from "@web/lib/constants";
 import { trpc } from "@web/lib/trpc";
 
 type FavoriteButtonProps = {
@@ -20,6 +21,18 @@ const FavoriteButton = ({ isFullyOpen, busStop }: FavoriteButtonProps) => {
 
   const favoriteMutation = trpc.busStop.favorite.useMutation({
     onSuccess: () => {
+      // Capture event
+      window.dispatchEvent(
+        new CustomEvent(Events.Analytics.BusStopFavorite, {
+          detail: {
+            busStop: {
+              id: busStop.id,
+            },
+            favorite: !favorite,
+          },
+        }),
+      );
+
       // Update cache
       favorites.setData(undefined, (prev) => {
         if (!prev) return [busStop.id];
