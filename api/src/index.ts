@@ -41,6 +41,7 @@ async function main() {
     cors({
       maxAge: IsProd ? 86400 : undefined,
       origin: env.FRONTEND_URL,
+      credentials: true,
     })
   );
 

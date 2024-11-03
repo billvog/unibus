@@ -1,5 +1,6 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
+import superjson from "superjson";
 
 import {
   checkTokens,
@@ -18,7 +19,9 @@ type Context = Awaited<
   ReturnType<typeof createContext> & { userId: string; maybeUser?: DbUser }
 >;
 
-export const t = initTRPC.context<Context>().create();
+export const t = initTRPC.context<Context>().create({
+  transformer: superjson,
+});
 
 export const publicProcedure = t.procedure;
 
