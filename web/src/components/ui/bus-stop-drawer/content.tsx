@@ -1,20 +1,19 @@
-import { Star } from "lucide-react";
 import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import ActionButton from "@web/components/ui/bus-stop-drawer/action-button";
+import FavoriteButton from "@web/components/ui/bus-stop-drawer/action-button/favorite";
 import BusStopSchedule from "@web/components/ui/bus-stop-schedule";
 import BusVehicle from "@web/components/ui/bus-vehicle";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { Spinner } from "@web/components/ui/spinner";
+import { useUser } from "@web/components/user-context";
 import { Events } from "@web/lib/constants";
 import { PrettifyName } from "@web/lib/prettify-name";
 import { trpc } from "@web/lib/trpc";
 import { cn } from "@web/lib/utils";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
-import FavoriteButton from "@web/components/ui/bus-stop-drawer/action-button/favorite";
-import { useUser } from "@web/components/user-context";
 
 const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 

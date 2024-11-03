@@ -1,4 +1,5 @@
-import { LogIn, LogOut, UserRound } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { LogIn, LogOut } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { toast } from "sonner";
@@ -21,13 +22,11 @@ type UserDropdownProps = {
 const UserDropdown = ({ children }: UserDropdownProps) => {
   const { user } = useUser();
 
-  const {
-    user: { me },
-  } = trpc.useUtils();
+  const queryClient = useQueryClient();
 
   const logoutMutation = trpc.user.logout.useMutation({
     onSuccess: () => {
-      void me.reset();
+      void queryClient.resetQueries();
       toast.success("Επιτυχής αποσύνδεση");
     },
     onError: () => {
@@ -46,14 +45,9 @@ const UserDropdown = ({ children }: UserDropdownProps) => {
         {user ? (
           <>
             <DropdownMenuItem asChild>
-              <Link href="/profile">
-                <UserRound />
-                Προφίλ
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
               <Button
                 variant="ghost"
+                className="w-full justify-start"
                 disabled={logoutMutation.isPending}
                 onClick={() => logoutMutation.mutate()}
               >

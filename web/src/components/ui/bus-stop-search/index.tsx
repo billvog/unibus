@@ -4,6 +4,7 @@ import { CircleUserRound, CircleX } from "lucide-react";
 import React from "react";
 import { useDebounce } from "use-debounce";
 
+import { useBusStop } from "@web/components/bus-stop-context";
 import BusStop from "@web/components/ui/bus-stop";
 import UserDropdown from "@web/components/ui/bus-stop-search/user-dropdown";
 import { Input } from "@web/components/ui/input";
@@ -20,6 +21,8 @@ const BusStopSearch = ({
   onBusStopClick: handleBusStopClick,
 }: BusStopsSearchProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const { setSelectedStopId } = useBusStop();
 
   const [show, setShow] = React.useState(true);
   const [focused, setFocused] = React.useState(false);
@@ -60,6 +63,8 @@ const BusStopSearch = ({
   }, []);
 
   const openSearch = React.useCallback(() => {
+    // Reset selected stop
+    setSelectedStopId(null);
     // Enter focused state
     setFocused(true);
     // Wait for the animation to finish, then focus the input
@@ -138,7 +143,7 @@ const BusStopSearch = ({
             {/* Search Close Button */}
             {focused && query.length > 0 && (
               <button
-                className="absolute bottom-0 right-0 top-0 my-1 mr-4 flex items-center justify-center rounded-full p-1 text-gray-400"
+                className="absolute bottom-0 right-0 top-0 my-1 mr-3 flex items-center justify-center rounded-full p-1 text-gray-400"
                 onClick={() => {
                   setQuery("");
                   setFocused(false);

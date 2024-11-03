@@ -1,9 +1,10 @@
-import { DbBusStop } from "@api/types/models";
-import ActionButton from "@web/components/ui/bus-stop-drawer/action-button";
-import { trpc } from "@web/lib/trpc";
+import { type DbBusStop } from "@api/types/models";
 import { Star } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
+
+import ActionButton from "@web/components/ui/bus-stop-drawer/action-button";
+import { trpc } from "@web/lib/trpc";
 
 type FavoriteButtonProps = {
   isFullyOpen: boolean;
