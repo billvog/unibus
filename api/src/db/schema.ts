@@ -154,12 +154,35 @@ export const busStopToRoute = pgTable(
 
 /* 
   ┌─────────────────────────────────────────────────────────────────────────┐
+  │ User <-> Bus Models                                                     │
+  └─────────────────────────────────────────────────────────────────────────┘
+ */
+
+export const userFavoriteBusStop = pgTable(
+  "user_favorite_bus_stop",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    stopId: integer("stop_id")
+      .notNull()
+      .references(() => busStop.id, { onDelete: "cascade" }),
+    ...timestamps,
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.userId, t.stopId] }),
+  })
+);
+
+/* 
+  ┌─────────────────────────────────────────────────────────────────────────┐
   │ User Relations                                                          │
   └─────────────────────────────────────────────────────────────────────────┘
  */
 
 export const userRelations = relations(user, ({ many }) => ({
   userAccounts: many(userAccount),
+  favoriteBusStops: many(userFavoriteBusStop),
 }));
 
 export const userAccountRelations = relations(userAccount, ({ one }) => ({
