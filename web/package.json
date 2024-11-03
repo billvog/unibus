@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prebuild": "pnpm lint",
     "build": "next build",
     "dev": "next dev --turbo",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
