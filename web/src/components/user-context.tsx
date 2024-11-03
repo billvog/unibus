@@ -1,3 +1,5 @@
+"use client";
+
 import type { DbUser } from "@api/types/models";
 import posthog from "posthog-js";
 import React, { createContext, useContext, useState } from "react";
