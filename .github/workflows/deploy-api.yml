@@ -8,6 +8,7 @@ on:
     paths:
       - .github/workflows/deploy-api.yml
       - "api/**"
+      - .env.example
       - .dockerignore
       - Dockerfile
       - package.json
