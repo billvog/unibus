@@ -1,10 +1,12 @@
 "use client";
 
-import { CircleX } from "lucide-react";
+import { CircleUserRound, CircleX } from "lucide-react";
 import React from "react";
 import { useDebounce } from "use-debounce";
 
+import { useBusStop } from "@web/components/bus-stop-context";
 import BusStop from "@web/components/ui/bus-stop";
+import UserDropdown from "@web/components/ui/bus-stop-search/user-dropdown";
 import { Input } from "@web/components/ui/input";
 import { useKeyPress } from "@web/hooks/useKeyPress";
 import { Events, Shortcuts } from "@web/lib/constants";
@@ -19,6 +21,8 @@ const BusStopSearch = ({
   onBusStopClick: handleBusStopClick,
 }: BusStopsSearchProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const { setSelectedStopId } = useBusStop();
 
   const [show, setShow] = React.useState(true);
   const [focused, setFocused] = React.useState(false);
@@ -58,6 +62,19 @@ const BusStopSearch = ({
     };
   }, []);
 
+  const openSearch = React.useCallback(() => {
+    // Reset selected stop
+    setSelectedStopId(null);
+    // Enter focused state
+    setFocused(true);
+    // Wait for the animation to finish, then focus the input
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 300);
+  }, []);
+
   const closeSearch = React.useCallback(() => {
     setFocused(false);
     setQuery("");
@@ -94,43 +111,66 @@ const BusStopSearch = ({
     <>
       <div
         className={cn(
-          "will-change-opacity absolute bottom-0 left-0 right-0 top-0 bg-black/20 backdrop-blur-sm transition-[opacity] duration-500 ease-out",
+          "will-change-opacity absolute bottom-0 left-0 right-0 top-0 bg-black/20 backdrop-blur-sm transition-[opacity] duration-300 ease-out",
           focused ? "z-20 opacity-100" : "-z-10 opacity-0",
         )}
       />
       <div className="absolute left-0 right-0 top-0 z-30 mx-4 my-8 flex flex-col items-center justify-center gap-8">
         <div
           className={cn(
-            "relative w-full max-w-lg transition-[transform,opacity] duration-500 ease-out will-change-transform",
-            show ? "scale-95 opacity-80" : "scale-90 opacity-0",
-            focused && "scale-100 opacity-100",
+            "flex w-full max-w-lg items-center gap-4 rounded-xl bg-white ring-1 ring-gray-200 transition-[transform,opacity,gap] duration-300 ease-out will-change-transform",
+            show ? "scale-95 opacity-95" : "scale-90 opacity-0",
+            focused && "scale-100 gap-0 ring-0",
           )}
         >
-          <Input
-            ref={inputRef}
-            placeholder="Αναζήτηση στάσης... 🔍"
-            onFocus={() => setFocused(true)}
-            onBlur={() => query.length === 0 && setFocused(false)}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          {focused && query.length > 0 && (
-            <button
-              className="absolute bottom-0 right-0 top-0 my-1 mr-2 flex items-center justify-center rounded-full p-1 text-gray-400"
-              onClick={() => {
-                setQuery("");
-                setFocused(false);
-              }}
+          <div className="relative w-full rounded-lg p-1">
+            {/* To fight with the animation glitch on mobile devices. */}
+            {!focused && (
+              <div
+                className="absolute bottom-0 left-0 right-0 top-0 z-20 cursor-text"
+                onClick={openSearch}
+              />
+            )}
+            {/* Search Input */}
+            <Input
+              ref={inputRef}
+              placeholder="Αναζήτηση στάσης... 🔍"
+              onFocus={() => setFocused(true)}
+              onBlur={() => query.length === 0 && setFocused(false)}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {/* Search Close Button */}
+            {focused && query.length > 0 && (
+              <button
+                className="absolute bottom-0 right-0 top-0 my-1 mr-3 flex items-center justify-center rounded-full p-1 text-gray-400"
+                onClick={() => {
+                  setQuery("");
+                  setFocused(false);
+                }}
+              >
+                <CircleX size={18} />
+              </button>
+            )}
+          </div>
+
+          {/* User Account */}
+          <UserDropdown>
+            <div
+              className={cn(
+                "will-change-opacity scale-100 border-l-2 border-gray-200 transition-opacity duration-300 ease-out",
+                focused ? "opacity-0" : "p-2.5 opacity-100",
+              )}
             >
-              <CircleX size={18} />
-            </button>
-          )}
+              <CircleUserRound size={focused ? 0 : 24} />
+            </div>
+          </UserDropdown>
         </div>
 
         {busStops.length > 0 ? (
           <div
             className={cn(
-              "w-full max-w-lg transition-[transform,opacity] duration-500 ease-out will-change-transform",
+              "w-full max-w-lg transition-[transform,opacity] duration-300 ease-out will-change-transform",
               focused ? "scale-100 opacity-100" : "scale-90 opacity-0",
             )}
           >

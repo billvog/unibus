@@ -1,11 +1,13 @@
 import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
+import ActionButton from "@web/components/ui/bus-stop-drawer/action-button";
+import FavoriteButton from "@web/components/ui/bus-stop-drawer/action-button/favorite";
 import BusStopSchedule from "@web/components/ui/bus-stop-schedule";
 import BusVehicle from "@web/components/ui/bus-vehicle";
-import { Button } from "@web/components/ui/button";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { Spinner } from "@web/components/ui/spinner";
+import { useUser } from "@web/components/user-context";
 import { Events } from "@web/lib/constants";
 import { PrettifyName } from "@web/lib/prettify-name";
 import { trpc } from "@web/lib/trpc";
@@ -18,14 +20,15 @@ const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 type ViewMode = "live" | "schedule";
 
 type BusStopContentProps = {
-  canScroll: boolean;
+  isFullyOpen: boolean;
   onBusVehicleClick: () => void;
 };
 
 const BusStopContent = ({
-  canScroll,
+  isFullyOpen,
   onBusVehicleClick: handleBusVehicleClick,
 }: BusStopContentProps) => {
+  const { user } = useUser();
   const { selectedStop, setLiveBusCoordinates } = useBusStop();
 
   const [viewMode, setViewMode] = React.useState<ViewMode>("live");
@@ -154,22 +157,34 @@ const BusStopContent = ({
 
   return (
     <>
-      <div className="flex items-center gap-4 border-b-2 border-gray-100 px-10 pb-4 pt-8">
+      <div
+        className={cn(
+          "flex border-b-2 border-gray-100 px-10 pb-4 pt-8",
+          isFullyOpen ? "flex-col items-start gap-2" : "items-center gap-4",
+        )}
+      >
         <DynamicTitle title={prettyStopName} onClick={onBusStopNameClick} />
-        <Button
-          size="sm"
-          variant="outline"
-          className="gap-2"
-          onClick={onViewModeToggle}
+        <div
+          className={cn(
+            "flex items-center gap-2",
+            isFullyOpen && "w-full overflow-x-auto",
+          )}
         >
-          <span>{viewMode === "live" ? "🗓️" : "🚍"}</span>
-          <span>{viewMode === "live" ? "Πρόγραμμα" : "Τώρα"}</span>
-        </Button>
+          <ActionButton
+            icon={<span>{viewMode === "live" ? "🗓️" : "🚍"}</span>}
+            label={viewMode === "live" ? "Πρόγραμμα" : "Τώρα"}
+            isCompact={!isFullyOpen}
+            onClick={onViewModeToggle}
+          />
+          {user && (
+            <FavoriteButton isFullyOpen={isFullyOpen} busStop={selectedStop} />
+          )}
+        </div>
       </div>
       <div
         className={cn(
           "flex h-full flex-col gap-4 px-10 pb-8 pt-5",
-          canScroll && "no-scrollbar overflow-y-auto",
+          isFullyOpen && "no-scrollbar overflow-y-auto",
         )}
       >
         {/* Bus Live */}

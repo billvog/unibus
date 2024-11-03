@@ -18,6 +18,7 @@ const marketing = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://unibus.gr"),
   title: marketing.title,
   description: marketing.description,
   icons: [{ rel: "icon", url: "/favicon.ico" }],

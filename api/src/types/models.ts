@@ -8,7 +8,27 @@ import {
   busStopTime,
   busStopToLine,
   busStopToRoute,
+  user,
+  userAccount,
 } from "@api/db/schema";
+
+/* 
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │ User Model Types                                                        │
+  └─────────────────────────────────────────────────────────────────────────┘
+ */
+
+export type DbUser = InferSelectModel<typeof user>;
+
+export type DbUserAccount = InferSelectModel<typeof userAccount> & {
+  user: DbUser;
+};
+
+/* 
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │ Bus Model Types                                                         │
+  └─────────────────────────────────────────────────────────────────────────┘
+ */
 
 export type DbBusLine = InferSelectModel<typeof busLine>;
 

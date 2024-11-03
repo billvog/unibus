@@ -1,15 +1,12 @@
 import axios, { AxiosError } from "axios";
 import rateLimit from "axios-rate-limit";
 
-import {
-  generateCitybusToken,
-  getCitybusToken,
-} from "@api/utils/citybus/token";
-import { CITYBUS_API_URL } from "@api/utils/constants";
+import { generateCitybusToken, getCitybusToken } from "@api/lib/citybus/token";
+import { GetCitybusAPIURL } from "@api/lib/constants";
 
 const citybusClient = rateLimit(
   axios.create({
-    baseURL: CITYBUS_API_URL(114),
+    baseURL: GetCitybusAPIURL(114),
   }),
   // Rate limit to 3 requests per second.
   // This is to prevent abuse of Citybus API.

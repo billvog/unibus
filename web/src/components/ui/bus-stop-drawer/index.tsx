@@ -68,14 +68,14 @@ const BusStop = () => {
           <div className={"relative flex h-full flex-col"}>
             {/* Resize Handle */}
             <div className="absolute top-2 h-1 w-12 flex-shrink-0 self-center rounded-full bg-gray-200" />
-            {/* Close Buttons */}
+            {/* Close Button */}
             <div className="absolute right-0 top-0 p-4 text-gray-400">
               <X className="cursor-pointer" onClick={onCloseClick} />
             </div>
             {/* Content */}
             <BusStopContent
               onBusVehicleClick={onBusVehicleClick}
-              canScroll={snap === 1}
+              isFullyOpen={snap === 1}
             />
           </div>
         </Drawer.Content>

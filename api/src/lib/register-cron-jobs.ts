@@ -1,14 +1,12 @@
 import cron from "node-cron";
 
-import { fetchStaticCitybusFeed } from "@api/utils/citybus/fetch-static-feed";
-import { generateCitybusToken } from "@api/utils/citybus/token";
+import { fetchStaticCitybusFeed } from "@api/lib/citybus/fetch-static-feed";
+import { generateCitybusToken } from "@api/lib/citybus/token";
 
-export const registerCronJobs = async () => {
-  // Generate a new Citybus token on startup
-  await generateCitybusToken();
-
+export const registerCronJobs = () => {
   // Generate a new Citybus token every day at midnight
   cron.schedule("0 0 * * *", () => void generateCitybusToken(), {
+    runOnInit: true,
     name: "generate-citybus-token",
     timezone: "Europe/Athens",
   });
@@ -17,5 +15,6 @@ export const registerCronJobs = async () => {
   cron.schedule("0 0 1 * *", () => void fetchStaticCitybusFeed(), {
     name: "fetch-static-citybus-feed",
     timezone: "Europe/Athens",
+    scheduled: false, // disable for now
   });
 };

@@ -9,9 +9,11 @@ import { httpLink } from "@trpc/client";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 import React from "react";
+import superjson from "superjson";
 
 import { BusStopProvider } from "@web/components/bus-stop-context";
 import { Toaster } from "@web/components/ui/sonner";
+import { UserProvider } from "@web/components/user-context";
 import { env } from "@web/env";
 import { trpc } from "@web/lib/trpc";
 
@@ -47,10 +49,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       links: [
         httpLink({
           url: `${env.NEXT_PUBLIC_API_URL}/trpc`,
-          headers() {
-            const headers = new Headers();
-            headers.set("x-trpc-source", "nextjs-react");
-            return headers;
+          transformer: superjson,
+          fetch(url, options) {
+            return fetch(url, {
+              ...options,
+              credentials: "include",
+            });
           },
         }),
       ],
@@ -75,12 +79,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <PostHogProvider client={posthog}>
-          <BusStopProvider>
-            {children}
-            <Toaster richColors />
-          </BusStopProvider>
-        </PostHogProvider>
+        <UserProvider>
+          <PostHogProvider client={posthog}>
+            <BusStopProvider>
+              {children}
+              <Toaster richColors />
+            </BusStopProvider>
+          </PostHogProvider>
+        </UserProvider>
       </trpc.Provider>
     </QueryClientProvider>
   );

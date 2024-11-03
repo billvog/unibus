@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { CITYBUS_WEBSITE_URL } from "@api/utils/constants";
+import { GetCitybusWebsiteURL } from "@api/lib/constants";
 
 let citybusToken = "";
 
@@ -13,7 +13,7 @@ export const setCitybusToken = (token: string) => {
 export const generateCitybusToken = async () => {
   console.log("Generating new Citybus token...");
 
-  const url = `${CITYBUS_WEBSITE_URL("lamia")}/stops`;
+  const url = `${GetCitybusWebsiteURL("lamia")}/stops`;
 
   try {
     const response = await axios.get(url);
