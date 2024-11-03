@@ -6,6 +6,7 @@ import React from "react";
 
 import { Button } from "@web/components/ui/button";
 import { env } from "@web/env";
+import { Events } from "@web/lib/constants";
 
 type OAuthButtonProps = {
   providerId: string;
@@ -21,7 +22,14 @@ const OAuthButton = ({ providerId, providerName }: OAuthButtonProps) => {
         variant="outline"
         className="w-full space-x-2"
         loading={isLoading}
-        onClick={() => setIsLoading(true)}
+        onClick={() => {
+          // Set loading state.
+          setIsLoading(true);
+          // Capture event.
+          window.dispatchEvent(
+            new CustomEvent(Events.Analytics.OAuthLoginClick),
+          );
+        }}
       >
         <Image
           src={`/icons/${providerId}.svg`}

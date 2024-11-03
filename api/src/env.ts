@@ -24,6 +24,9 @@ export const env = createEnv({
     OAUTH_GOOGLE_CLIENT_ID: z.string(),
     OAUTH_GOOGLE_CLIENT_SECRET: z.string(),
     OAUTH_GOOGLE_SCOPES: z.string(),
+    // PostHog
+    POSTHOG_KEY: z.string().optional(),
+    POSTHOG_HOST: z.string().optional(),
   },
 
   /**

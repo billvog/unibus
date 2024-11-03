@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@web/components/ui/dropdown-menu";
 import { useUser } from "@web/components/user-context";
+import { Events } from "@web/lib/constants";
 import { trpc } from "@web/lib/trpc";
 import { cn } from "@web/lib/utils";
 
@@ -26,7 +27,11 @@ const UserDropdown = ({ children }: UserDropdownProps) => {
 
   const logoutMutation = trpc.user.logout.useMutation({
     onSuccess: () => {
+      // Capture event.
+      window.dispatchEvent(new CustomEvent(Events.Analytics.Logout));
+      // Reset all cache.
       void queryClient.resetQueries();
+      // Show success message.
       toast.success("Επιτυχής αποσύνδεση");
     },
     onError: () => {
@@ -57,7 +62,15 @@ const UserDropdown = ({ children }: UserDropdownProps) => {
             </DropdownMenuItem>
           </>
         ) : (
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem
+            asChild
+            onClick={() => {
+              // Capture event.
+              window.dispatchEvent(
+                new CustomEvent(Events.Analytics.LoginClick),
+              );
+            }}
+          >
             <Link href="/login">
               <LogIn />
               Σύνδεση
