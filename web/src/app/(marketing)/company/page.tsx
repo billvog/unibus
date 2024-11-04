@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const Page = () => {
   return (
-    <div className="container space-y-20 text-center">
+    <div className="container space-y-20 py-20 text-center">
       <div>
         <h1 className="text-7xl font-black leading-relaxed tracking-wide">
           unibus
