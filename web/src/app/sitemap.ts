@@ -17,7 +17,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
     {
-      url: `${url}/whoami`,
+      url: `${url}/company`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${url}/company/whoami`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${url}/company/privacy-policy`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.5,

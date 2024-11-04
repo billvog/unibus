@@ -6,7 +6,7 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="brand-gradient flex min-h-screen items-center justify-center p-4">
+    <div className="brand-gradient flex min-h-screen items-center justify-center">
       {children}
     </div>
   );
