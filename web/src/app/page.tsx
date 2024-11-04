@@ -10,6 +10,7 @@ import GraveError from "@web/components/ui/grave-error";
 import Map from "@web/components/ui/map";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
+import { useBodyScroll } from "@web/hooks/useBodyScroll";
 import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
 import { useGeolocation } from "@web/hooks/useGeolocation";
 import { trpc } from "@web/lib/trpc";
@@ -17,6 +18,7 @@ import { type MapFlyToDetail } from "@web/types/events";
 
 function Page() {
   useCaptureAnalytics();
+  useBodyScroll(true); // disable scroll
 
   const geolocation = useGeolocation();
 

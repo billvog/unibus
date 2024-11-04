@@ -167,7 +167,7 @@ const BusStopContent = ({
         <div
           className={cn(
             "flex items-center gap-2",
-            isFullyOpen && "w-full overflow-x-auto",
+            isFullyOpen && "no-scrollbar w-full overflow-x-auto",
           )}
         >
           <ActionButton
