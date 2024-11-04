@@ -1,8 +1,15 @@
+import { type Metadata } from "next";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy ― unibus",
+  description:
+    "Read unibus' privacy policy to learn how we handle your data. We promise to keep it safe and secure 🔒",
+};
 
 const Page = () => {
   return (
-    <div className="prose mx-auto h-screen overflow-y-auto p-10">
+    <div className="prose mx-auto h-screen overflow-y-auto bg-white p-10">
       <h1>Privacy Policy</h1>
       <p>Last updated: November 03, 2024</p>
       <p>

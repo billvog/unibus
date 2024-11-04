@@ -1,4 +1,5 @@
 import { type Metadata } from "next";
+import Link from "next/link";
 
 import ErrorMessage from "@web/app/(auth)/login/_components/error-message";
 import OAuthButton from "@web/app/(auth)/login/_components/oauth-button";
@@ -30,6 +31,16 @@ const Page = () => {
         <ErrorMessage />
         <div>
           <OAuthButton providerId="google" providerName="Google" />
+        </div>
+        <div className="text-center">
+          <Link
+            className="link space-x-2 space-y-1 text-xs"
+            href="/company/privacy-policy"
+            target="_blank"
+          >
+            <span>🕵️‍♂️</span>
+            <span>Πολιτική απορρήτου. Πώς χρησιμοποιούμε τα δεδομένα σου.</span>
+          </Link>
         </div>
       </CardContent>
     </Card>

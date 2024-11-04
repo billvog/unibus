@@ -7,6 +7,15 @@ export default {
   darkMode: ["class"],
   content: ["./src/**/*.tsx"],
   theme: {
+    container: {
+      center: true,
+      padding: "1rem",
+      screens: {
+        sm: "100%",
+        md: "100%",
+        lg: "800px",
+      },
+    },
     extend: {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],

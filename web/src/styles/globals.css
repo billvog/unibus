@@ -88,4 +88,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .brand-gradient {
+    @apply bg-gradient-to-tr from-[#52BBD6]/30 from-5% via-white via-50% to-[#ff0000]/15;
+  }
 }
