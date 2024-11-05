@@ -12,9 +12,9 @@ import {
 } from "@web/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Συνδέσου ― Unibus",
+  title: "Συνδέσου ― unibus",
   description:
-    "Συνδέσου στο Unibus για να ξεκλειδώσεις εξατομικευμένες λειτουργίες που κάνουν τις μετακινήσεις σου πιο ομαλές.",
+    "Συνδέσου στο unibus για να ξεκλειδώσεις εξατομικευμένες λειτουργίες που κάνουν τις μετακινήσεις σου πιο ομαλές.",
 };
 
 const Page = () => {
@@ -32,14 +32,17 @@ const Page = () => {
         <div>
           <OAuthButton providerId="google" providerName="Google" />
         </div>
-        <div className="text-center">
+        <div className="w-fit">
           <Link
-            className="link space-x-2 space-y-1 text-xs"
+            className="group flex items-center gap-3 text-xs"
             href="/company/privacy-policy"
             target="_blank"
           >
-            <span>🕵️‍♂️</span>
-            <span>Πολιτική απορρήτου. Πώς χρησιμοποιούμε τα δεδομένα σου.</span>
+            <div className="text-base">🕵️‍♂️</div>
+            <div className="link flex flex-col group-hover:underline">
+              <span>Πολιτική απορρήτου.</span>
+              <span>Πώς χρησιμοποιούμε τα δεδομένα σου.</span>
+            </div>
           </Link>
         </div>
       </CardContent>

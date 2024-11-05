@@ -1,11 +1,11 @@
 <p>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://github.com/billvog/unibus/blob/main/web/public/og-image-dark.png">
-    <img src="https://github.com/billvog/unibus/blob/main/web/public/og-image.png" alt="Unibus: Public transit, without the buzz." />
+    <img src="https://github.com/billvog/unibus/blob/main/web/public/og-image.png" alt="unibus: Public transit, without the buzz." />
   </picture>
 </p>
 
-Unibus focuses on Greece's public transit network, to help people move throughout the city with ease and speed.
+**unibus** focuses on Greece's public transit network, to help people move throughout the city with ease and speed.
 
 We make the hard work of assembling the puzzle to get from point A to point B, while combining transit, and we make it look stupidly easy.
 

@@ -13,8 +13,8 @@ const inter = Inter({
 });
 
 const marketing = {
-  title: "Unibus: Βρες το δρομολόγιο που σε ενδιαφέρει",
-  description: "Μέσα μαζικής μεταφοράς, χωρίς την ταλαιπωρία ― Με το Unibus.",
+  title: "unibus ― Βρες το δρομολόγιο που σε ενδιαφέρει",
+  description: "Μέσα μαζικής μεταφοράς, χωρίς την ταλαιπωρία ― Με το unibus.",
 };
 
 export const metadata: Metadata = {
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     "city bus",
     "public transport",
     "bus schedules",
-    "Unibus",
+    "unibus",
     "αστικο",
     "λαμια",
     "δρομολογια",
@@ -83,7 +83,7 @@ export default function RootLayout({
           sizes="180x180"
           href="/apple-touch-icon.png"
         />
-        <meta name="apple-mobile-web-app-title" content="Unibus" />
+        <meta name="apple-mobile-web-app-title" content="unibus" />
         <link
           href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css"
           rel="stylesheet"
