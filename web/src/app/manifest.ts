@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Unibus",
-    short_name: "Unibus",
-    description: "Βρες το δρομολόγιο που σε ενδιαφέρει",
+    name: "unibus",
+    short_name: "unibus",
+    description: "Μέσα μαζικής μεταφοράς, χωρίς την ταλαιπωρία",
     start_url: "/",
     theme_color: "#000000",
     background_color: "#ffffff",

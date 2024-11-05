@@ -12,7 +12,7 @@ const description =
   "Find out more about the creator of unibus, Vasilis Voyiadjis.";
 
 export const metadata: Metadata = {
-  title: "Who am I? - unibus",
+  title: "unibus, the creator.",
   description,
   twitter: {
     description,
