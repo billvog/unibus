@@ -39,6 +39,7 @@ export const BusStopProvider = ({
   const [selectedStopId, setSelectedStopId] = useState<DbBusStop["id"] | null>(
     null,
   );
+
   const [liveBusCoordinates, setLiveBusCoordinates] =
     useState<Coordinates | null>(null);
 

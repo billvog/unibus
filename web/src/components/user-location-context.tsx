@@ -1,10 +1,10 @@
 "use client";
 
 import React, { createContext, useContext } from "react";
+import { toast } from "sonner";
 
 import { useGeolocation } from "@web/hooks/useGeolocation";
-import { Coordinates } from "@web/types/coordinates";
-import { toast } from "sonner";
+import { type Coordinates } from "@web/types/coordinates";
 
 interface UserLocationContextType {
   userLocation: Coordinates | null;

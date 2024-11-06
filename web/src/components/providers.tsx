@@ -14,9 +14,9 @@ import superjson from "superjson";
 import { BusStopProvider } from "@web/components/bus-stop-context";
 import { Toaster } from "@web/components/ui/sonner";
 import { UserProvider } from "@web/components/user-context";
+import { UserLocationProvider } from "@web/components/user-location-context";
 import { env } from "@web/env";
 import { trpc } from "@web/lib/trpc";
-import { UserLocationProvider } from "@web/components/user-location-context";
 
 function makeQueryClient() {
   return new QueryClient({
