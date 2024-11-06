@@ -16,6 +16,7 @@ import { Toaster } from "@web/components/ui/sonner";
 import { UserProvider } from "@web/components/user-context";
 import { env } from "@web/env";
 import { trpc } from "@web/lib/trpc";
+import { UserLocationProvider } from "@web/components/user-location-context";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -80,12 +81,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <UserProvider>
-          <PostHogProvider client={posthog}>
-            <BusStopProvider>
-              {children}
-              <Toaster richColors />
-            </BusStopProvider>
-          </PostHogProvider>
+          <UserLocationProvider>
+            <PostHogProvider client={posthog}>
+              <BusStopProvider>
+                {children}
+                <Toaster richColors />
+              </BusStopProvider>
+            </PostHogProvider>
+          </UserLocationProvider>
         </UserProvider>
       </trpc.Provider>
     </QueryClientProvider>
