@@ -4,12 +4,15 @@ import {
   type DirectionsResponse,
   type DirectionsWaypoint,
 } from "@mapbox/mapbox-sdk/services/directions";
+import { type LineString, type MultiLineString } from "geojson";
 import React, { createContext, useContext } from "react";
 
 import { mbxDirectionsClient } from "@web/lib/mapbox";
 
+type DirectionsGeometry = MultiLineString | LineString;
+
 interface DirectionsContextType {
-  directions: DirectionsResponse | null;
+  directions: DirectionsResponse<DirectionsGeometry> | null;
   resetDirections: () => void;
   getDirections: (waypoints: DirectionsWaypoint[]) => Promise<void>;
 }
@@ -41,6 +44,7 @@ export function DirectionsProvider({
       const response = await mbxDirectionsClient
         .getDirections({
           profile: "walking",
+          geometries: "geojson",
           waypoints,
         })
         .send();
