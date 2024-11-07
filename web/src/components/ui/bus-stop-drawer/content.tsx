@@ -2,18 +2,17 @@ import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import ActionButton from "@web/components/ui/bus-stop-drawer/action-button";
+import DirectionsButton from "@web/components/ui/bus-stop-drawer/action-button/directions";
 import FavoriteButton from "@web/components/ui/bus-stop-drawer/action-button/favorite";
 import BusStopSchedule from "@web/components/ui/bus-stop-schedule";
 import BusVehicle from "@web/components/ui/bus-vehicle";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { Spinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
-import { useUserLocation } from "@web/components/user-location-context";
 import { Events } from "@web/lib/constants";
 import { PrettifyName } from "@web/lib/prettify-name";
 import { trpc } from "@web/lib/trpc";
 import { cn } from "@web/lib/utils";
-import { calculateWalkingDistance } from "@web/lib/walking-distance";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
 
@@ -31,7 +30,7 @@ const BusStopContent = ({
   onBusVehicleClick: handleBusVehicleClick,
 }: BusStopContentProps) => {
   const { user } = useUser();
-  const { userLocation } = useUserLocation();
+
   const { selectedStop, setLiveBusCoordinates } = useBusStop();
 
   const [viewMode, setViewMode] = React.useState<ViewMode>("live");
@@ -44,19 +43,6 @@ const BusStopContent = ({
     () => (selectedStop ? PrettifyName(selectedStop.name) : ""),
     [selectedStop],
   );
-
-  const walkingTime = React.useMemo(() => {
-    if (!selectedStop || !userLocation) {
-      return null;
-    }
-
-    const distance = calculateWalkingDistance(userLocation, {
-      latitude: selectedStop.location.y,
-      longitude: selectedStop.location.x,
-    });
-
-    return distance.walkingTime;
-  }, [selectedStop, userLocation]);
 
   const busLiveQuery = trpc.getBusLiveStop.useQuery(
     { stopCode: selectedStop?.code ?? "" },
@@ -194,15 +180,7 @@ const BusStopContent = ({
             onClick={onViewModeToggle}
           />
           {/* Walking time + Directions */}
-          {walkingTime && (
-            <ActionButton
-              icon={<span>🚶‍♂️</span>}
-              label={`${walkingTime} λεπτ${walkingTime > 1 ? "ά" : "ό"}`}
-              isCompact={!isFullyOpen}
-              // @TODO: Show walking directions.
-              onClick={() => {}}
-            />
-          )}
+          <DirectionsButton isFullyOpen={isFullyOpen} />
           {/* Favorite */}
           {user && (
             <FavoriteButton isFullyOpen={isFullyOpen} busStop={selectedStop} />

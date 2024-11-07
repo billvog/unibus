@@ -29,6 +29,9 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    serverComponentsExternalPackages: ["@mapbox/mapbox-sdk"],
+  },
 };
 
 export default config;

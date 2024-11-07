@@ -12,6 +12,7 @@ import React from "react";
 import superjson from "superjson";
 
 import { BusStopProvider } from "@web/components/bus-stop-context";
+import { DirectionsProvider } from "@web/components/directions-context";
 import { Toaster } from "@web/components/ui/sonner";
 import { UserProvider } from "@web/components/user-context";
 import { UserLocationProvider } from "@web/components/user-location-context";
@@ -84,8 +85,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           <UserLocationProvider>
             <PostHogProvider client={posthog}>
               <BusStopProvider>
-                {children}
-                <Toaster richColors />
+                <DirectionsProvider>
+                  {children}
+                  <Toaster richColors />
+                </DirectionsProvider>
               </BusStopProvider>
             </PostHogProvider>
           </UserLocationProvider>

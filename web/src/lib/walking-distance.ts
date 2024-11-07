@@ -18,7 +18,7 @@ export function calculateWalkingDistance(
 
   // Estimate walking time in minutes (assuming 1.2 m/s walking speed)
   const walkingSpeed = 1.2; // meters per second
-  const walkingTime = Math.floor(distance / walkingSpeed / 60);
+  const walkingTime = Math.round(distance / walkingSpeed / 60);
 
   return { distance, walkingTime };
 }
