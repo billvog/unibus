@@ -17,9 +17,15 @@ export function UserLocationProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const [showedError, setShowedError] = React.useState(false);
+
   const geolocation = useGeolocation();
 
   React.useEffect(() => {
+    if (showedError) {
+      return;
+    }
+
     // Show an error message if location could not be
     // retrieved, but skip the error if the user denied
     if (
@@ -27,8 +33,9 @@ export function UserLocationProvider({
       geolocation.error.code !== GeolocationPositionError.PERMISSION_DENIED
     ) {
       toast.error(geolocation.error.message);
+      setShowedError(true);
     }
-  }, [geolocation.error]);
+  }, [showedError, geolocation.error]);
 
   return (
     <UserLocationContext.Provider
