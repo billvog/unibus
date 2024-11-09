@@ -1,5 +1,7 @@
 "use client";
 
+import "@web/lib/day";
+
 import {
   isServer,
   QueryClient,

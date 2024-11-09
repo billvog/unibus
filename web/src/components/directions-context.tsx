@@ -43,9 +43,11 @@ export function DirectionsProvider({
     async (waypoints: DirectionsWaypoint[]) => {
       const response = await mbxDirectionsClient
         .getDirections({
+          waypoints,
           profile: "walking",
           geometries: "geojson",
-          waypoints,
+          language: "el",
+          steps: true,
         })
         .send();
 

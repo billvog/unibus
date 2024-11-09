@@ -2,15 +2,19 @@ import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
-import ActionButton from "@web/components/ui/bus-stop-drawer/action-button";
+import ActionButton from "@web/components/ui/bus-stop-drawer/content/action-button";
 import { useUserLocation } from "@web/components/user-location-context";
 import { calculateWalkingDistance } from "@web/lib/walking-distance";
 
 type DirectionsButtonProps = {
   isFullyOpen: boolean;
+  onDirectionsReceived: () => void;
 };
 
-const DirectionsButton = ({ isFullyOpen }: DirectionsButtonProps) => {
+const DirectionsButton = ({
+  isFullyOpen,
+  onDirectionsReceived,
+}: DirectionsButtonProps) => {
   const { userLocation } = useUserLocation();
   const { selectedStop } = useBusStop();
   const { getDirections } = useDirections();
@@ -37,17 +41,26 @@ const DirectionsButton = ({ isFullyOpen }: DirectionsButtonProps) => {
     }
 
     // Fetch directions with transition.
-    startDirectionsTransition(() =>
-      getDirections([
+    startDirectionsTransition(async () => {
+      await getDirections([
         {
           coordinates: [userLocation.longitude, userLocation.latitude],
         },
         {
           coordinates: [selectedStop.location.x, selectedStop.location.y],
         },
-      ]),
-    );
-  }, [userLocation, selectedStop, getDirections, startDirectionsTransition]);
+      ]);
+
+      // Collapse the drawer.
+      onDirectionsReceived();
+    });
+  }, [
+    userLocation,
+    selectedStop,
+    startDirectionsTransition,
+    getDirections,
+    onDirectionsReceived,
+  ]);
 
   if (!walkingTime) {
     return null;
