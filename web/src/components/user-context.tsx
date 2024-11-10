@@ -1,10 +1,10 @@
 "use client";
 
 import type { DbUser } from "@api/types/models";
-import posthog from "posthog-js";
 import React, { createContext, useContext, useState } from "react";
 
 import { trpc } from "@web/lib/trpc";
+import { useIdentifyUser } from "@web/hooks/use-identify-user";
 
 interface UserContextType {
   user: DbUser | null;
@@ -17,27 +17,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   const { data: userData, isLoading } = trpc.user.me.useQuery();
 
+  // Identify user to thrid-party services
+  useIdentifyUser(isLoading, userData ?? null);
+
   React.useEffect(() => {
     setUser(userData ?? null);
   }, [userData]);
-
-  // Identify user in PostHog, using their unique ID
-  React.useEffect(() => {
-    if (isLoading) {
-      return;
-    }
-
-    if (!user) {
-      posthog.reset();
-    }
-
-    if (user) {
-      posthog.identify(user.id, {
-        email: user.email,
-        name: user.name,
-      });
-    }
-  }, [user, isLoading]);
 
   return (
     <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
