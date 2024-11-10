@@ -71,7 +71,7 @@ export const useGeolocation = () => {
         // Do nothing
       });
 
-    window.navigator.geolocation.getCurrentPosition(
+    const watchId = window.navigator.geolocation.watchPosition(
       successCallback,
       errorCallback,
       {
@@ -82,6 +82,7 @@ export const useGeolocation = () => {
     );
 
     return () => {
+      window.navigator.geolocation.clearWatch(watchId);
       void removeEventListener.then((remove) => remove?.());
     };
   }, [successCallback, errorCallback, permissionChangeCallback]);
