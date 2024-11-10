@@ -1,14 +1,17 @@
+import { useFeatureFlagEnabled } from "posthog-js/react";
 import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
-import ActionButton from "@web/components/ui/bus-stop-drawer/action-button";
-import FavoriteButton from "@web/components/ui/bus-stop-drawer/action-button/favorite";
+import ActionButton from "@web/components/ui/bus-stop-drawer/content/action-button";
+import DirectionsButton from "@web/components/ui/bus-stop-drawer/content/action-button/directions";
+import FavoriteButton from "@web/components/ui/bus-stop-drawer/content/action-button/favorite";
+import Content from "@web/components/ui/bus-stop-drawer/content/elements";
 import BusStopSchedule from "@web/components/ui/bus-stop-schedule";
 import BusVehicle from "@web/components/ui/bus-vehicle";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { Spinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
-import { Events } from "@web/lib/constants";
+import { Events, FeatureFlags } from "@web/lib/constants";
 import { PrettifyName } from "@web/lib/prettify-name";
 import { trpc } from "@web/lib/trpc";
 import { cn } from "@web/lib/utils";
@@ -21,14 +24,17 @@ type ViewMode = "live" | "schedule";
 
 type BusStopContentProps = {
   isFullyOpen: boolean;
-  onBusVehicleClick: () => void;
+  minimizeDrawer: () => void;
 };
 
 const BusStopContent = ({
   isFullyOpen,
-  onBusVehicleClick: handleBusVehicleClick,
+  minimizeDrawer,
 }: BusStopContentProps) => {
+  const directionsEnabled = useFeatureFlagEnabled(FeatureFlags.Directions);
+
   const { user } = useUser();
+
   const { selectedStop, setLiveBusCoordinates } = useBusStop();
 
   const [viewMode, setViewMode] = React.useState<ViewMode>("live");
@@ -122,7 +128,7 @@ const BusStopContent = ({
 
       setLiveBusCoordinates(coordinates);
 
-      handleBusVehicleClick();
+      minimizeDrawer();
 
       // Capture event
       window.dispatchEvent(
@@ -144,7 +150,7 @@ const BusStopContent = ({
         }),
       );
     },
-    [vehicles, selectedStop, handleBusVehicleClick, setLiveBusCoordinates],
+    [vehicles, selectedStop, minimizeDrawer, setLiveBusCoordinates],
   );
 
   const onViewModeToggle = React.useCallback(() => {
@@ -157,12 +163,7 @@ const BusStopContent = ({
 
   return (
     <>
-      <div
-        className={cn(
-          "flex border-b-2 border-gray-100 px-10 pb-4 pt-8",
-          isFullyOpen ? "flex-col items-start gap-2" : "items-center gap-4",
-        )}
-      >
+      <Content.Header isFullyOpen={isFullyOpen}>
         <DynamicTitle title={prettyStopName} onClick={onBusStopNameClick} />
         <div
           className={cn(
@@ -170,23 +171,27 @@ const BusStopContent = ({
             isFullyOpen && "no-scrollbar w-full overflow-x-auto",
           )}
         >
+          {/* View mode toggle */}
           <ActionButton
             icon={<span>{viewMode === "live" ? "🗓️" : "🚍"}</span>}
             label={viewMode === "live" ? "Πρόγραμμα" : "Τώρα"}
             isCompact={!isFullyOpen}
             onClick={onViewModeToggle}
           />
+          {/* Feature Flag: Directions */}
+          {directionsEnabled && (
+            <DirectionsButton
+              isFullyOpen={isFullyOpen}
+              onDirectionsReceived={minimizeDrawer}
+            />
+          )}
+          {/* Favorite */}
           {user && (
             <FavoriteButton isFullyOpen={isFullyOpen} busStop={selectedStop} />
           )}
         </div>
-      </div>
-      <div
-        className={cn(
-          "flex h-full flex-col gap-4 px-10 pb-8 pt-5",
-          isFullyOpen && "no-scrollbar overflow-y-auto",
-        )}
-      >
+      </Content.Header>
+      <Content.Body isFullyOpen={isFullyOpen}>
         {/* Bus Live */}
         {viewMode === "live" &&
           (busLiveQuery.isLoading ? (
@@ -216,7 +221,7 @@ const BusStopContent = ({
             isLoading={busStopScheduleQuery.isLoading}
           />
         )}
-      </div>
+      </Content.Body>
     </>
   );
 };

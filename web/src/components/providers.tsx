@@ -1,5 +1,7 @@
 "use client";
 
+import "@web/lib/day";
+
 import {
   isServer,
   QueryClient,
@@ -12,8 +14,10 @@ import React from "react";
 import superjson from "superjson";
 
 import { BusStopProvider } from "@web/components/bus-stop-context";
+import { DirectionsProvider } from "@web/components/directions-context";
 import { Toaster } from "@web/components/ui/sonner";
 import { UserProvider } from "@web/components/user-context";
+import { UserLocationProvider } from "@web/components/user-location-context";
 import { env } from "@web/env";
 import { trpc } from "@web/lib/trpc";
 
@@ -68,10 +72,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
     posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
       api_host: "/ingest",
+      autocapture: false,
       capture_pageview: false,
       capture_pageleave: true,
-      persistence: "localStorage",
       person_profiles: "always",
+      persistence: "localStorage",
       ui_host: "https://eu.posthog.com",
     });
   }, []);
@@ -80,12 +85,16 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <UserProvider>
-          <PostHogProvider client={posthog}>
-            <BusStopProvider>
-              {children}
-              <Toaster richColors />
-            </BusStopProvider>
-          </PostHogProvider>
+          <UserLocationProvider>
+            <PostHogProvider client={posthog}>
+              <BusStopProvider>
+                <DirectionsProvider>
+                  {children}
+                  <Toaster richColors />
+                </DirectionsProvider>
+              </BusStopProvider>
+            </PostHogProvider>
+          </UserLocationProvider>
         </UserProvider>
       </trpc.Provider>
     </QueryClientProvider>

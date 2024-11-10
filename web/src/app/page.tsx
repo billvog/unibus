@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { toast } from "sonner";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import BusStopDrawer from "@web/components/ui/bus-stop-drawer";
@@ -12,7 +11,7 @@ import { FullscreenSpinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
 import { useBodyScroll } from "@web/hooks/useBodyScroll";
 import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
-import { useGeolocation } from "@web/hooks/useGeolocation";
+import { Events } from "@web/lib/constants";
 import { trpc } from "@web/lib/trpc";
 import { type MapFlyToDetail } from "@web/types/events";
 
@@ -20,10 +19,8 @@ function Page() {
   useCaptureAnalytics();
   useBodyScroll(true); // disable scroll
 
-  const geolocation = useGeolocation();
-
-  const { setSelectedStopId } = useBusStop();
   const { user } = useUser();
+  const { setSelectedStopId } = useBusStop();
 
   // Fetch user's favorite bus stops.
   // We're are going to access these through cache.
@@ -54,6 +51,9 @@ function Page() {
         return;
       }
 
+      // Emit event for bus stop change
+      window.dispatchEvent(new CustomEvent(Events.BusStopChanged));
+
       // Emit event to fly map to bus stop
       window.dispatchEvent(
         new CustomEvent<MapFlyToDetail>("map:fly-to", {
@@ -69,17 +69,6 @@ function Page() {
     },
     [busStops, setSelectedStopId],
   );
-
-  React.useEffect(() => {
-    // Show an error message if location could not be
-    // retrieved, but skip the error if the user denied
-    if (
-      geolocation.error &&
-      geolocation.error.code !== GeolocationPositionError.PERMISSION_DENIED
-    ) {
-      toast.error(geolocation.error.message);
-    }
-  }, [geolocation.error]);
 
   // Show message if we're getting a 500 from Citybus
   if (hasGraveError) {
@@ -98,7 +87,6 @@ function Page() {
       <Map
         busStops={busStops}
         onBusStopClick={(id) => onBusStopClick(id, false)}
-        userLocation={geolocation.position}
       />
       <BusStopDrawer />
     </div>

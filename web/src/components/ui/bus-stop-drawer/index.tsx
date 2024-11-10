@@ -4,10 +4,13 @@ import React from "react";
 import { Drawer } from "vaul";
 
 import { useBusStop } from "@web/components/bus-stop-context";
+import { useDirections } from "@web/components/directions-context";
 import BusStopContent from "@web/components/ui/bus-stop-drawer/content";
+import DirectionsContent from "@web/components/ui/bus-stop-drawer/content/directions";
 
 const BusStop = () => {
   const { selectedStop, setSelectedStopId } = useBusStop();
+  const { directions, resetDirections } = useDirections();
 
   const [open, setOpen] = React.useState(false);
 
@@ -15,6 +18,8 @@ const BusStop = () => {
   const [snap, setSnap] = React.useState<number | string | null>(
     snapPoints[0]!,
   );
+
+  const isFullyOpen = React.useMemo(() => snap === 1, [snap]);
 
   React.useEffect(() => {
     setOpen(!!selectedStop);
@@ -25,15 +30,16 @@ const BusStop = () => {
     setOpen(false);
     setSnap(snapPoints[0]!);
 
-    // Reset selected stop
+    // Reset selected stop & directions
     setSelectedStopId(null);
-  }, [setOpen, setSelectedStopId, setSnap, snapPoints]);
+    resetDirections();
+  }, [snapPoints, setSnap, setOpen, setSelectedStopId, resetDirections]);
 
   const onCloseClick = React.useCallback(() => {
     onClose();
   }, [onClose]);
 
-  const onBusVehicleClick = React.useCallback(() => {
+  const minimizeDrawer = React.useCallback(() => {
     // If drawer is opened at full height, collapse it
     setSnap((s) => (s === 1 ? snapPoints[0]! : s));
   }, [snapPoints]);
@@ -73,10 +79,14 @@ const BusStop = () => {
               <X className="cursor-pointer" onClick={onCloseClick} />
             </div>
             {/* Content */}
-            <BusStopContent
-              onBusVehicleClick={onBusVehicleClick}
-              isFullyOpen={snap === 1}
-            />
+            {directions ? (
+              <DirectionsContent isFullyOpen={isFullyOpen} />
+            ) : (
+              <BusStopContent
+                minimizeDrawer={minimizeDrawer}
+                isFullyOpen={isFullyOpen}
+              />
+            )}
           </div>
         </Drawer.Content>
       </Drawer.Portal>

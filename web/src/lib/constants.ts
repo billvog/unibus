@@ -3,6 +3,7 @@ export const Shortcuts = {
 };
 
 export const Events = {
+  BusStopChanged: "bus-stop:changed",
   Analytics: {
     LoginClick: "login click",
     Logout: "logout",
@@ -14,6 +15,10 @@ export const Events = {
     GeolocationPrompt: "geolocation prompt",
     GraveErrorSendHelp: "grave error send help",
   },
+};
+
+export const FeatureFlags = {
+  Directions: "feat-directions",
 };
 
 export const Days = [

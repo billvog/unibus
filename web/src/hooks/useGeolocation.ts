@@ -71,12 +71,18 @@ export const useGeolocation = () => {
         // Do nothing
       });
 
-    window.navigator.geolocation.getCurrentPosition(
+    const watchId = window.navigator.geolocation.watchPosition(
       successCallback,
       errorCallback,
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      },
     );
 
     return () => {
+      window.navigator.geolocation.clearWatch(watchId);
       void removeEventListener.then((remove) => remove?.());
     };
   }, [successCallback, errorCallback, permissionChangeCallback]);

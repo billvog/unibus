@@ -14,6 +14,8 @@ import MapGL, {
 import { useBusStop } from "@web/components/bus-stop-context";
 import BusLinePointsMapLayer from "@web/components/ui/bus-line-points-map-layer";
 import { Button } from "@web/components/ui/button";
+import DirectionsMapLayer from "@web/components/ui/directions-map-layer";
+import { useUserLocation } from "@web/components/user-location-context";
 import { env } from "@web/env";
 import { Events } from "@web/lib/constants";
 import { trpc } from "@web/lib/trpc";
@@ -23,10 +25,10 @@ import { type MapFlyToDetail } from "@web/types/events";
 type MapProps = {
   busStops: DbMassBusStop[];
   onBusStopClick: (id: number) => void;
-  userLocation: Coordinates | null;
 };
 
-const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
+const Map = ({ busStops, onBusStopClick }: MapProps) => {
+  const { userLocation } = useUserLocation();
   const { selectedStop, liveBusCoordinates } = useBusStop();
 
   const [hasZoomedToUser, setHasZoomedToUser] = React.useState(false);
@@ -212,6 +214,9 @@ const Map = ({ busStops, onBusStopClick, userLocation }: MapProps) => {
           busLine={busLine}
         />
       ))}
+
+      {/* Directions */}
+      <DirectionsMapLayer />
 
       {/* Show user's location marker, if any */}
       {userLocation && (
