@@ -11,13 +11,18 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
+    "compile": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
+    "build": "pnpm run compile && pnpm run sentry:sourcemaps",
     "dev": "tsx watch ./src/index.ts",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
     "typecheck": "tsc --noEmit",
-    "fetch-static-feed": "tsx ./src/scripts/fetch-static-feed.ts"
+    "fetch-static-feed": "tsx ./src/scripts/fetch-static-feed.ts",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org unibus-m6 --project api-prod ./dist && sentry-cli sourcemaps upload --org unibus-m6 --project api-prod ./dist"
   },
   "dependencies": {
+    "@sentry/cli": "^2.38.2",
+    "@sentry/node": "^8.37.1",
+    "@sentry/profiling-node": "^8.37.1",
     "@t3-oss/env-core": "^0.11.1",
     "@trpc/server": "11.0.0-rc.586",
     "axios": "^1.7.7",

@@ -38,6 +38,9 @@ importers:
 
   api:
     dependencies:
+      '@sentry/cli':
+        specifier: ^2.38.2
+        version: 2.38.2
       '@sentry/node':
         specifier: ^8.37.1
         version: 8.37.1

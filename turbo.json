@@ -31,5 +31,8 @@
       ],
       "cache": false
     }
-  }
+  },
+  "globalEnv": [
+    "NEXT_RUNTIME"
+  ]
 }
