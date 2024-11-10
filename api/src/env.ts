@@ -27,6 +27,8 @@ export const env = createEnv({
     // PostHog
     POSTHOG_KEY: z.string().optional(),
     POSTHOG_HOST: z.string().optional(),
+    // Sentry
+    SENTRY_DSN: z.string(),
   },
 
   /**

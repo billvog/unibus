@@ -1,6 +1,9 @@
 import "@api/lib/axios";
+import "@api/lib/sentry";
+
 import path from "path";
 
+import * as Sentry from "@sentry/node";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
@@ -65,6 +68,9 @@ async function main() {
   // Register our modules
   addTrpc(app);
   addPassport(app);
+
+  // Register Sentry
+  Sentry.setupExpressErrorHandler(app);
 
   // Start the server
   const server = app.listen(env.PORT, () => {
