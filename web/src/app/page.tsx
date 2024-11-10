@@ -11,9 +11,9 @@ import { FullscreenSpinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
 import { useBodyScroll } from "@web/hooks/useBodyScroll";
 import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
+import { Events } from "@web/lib/constants";
 import { trpc } from "@web/lib/trpc";
 import { type MapFlyToDetail } from "@web/types/events";
-import { Events } from "@web/lib/constants";
 
 function Page() {
   useCaptureAnalytics();
