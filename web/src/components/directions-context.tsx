@@ -11,6 +11,7 @@ import React, { createContext, useContext } from "react";
 
 import { useUserLocation } from "@web/components/user-location-context";
 import { mbxDirectionsClient } from "@web/lib/mapbox";
+import { Events } from "@web/lib/constants";
 
 type DirectionsGeometry = MultiLineString | LineString;
 type DirectionsManeuver = {
@@ -102,6 +103,19 @@ export function DirectionsProvider({
     },
     [],
   );
+
+  // Reset directions when bus stop changes
+  React.useEffect(() => {
+    const handleBusStopChanged = () => {
+      resetDirections();
+    };
+
+    window.addEventListener(Events.BusStopChanged, handleBusStopChanged);
+
+    return () => {
+      window.removeEventListener(Events.BusStopChanged, handleBusStopChanged);
+    };
+  }, [resetDirections]);
 
   return (
     <DirectionsContext.Provider

@@ -13,6 +13,7 @@ import { useBodyScroll } from "@web/hooks/useBodyScroll";
 import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
 import { trpc } from "@web/lib/trpc";
 import { type MapFlyToDetail } from "@web/types/events";
+import { Events } from "@web/lib/constants";
 
 function Page() {
   useCaptureAnalytics();
@@ -49,6 +50,9 @@ function Page() {
       if (!busStop) {
         return;
       }
+
+      // Emit event for bus stop change
+      window.dispatchEvent(new CustomEvent(Events.BusStopChanged));
 
       // Emit event to fly map to bus stop
       window.dispatchEvent(
