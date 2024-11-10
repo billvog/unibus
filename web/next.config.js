@@ -3,8 +3,8 @@
  * for Docker builds.
  */
 
-import { withSentryConfig } from "@sentry/nextjs";
 await import("./src/env.js");
+import { withSentryConfig } from "@sentry/nextjs";
 
 /** @type {import("next").NextConfig} */
 const config = withSentryConfig(
