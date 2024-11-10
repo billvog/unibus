@@ -19,11 +19,13 @@ RUN pnpm install
 COPY api/ ./
 
 # Compile TypeScript to JavaScript.
-# Expose the Sentry auth token as an environment variable
-# to upload source maps to Sentry.
+RUN pnpm build
+
+# Update Sourcemaps for Sentry.
 RUN --mount=type=secret,id=sentry_token \
   export SENTRY_AUTH_TOKEN=$(cat /run/secrets/sentry_token) && \
-  pnpm build
+  pnpm sentry:sourcemaps
+
 
 # Stage 2: Run the built code with only production dependencies
 FROM node:20-alpine
