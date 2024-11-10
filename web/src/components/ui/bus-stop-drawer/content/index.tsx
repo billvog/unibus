@@ -1,3 +1,4 @@
+import { useFeatureFlagEnabled } from "posthog-js/react";
 import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
@@ -10,7 +11,7 @@ import BusVehicle from "@web/components/ui/bus-vehicle";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { Spinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
-import { Events } from "@web/lib/constants";
+import { Events, FeatureFlags } from "@web/lib/constants";
 import { PrettifyName } from "@web/lib/prettify-name";
 import { trpc } from "@web/lib/trpc";
 import { cn } from "@web/lib/utils";
@@ -30,6 +31,8 @@ const BusStopContent = ({
   isFullyOpen,
   minimizeDrawer,
 }: BusStopContentProps) => {
+  const directionsEnabled = useFeatureFlagEnabled(FeatureFlags.Directions);
+
   const { user } = useUser();
 
   const { selectedStop, setLiveBusCoordinates } = useBusStop();
@@ -175,11 +178,13 @@ const BusStopContent = ({
             isCompact={!isFullyOpen}
             onClick={onViewModeToggle}
           />
-          {/* Walking time + Directions */}
-          <DirectionsButton
-            isFullyOpen={isFullyOpen}
-            onDirectionsReceived={minimizeDrawer}
-          />
+          {/* Feature Flag: Directions */}
+          {directionsEnabled && (
+            <DirectionsButton
+              isFullyOpen={isFullyOpen}
+              onDirectionsReceived={minimizeDrawer}
+            />
+          )}
           {/* Favorite */}
           {user && (
             <FavoriteButton isFullyOpen={isFullyOpen} busStop={selectedStop} />
