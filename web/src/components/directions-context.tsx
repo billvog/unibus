@@ -12,6 +12,7 @@ import React, { createContext, useContext } from "react";
 import { useUserLocation } from "@web/components/user-location-context";
 import { mbxDirectionsClient } from "@web/lib/mapbox";
 import { Events } from "@web/lib/constants";
+import { fixGreek } from "@web/lib/fix-greek";
 
 type DirectionsGeometry = MultiLineString | LineString;
 type DirectionsManeuver = {
@@ -60,7 +61,10 @@ export function DirectionsProvider({
         (step) =>
           ({
             id: crypto.randomUUID(),
-            maneuver: step.maneuver,
+            maneuver: {
+              ...step.maneuver,
+              instruction: fixGreek(step.maneuver.instruction),
+            },
           }) as DirectionsManeuver,
       ),
     [directionsSteps],
