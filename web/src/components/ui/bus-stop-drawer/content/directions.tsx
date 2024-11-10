@@ -7,6 +7,7 @@ import { useDirections } from "@web/components/directions-context";
 import Content from "@web/components/ui/bus-stop-drawer/content/elements";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import ManeuverIcon from "@web/components/ui/maneuver-icon";
+import { formatDistance } from "@web/lib/format-distance";
 import { PrettifyName } from "@web/lib/prettify-name";
 import { cn } from "@web/lib/utils";
 
@@ -32,13 +33,18 @@ const DirectionsContent = ({ isFullyOpen }: DirectionsContentProps) => {
     [directions],
   );
 
-  const totalDistance = React.useMemo(
-    () =>
-      directions
-        ? directions.routes.reduce((acc, route) => acc + route.distance, 0)
-        : 0,
-    [directions],
-  );
+  const totalDistanceFormatted = React.useMemo(() => {
+    if (!directions) {
+      return "";
+    }
+
+    const distance = directions.routes.reduce(
+      (acc, route) => acc + route.distance,
+      0,
+    );
+
+    return formatDistance(distance);
+  }, [directions]);
 
   React.useEffect(() => {
     if (activeManeuverId) {
@@ -74,10 +80,7 @@ const DirectionsContent = ({ isFullyOpen }: DirectionsContentProps) => {
             label="Συνολική διάρκεια"
             text={dayjs.duration(totalDuration, "seconds").humanize()}
           />
-          <Detail
-            label="Συνολική απόσταση"
-            text={`${Math.floor(totalDistance)} μέτρα`}
-          />
+          <Detail label="Συνολική απόσταση" text={totalDistanceFormatted} />
         </div>
 
         <div className="mt-2 space-y-4 rounded-2xl border p-6">
