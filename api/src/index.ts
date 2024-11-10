@@ -69,10 +69,6 @@ async function main() {
   addTrpc(app);
   addPassport(app);
 
-  app.get("/debug-sentry", function () {
-    throw new Error("My first Sentry error on Production! 🚀");
-  });
-
   // Register Sentry
   Sentry.setupExpressErrorHandler(app);
 
