@@ -4,6 +4,7 @@ import { nodeProfilingIntegration } from "@sentry/profiling-node";
 
 Sentry.init({
   dsn: env.SENTRY_DSN,
+  environment: env.NODE_ENV,
   release: env.SENTRY_RELEASE,
   integrations: [nodeProfilingIntegration()],
   // Tracing
