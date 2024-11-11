@@ -15,7 +15,7 @@
     "dev": "tsx watch ./src/index.ts",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
     "typecheck": "tsc --noEmit",
-    "sentry:sourcemaps": "./scripts/sentry-sourcemaps.sh"
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org unibus-m6 --project api-prod ./dist && sentry-cli sourcemaps upload --org unibus-m6 --project api-prod ./dist"
   },
   "dependencies": {
     "@sentry/cli": "^2.38.2",
