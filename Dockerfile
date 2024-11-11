@@ -21,7 +21,7 @@ COPY api/ ./
 # Compile TypeScript to JavaScript.
 RUN pnpm build
 
-# Update Sourcemaps for Sentry.
+# Upload Sourcemaps to Sentry.
 RUN --mount=type=secret,id=sentry_token \
   export SENTRY_AUTH_TOKEN=$(cat /run/secrets/sentry_token) && \
   pnpm sentry:sourcemaps

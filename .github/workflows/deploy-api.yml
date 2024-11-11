@@ -19,13 +19,34 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-24.04
+    env:
+      SENTRY_RELEASE: ${{ github.sha }}
     steps:
       - name: Cloning repo
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Push to dokku
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: "[Sentry] Create release"
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        with:
+          environment: production
+          version: ${{ env.SENTRY_RELEASE }}
+
+      - name: "[Sentry] Set release in Dokku"
+        run: |
+          ssh -o StrictHostKeyChecking=accept-new dokku@${{ secrets.SSH_HOST }} config:set --no-restart api SENTRY_RELEASE=${{ env.SENTRY_RELEASE }}
+
+      - name: Push to Dokku
         uses: dokku/github-action@master
         with:
           branch: main
