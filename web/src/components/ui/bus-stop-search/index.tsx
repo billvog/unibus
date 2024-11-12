@@ -1,8 +1,9 @@
 "use client";
 
 import { CircleUserRound, CircleX } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { useDebounce } from "use-debounce";
+import * as Sentry from "@sentry/nextjs";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import BusStop from "@web/components/ui/bus-stop";
@@ -12,6 +13,11 @@ import { useKeyPress } from "@web/hooks/useKeyPress";
 import { Events, Shortcuts } from "@web/lib/utils/constants";
 import { trpc } from "@web/lib/trpc";
 import { cn } from "@web/lib/utils/tailwind";
+import { mbxGeocodingClient } from "@web/lib/mapbox";
+import { useUserLocation } from "@web/components/user-location-context";
+import { GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
+import Place from "@web/components/ui/place";
+import { MapFlyToDetail } from "@web/types/events";
 
 type BusStopsSearchProps = {
   onBusStopClick: (id: number) => void;
@@ -22,6 +28,9 @@ const BusStopSearch = ({
 }: BusStopsSearchProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  const [searchSessionToken] = useState(() => crypto.randomUUID());
+
+  const { userLocation } = useUserLocation();
   const { setSelectedStopId } = useBusStop();
 
   const [show, setShow] = React.useState(true);
@@ -30,6 +39,10 @@ const BusStopSearch = ({
   const [query, setQuery] = React.useState("");
   const [debouncedQuery] = useDebounce(query, 400);
 
+  const [searchFeatures, setSearchFeatures] = React.useState<GeocodeFeature[]>(
+    [],
+  );
+
   const searchQuery = trpc.searchBusStop.useQuery(
     { term: debouncedQuery },
     {
@@ -37,7 +50,15 @@ const BusStopSearch = ({
     },
   );
 
-  const busStops = searchQuery.data ?? [];
+  const busStops = React.useMemo(
+    () => searchQuery.data ?? [],
+    [searchQuery.data],
+  );
+
+  const hasResults = React.useMemo(
+    () => busStops.length > 0 || searchFeatures.length > 0,
+    [busStops, searchFeatures],
+  );
 
   // Focus input on "/" key press
   useKeyPress(
@@ -62,6 +83,31 @@ const BusStopSearch = ({
     };
   }, []);
 
+  React.useEffect(() => {
+    if (debouncedQuery.length < 3) return;
+
+    const location = userLocation
+      ? ([userLocation.longitude, userLocation.latitude] as [number, number])
+      : undefined;
+
+    mbxGeocodingClient
+      .forwardGeocode({
+        query: debouncedQuery,
+        mode: "mapbox.places",
+        countries: ["GR"],
+        language: ["el"],
+        proximity: location,
+        session_token: searchSessionToken,
+        limit: 5,
+      })
+      .send()
+      .then((response) => setSearchFeatures(response.body.features))
+      .catch((error) => {
+        // Send error to Sentry
+        Sentry.captureException(error);
+      });
+  }, [userLocation, debouncedQuery]);
+
   const openSearch = React.useCallback(() => {
     // Reset selected stop
     setSelectedStopId(null);
@@ -79,6 +125,29 @@ const BusStopSearch = ({
     setFocused(false);
     setQuery("");
   }, []);
+
+  const onPlaceClick = React.useCallback(
+    (id: string) => {
+      const feature = searchFeatures.find((feature) => feature.id === id);
+
+      if (!feature || feature.geometry.coordinates.length !== 2) return;
+
+      closeSearch();
+
+      // Emit event to fly map to place
+      window.dispatchEvent(
+        new CustomEvent<MapFlyToDetail>("map:fly-to", {
+          detail: {
+            coordinates: {
+              longitude: feature.geometry.coordinates[0]!,
+              latitude: feature.geometry.coordinates[1]!,
+            },
+          },
+        }),
+      );
+    },
+    [searchFeatures],
+  );
 
   const onBusStopClick = React.useCallback(
     (id: number) => {
@@ -167,7 +236,7 @@ const BusStopSearch = ({
           </UserDropdown>
         </div>
 
-        {busStops.length > 0 ? (
+        {hasResults ? (
           <div
             className={cn(
               "w-full max-w-lg transition-[transform,opacity] duration-300 ease-out will-change-transform",
@@ -175,11 +244,19 @@ const BusStopSearch = ({
             )}
           >
             <div className="flex flex-col gap-4">
+              {searchFeatures.map((feature) => (
+                <Place
+                  key={feature.id}
+                  feature={feature}
+                  onClick={() => onPlaceClick(feature.id)}
+                />
+              ))}
+
               {busStops.map((busStop) => (
                 <BusStop
                   key={busStop.id}
-                  onClick={() => onBusStopClick(busStop.id)}
                   busStop={busStop}
+                  onClick={() => onBusStopClick(busStop.id)}
                 />
               ))}
             </div>

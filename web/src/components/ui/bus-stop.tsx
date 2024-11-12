@@ -1,5 +1,5 @@
 import { type DbBusStop } from "@api/types/models";
-import { Star } from "lucide-react";
+import { BusFront, Star } from "lucide-react";
 import React from "react";
 
 import BusLineCode from "@web/components/ui/bus-line-code";
@@ -28,23 +28,28 @@ const BusStop = ({ busStop, onClick }: BusStopProps) => {
 
   return (
     <div
+      className="flex cursor-pointer gap-[.5rem] rounded-2xl bg-white px-4 pb-5 pt-6"
       onClick={onClick}
-      className="flex cursor-pointer flex-col gap-1 rounded-2xl bg-white p-4"
     >
-      <div className="flex items-center gap-2">
-        <div className="text-sm font-bold text-gray-500">{busStop.code}</div>
-        <div className="flex items-center gap-1">
-          {busStop.busLines.map(({ busLine }) => (
-            <BusLineCode key={busLine.id} busLine={busLine} />
-          ))}
+      <BusFront size={18} className="text-blue-500" />
+      <div className="flex flex-col gap-1">
+        <div className="text-lg font-extrabold leading-none">
+          {prettyBusStopName}
         </div>
-        {isFavorite && (
-          <div title="Είναι στα αγαπημένα">
-            <Star size={20} color="#facc15" fill="#facc15" />
+        <div className="flex items-center gap-1.5 text-xs">
+          <div className="font-bold text-gray-500">{busStop.code}</div>
+          <div className="flex items-center gap-1">
+            {busStop.busLines.map(({ busLine }) => (
+              <BusLineCode key={busLine.id} busLine={busLine} />
+            ))}
           </div>
-        )}
+          {isFavorite && (
+            <div title="Είναι στα αγαπημένα">
+              <Star size={20} color="#facc15" fill="#facc15" />
+            </div>
+          )}
+        </div>
       </div>
-      <div className="text-lg font-extrabold">{prettyBusStopName}</div>
     </div>
   );
 };
