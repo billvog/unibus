@@ -1,1 +1,2 @@
+release: sh -c ./scripts/sentry-release.sh
 web: node dist/src/index.js

@@ -21,11 +21,6 @@ COPY api/ ./
 # Compile TypeScript to JavaScript.
 RUN pnpm build
 
-# Upload Sourcemaps to Sentry.
-RUN --mount=type=secret,id=sentry_token \
-  export SENTRY_AUTH_TOKEN=$(cat /run/secrets/sentry_token) && \
-  pnpm sentry:sourcemaps
-
 
 # Stage 2: Run the built code with only production dependencies
 FROM node:20-alpine
@@ -35,6 +30,9 @@ WORKDIR /usr/src/api
 # Copy built artifacts from the builder stage
 COPY --from=builder /usr/src/api/dist ./dist
 COPY --from=builder /usr/src/api/drizzle ./dist/drizzle
+
+# Copy shell scripts
+COPY api/scripts ./scripts
 
 # Copy package.json (to run the application) and any other necessary files
 COPY api/package.json .
