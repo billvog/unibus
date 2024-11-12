@@ -9,7 +9,7 @@ import cors from "cors";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import Express from "express";
 import rateLimit from "express-rate-limit";
-import { MemcachedStore } from "rate-limit-memcached";
+import { RedisStore } from "rate-limit-redis";
 
 import { addTrpc } from "@api/app-router";
 import { db } from "@api/db";
@@ -17,6 +17,7 @@ import { env } from "@api/env";
 import { IsProd } from "@api/lib/constants";
 import { addPassport } from "@api/lib/passport";
 import { posthog } from "@api/lib/posthog";
+import { client } from "@api/lib/redis";
 import { registerCronJobs } from "@api/lib/register-cron-jobs";
 
 const __dirname = import.meta.dirname;
@@ -58,9 +59,10 @@ async function main() {
       windowMs: 60 * 1000,
       limit: 100,
       legacyHeaders: !IsProd, // Disable rate limit headers on prod
-      store: new MemcachedStore({
+      store: new RedisStore({
         prefix: "rl:",
-        locations: [env.MEMCACHED_URL.replace("memcached://", "")],
+        // @ts-expect-error - Known issue: the `call` function is not present in @types/ioredis
+        sendCommand: (...args: string[]) => client.call(...args),
       }),
     })
   );
