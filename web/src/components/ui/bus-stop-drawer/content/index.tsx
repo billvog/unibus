@@ -11,10 +11,10 @@ import BusVehicle from "@web/components/ui/bus-vehicle";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { Spinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
-import { Events, FeatureFlags } from "@web/lib/constants";
-import { PrettifyName } from "@web/lib/prettify-name";
+import { Events, FeatureFlags } from "@web/lib/utils/constants";
+import { PrettifyName } from "@web/lib/utils/prettify-name";
 import { trpc } from "@web/lib/trpc";
-import { cn } from "@web/lib/utils";
+import { cn } from "@web/lib/utils/tailwind";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
 

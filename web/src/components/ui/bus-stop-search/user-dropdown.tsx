@@ -12,9 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@web/components/ui/dropdown-menu";
 import { useUser } from "@web/components/user-context";
-import { Events } from "@web/lib/constants";
+import { Events } from "@web/lib/utils/constants";
 import { trpc } from "@web/lib/trpc";
-import { cn } from "@web/lib/utils";
+import { cn } from "@web/lib/utils/tailwind";
 
 type UserDropdownProps = {
   children: React.ReactNode;

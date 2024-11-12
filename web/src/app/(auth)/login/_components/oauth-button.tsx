@@ -6,7 +6,7 @@ import React from "react";
 
 import { Button } from "@web/components/ui/button";
 import { env } from "@web/env";
-import { Events } from "@web/lib/constants";
+import { Events } from "@web/lib/utils/constants";
 
 type OAuthButtonProps = {
   providerId: string;

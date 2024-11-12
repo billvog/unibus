@@ -3,7 +3,7 @@ import { Star } from "lucide-react";
 import React from "react";
 
 import BusLineCode from "@web/components/ui/bus-line-code";
-import { PrettifyName } from "@web/lib/prettify-name";
+import { PrettifyName } from "@web/lib/utils/prettify-name";
 import { trpc } from "@web/lib/trpc";
 
 type BusStopProps = {

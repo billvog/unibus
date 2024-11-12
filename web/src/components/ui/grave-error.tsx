@@ -4,7 +4,7 @@ import React from "react";
 import { toast } from "sonner";
 
 import { Button } from "@web/components/ui/button";
-import { Events } from "@web/lib/constants";
+import { Events } from "@web/lib/utils/constants";
 
 const GraveError = () => {
   const onSendHelpClick = React.useCallback(() => {

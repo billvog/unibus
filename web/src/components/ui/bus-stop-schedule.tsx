@@ -5,8 +5,8 @@ import React from "react";
 
 import BusStopTime from "@web/components/ui/bus-stop-time";
 import { Spinner } from "@web/components/ui/spinner";
-import { Days } from "@web/lib/constants";
-import { cn } from "@web/lib/utils";
+import { Days } from "@web/lib/utils/constants";
+import { cn } from "@web/lib/utils/tailwind";
 
 function formatDayIndex(day: number) {
   return (day + 1) % 7;

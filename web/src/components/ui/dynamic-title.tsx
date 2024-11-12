@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import { cn } from "@web/lib/utils";
+import { cn } from "@web/lib/utils/tailwind";
 
 type DynamicTitleProps = {
   title: string;
