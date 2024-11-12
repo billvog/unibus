@@ -14,8 +14,7 @@
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "dev": "tsx watch ./src/index.ts",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
-    "typecheck": "tsc --noEmit",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org unibus-m6 --project api-prod ./dist && sentry-cli sourcemaps upload --org unibus-m6 --project api-prod ./dist"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@sentry/cli": "^2.38.2",
