@@ -13,7 +13,7 @@ export const env = createEnv({
     PORT: z.string().default("8000"),
     // Services
     DATABASE_URL: z.string(),
-    MEMCACHED_URL: z.string(),
+    REDIS_URL: z.string(),
     // URLs
     FRONTEND_URL: z.string(),
     BACKEND_URL: z.string(),
