@@ -2,7 +2,7 @@ import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
-import ActionButton from "@web/components/ui/bus-stop-drawer/content/action-button";
+import ActionButton from "@web/components/ui/drawer/content/action-button";
 import { useUserLocation } from "@web/components/user-location-context";
 import { calculateWalkingDistance } from "@web/lib/utils/walking-distance";
 

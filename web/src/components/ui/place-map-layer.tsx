@@ -1,6 +1,7 @@
-import { usePlace } from "@web/components/place-context";
 import { MapPin } from "lucide-react";
 import { Marker } from "react-map-gl";
+
+import { usePlace } from "@web/components/place-context";
 
 const PlaceMapLayer = () => {
   const { selectedPlace } = usePlace();

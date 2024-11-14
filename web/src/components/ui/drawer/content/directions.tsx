@@ -4,7 +4,7 @@ import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
-import Content from "@web/components/ui/bus-stop-drawer/content/elements";
+import Content from "@web/components/ui/drawer/content/elements";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import ManeuverIcon from "@web/components/ui/maneuver-icon";
 import { formatDistance } from "@web/lib/utils/format-distance";

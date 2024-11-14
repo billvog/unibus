@@ -1,7 +1,7 @@
-import { GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
-import Fuse, { IFuseOptions } from "fuse.js";
+import { type DbSearchedBusStop } from "@api/types/models";
+import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
+import Fuse, { type IFuseOptions } from "fuse.js";
 
-import { DbSearchedBusStop } from "@api/types/models";
 
 type FuseItem = GeocodeFeature | DbSearchedBusStop;
 

@@ -2,12 +2,12 @@ import { useFeatureFlagEnabled } from "posthog-js/react";
 import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
-import ActionButton from "@web/components/ui/bus-stop-drawer/content/action-button";
-import DirectionsButton from "@web/components/ui/bus-stop-drawer/content/action-button/directions";
-import FavoriteButton from "@web/components/ui/bus-stop-drawer/content/action-button/favorite";
-import Content from "@web/components/ui/bus-stop-drawer/content/elements";
 import BusStopSchedule from "@web/components/ui/bus-stop-schedule";
 import BusVehicle from "@web/components/ui/bus-vehicle";
+import ActionButton from "@web/components/ui/drawer/content/action-button";
+import DirectionsButton from "@web/components/ui/drawer/content/action-button/directions";
+import FavoriteButton from "@web/components/ui/drawer/content/action-button/favorite";
+import Content from "@web/components/ui/drawer/content/elements";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { Spinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";

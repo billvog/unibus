@@ -3,7 +3,7 @@ import { Star } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
 
-import ActionButton from "@web/components/ui/bus-stop-drawer/content/action-button";
+import ActionButton from "@web/components/ui/drawer/content/action-button";
 import { trpc } from "@web/lib/trpc";
 import { Events } from "@web/lib/utils/constants";
 

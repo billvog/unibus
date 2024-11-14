@@ -5,10 +5,10 @@ import { Drawer } from "vaul";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
-import BusStopContent from "@web/components/ui/bus-stop-drawer/content";
-import DirectionsContent from "@web/components/ui/bus-stop-drawer/content/directions";
+import BusStopContent from "@web/components/ui/drawer/content";
+import DirectionsContent from "@web/components/ui/drawer/content/directions";
 
-const BusStop = () => {
+const MyDrawer = () => {
   const { selectedStop, setSelectedStopId } = useBusStop();
   const { directions, resetDirections } = useDirections();
 
@@ -94,4 +94,4 @@ const BusStop = () => {
   );
 };
 
-export default BusStop;
+export default MyDrawer;

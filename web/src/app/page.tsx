@@ -3,8 +3,8 @@
 import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
-import BusStopDrawer from "@web/components/ui/bus-stop-drawer";
 import BusStopSearch from "@web/components/ui/bus-stop-search";
+import MyDrawer from "@web/components/ui/drawer";
 import GraveError from "@web/components/ui/grave-error";
 import Map from "@web/components/ui/map";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
@@ -88,7 +88,7 @@ function Page() {
         busStops={busStops}
         onBusStopClick={(id) => onBusStopClick(id, false)}
       />
-      <BusStopDrawer />
+      <MyDrawer />
     </div>
   );
 }
