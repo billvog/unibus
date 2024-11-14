@@ -9,9 +9,10 @@ import { useDebounce } from "use-debounce";
 import { useBusStop } from "@web/components/bus-stop-context";
 import { usePlace } from "@web/components/place-context";
 import BusStop from "@web/components/ui/bus-stop";
-import UserDropdown from "@web/components/ui/bus-stop-search/user-dropdown";
 import { Input } from "@web/components/ui/input";
 import Place from "@web/components/ui/place";
+import UserDropdown from "@web/components/ui/search/user-dropdown";
+import { Spinner } from "@web/components/ui/spinner";
 import { useUserLocation } from "@web/components/user-location-context";
 import { useKeyPress } from "@web/hooks/useKeyPress";
 import { mbxGeocodingClient } from "@web/lib/mapbox";
@@ -48,6 +49,8 @@ const BusStopSearch = ({
   const [query, setQuery] = React.useState("");
   const [debouncedQuery] = useDebounce(query, QUERY_DEBOUNCE);
 
+  const [isMapboxLoading, setIsMapboxLoading] = React.useState(false);
+
   const [searchFeatures, setSearchFeatures] = React.useState<GeocodeFeature[]>(
     [],
   );
@@ -76,6 +79,11 @@ const BusStopSearch = ({
   }, [debouncedQuery, searchFeatures, busStops]);
 
   const hasResults = React.useMemo(() => results.length > 0, [results.length]);
+
+  const isLoading = React.useMemo(
+    () => searchQuery.isLoading || isMapboxLoading,
+    [searchQuery.isLoading, isMapboxLoading],
+  );
 
   // Focus input on "/" key press
   useKeyPress(
@@ -107,6 +115,8 @@ const BusStopSearch = ({
       ? ([userLocation.longitude, userLocation.latitude] as [number, number])
       : undefined;
 
+    setIsMapboxLoading(true);
+
     mbxGeocodingClient
       .forwardGeocode({
         query: debouncedQuery,
@@ -122,7 +132,8 @@ const BusStopSearch = ({
       .catch((error) => {
         // Send error to Sentry
         Sentry.captureException(error);
-      });
+      })
+      .finally(() => setIsMapboxLoading(false));
   }, [userLocation, debouncedQuery]);
 
   const openSearch = React.useCallback(() => {
@@ -253,7 +264,11 @@ const BusStopSearch = ({
           </UserDropdown>
         </div>
 
-        {hasResults ? (
+        {isLoading ? (
+          <div className="py-6">
+            <Spinner className="text-white" />
+          </div>
+        ) : hasResults ? (
           <div
             className={cn(
               "w-full max-w-lg transition-[transform,opacity] duration-300 ease-out will-change-transform",

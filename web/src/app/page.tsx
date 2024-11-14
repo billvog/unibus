@@ -3,10 +3,10 @@
 import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
-import BusStopSearch from "@web/components/ui/bus-stop-search";
 import MyDrawer from "@web/components/ui/drawer";
 import GraveError from "@web/components/ui/grave-error";
 import Map from "@web/components/ui/map";
+import BusStopSearch from "@web/components/ui/search";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
 import { useBodyScroll } from "@web/hooks/useBodyScroll";
