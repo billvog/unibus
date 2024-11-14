@@ -5,9 +5,9 @@ import { Drawer } from "vaul";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
+import { usePlace } from "@web/components/place-context";
 import BusStopContent from "@web/components/ui/drawer/content";
 import DirectionsContent from "@web/components/ui/drawer/content/directions";
-import { usePlace } from "@web/components/place-context";
 import PlaceContent from "@web/components/ui/drawer/content/place";
 
 const MyDrawer = () => {

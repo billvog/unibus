@@ -1,7 +1,8 @@
 import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
-import { formatFeatureAddress } from "@web/lib/utils/format-feature-address";
 import { MapPin } from "lucide-react";
 import React from "react";
+
+import { formatFeatureAddress } from "@web/lib/utils/format-feature-address";
 
 type PlaceProps = {
   feature: GeocodeFeature;

@@ -1,4 +1,4 @@
-import { GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
+import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
 
 export const formatFeatureAddress = (feature: GeocodeFeature) => {
   const elements: string[] = [];

@@ -1,9 +1,10 @@
+import { MapPin } from "lucide-react";
+import React from "react";
+
 import { usePlace } from "@web/components/place-context";
 import Content from "@web/components/ui/drawer/content/elements";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { formatFeatureAddress } from "@web/lib/utils/format-feature-address";
-import { MapPin } from "lucide-react";
-import React from "react";
 
 type PlaceContentProps = {
   isFullyOpen: boolean;

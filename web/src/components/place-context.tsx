@@ -1,8 +1,9 @@
 "use client";
 
 import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
-import { Events } from "@web/lib/utils/constants";
 import React, { useState } from "react";
+
+import { Events } from "@web/lib/utils/constants";
 
 type PlaceContextType = {
   selectedPlace: GeocodeFeature | null;
