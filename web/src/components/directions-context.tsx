@@ -10,9 +10,9 @@ import { type LineString, type MultiLineString } from "geojson";
 import React, { createContext, useContext } from "react";
 
 import { useUserLocation } from "@web/components/user-location-context";
+import { mbxDirectionsClient } from "@web/lib/mapbox";
 import { Events } from "@web/lib/utils/constants";
 import { fixGreek } from "@web/lib/utils/fix-greek";
-import { mbxDirectionsClient } from "@web/lib/mapbox";
 
 type DirectionsGeometry = MultiLineString | LineString;
 type DirectionsManeuver = {

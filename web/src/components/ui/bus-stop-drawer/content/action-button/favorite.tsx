@@ -4,8 +4,8 @@ import React from "react";
 import { toast } from "sonner";
 
 import ActionButton from "@web/components/ui/bus-stop-drawer/content/action-button";
-import { Events } from "@web/lib/utils/constants";
 import { trpc } from "@web/lib/trpc";
+import { Events } from "@web/lib/utils/constants";
 
 type FavoriteButtonProps = {
   isFullyOpen: boolean;

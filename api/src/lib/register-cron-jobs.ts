@@ -1,5 +1,5 @@
-import cron from "node-cron";
 import * as Sentry from "@sentry/node";
+import cron from "node-cron";
 
 import { fetchStaticCitybusFeed } from "@api/lib/citybus/fetch-static-feed";
 import { generateCitybusToken } from "@api/lib/citybus/token";

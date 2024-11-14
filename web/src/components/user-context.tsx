@@ -3,8 +3,8 @@
 import type { DbUser } from "@api/types/models";
 import React, { createContext, useContext, useState } from "react";
 
-import { trpc } from "@web/lib/trpc";
 import { useIdentifyUser } from "@web/hooks/use-identify-user";
+import { trpc } from "@web/lib/trpc";
 
 interface UserContextType {
   user: DbUser | null;

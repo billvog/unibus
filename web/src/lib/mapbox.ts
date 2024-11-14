@@ -3,8 +3,8 @@
 import "es6-promise/auto";
 
 import MapboxClient from "@mapbox/mapbox-sdk";
-import MapboxGeocodingClient from "@mapbox/mapbox-sdk/services/geocoding";
 import MapboxDirectionsClient from "@mapbox/mapbox-sdk/services/directions";
+import MapboxGeocodingClient from "@mapbox/mapbox-sdk/services/geocoding";
 
 import { env } from "@web/env";
 

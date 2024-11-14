@@ -1,6 +1,7 @@
-import { env } from "@api/env";
 import * as Sentry from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
+
+import { env } from "@api/env";
 
 Sentry.init({
   dsn: env.SENTRY_DSN,

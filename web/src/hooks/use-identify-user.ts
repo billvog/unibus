@@ -1,4 +1,4 @@
-import { DbUser } from "@api/types/models";
+import { type DbUser } from "@api/types/models";
 import * as Sentry from "@sentry/nextjs";
 import posthog from "posthog-js";
 import React from "react";

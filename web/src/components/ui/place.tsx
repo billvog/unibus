@@ -1,4 +1,4 @@
-import { GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
+import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
 import { MapPin } from "lucide-react";
 import React from "react";
 
@@ -9,7 +9,7 @@ type PlaceProps = {
 
 const Place = ({ feature, onClick }: PlaceProps) => {
   const formattedAddress = React.useMemo(() => {
-    let elements: string[] = [];
+    const elements: string[] = [];
 
     if (feature.properties.address) {
       elements.push(feature.properties.address);

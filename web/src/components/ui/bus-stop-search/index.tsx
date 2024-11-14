@@ -1,23 +1,23 @@
 "use client";
 
+import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
+import * as Sentry from "@sentry/nextjs";
 import { CircleUserRound, CircleX } from "lucide-react";
 import React, { useState } from "react";
 import { useDebounce } from "use-debounce";
-import * as Sentry from "@sentry/nextjs";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import BusStop from "@web/components/ui/bus-stop";
 import UserDropdown from "@web/components/ui/bus-stop-search/user-dropdown";
 import { Input } from "@web/components/ui/input";
-import { useKeyPress } from "@web/hooks/useKeyPress";
-import { Events, Shortcuts } from "@web/lib/utils/constants";
-import { trpc } from "@web/lib/trpc";
-import { cn } from "@web/lib/utils/tailwind";
-import { mbxGeocodingClient } from "@web/lib/mapbox";
-import { useUserLocation } from "@web/components/user-location-context";
-import { GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
 import Place from "@web/components/ui/place";
-import { MapFlyToDetail } from "@web/types/events";
+import { useUserLocation } from "@web/components/user-location-context";
+import { useKeyPress } from "@web/hooks/useKeyPress";
+import { mbxGeocodingClient } from "@web/lib/mapbox";
+import { trpc } from "@web/lib/trpc";
+import { Events, Shortcuts } from "@web/lib/utils/constants";
+import { cn } from "@web/lib/utils/tailwind";
+import { type MapFlyToDetail } from "@web/types/events";
 
 type BusStopsSearchProps = {
   onBusStopClick: (id: number) => void;

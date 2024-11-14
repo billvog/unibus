@@ -12,8 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@web/components/ui/dropdown-menu";
 import { useUser } from "@web/components/user-context";
-import { Events } from "@web/lib/utils/constants";
 import { trpc } from "@web/lib/trpc";
+import { Events } from "@web/lib/utils/constants";
 import { cn } from "@web/lib/utils/tailwind";
 
 type UserDropdownProps = {

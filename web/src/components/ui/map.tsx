@@ -17,8 +17,8 @@ import { Button } from "@web/components/ui/button";
 import DirectionsMapLayer from "@web/components/ui/directions-map-layer";
 import { useUserLocation } from "@web/components/user-location-context";
 import { env } from "@web/env";
-import { Events } from "@web/lib/utils/constants";
 import { trpc } from "@web/lib/trpc";
+import { Events } from "@web/lib/utils/constants";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
 
