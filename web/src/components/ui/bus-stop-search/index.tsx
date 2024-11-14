@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { useDebounce } from "use-debounce";
 
 import { useBusStop } from "@web/components/bus-stop-context";
+import { usePlace } from "@web/components/place-context";
 import BusStop from "@web/components/ui/bus-stop";
 import UserDropdown from "@web/components/ui/bus-stop-search/user-dropdown";
 import { Input } from "@web/components/ui/input";
@@ -39,6 +40,7 @@ const BusStopSearch = ({
 
   const { userLocation } = useUserLocation();
   const { setSelectedStopId } = useBusStop();
+  const { setSelectedPlace } = usePlace();
 
   const [show, setShow] = React.useState(true);
   const [focused, setFocused] = React.useState(false);
@@ -149,6 +151,8 @@ const BusStopSearch = ({
       if (!feature || feature.geometry.coordinates.length !== 2) return;
 
       closeSearch();
+
+      setSelectedPlace(feature);
 
       // Emit event to fly map to place
       window.dispatchEvent(

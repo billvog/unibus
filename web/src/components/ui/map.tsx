@@ -15,6 +15,7 @@ import { useBusStop } from "@web/components/bus-stop-context";
 import BusLinePointsMapLayer from "@web/components/ui/bus-line-points-map-layer";
 import { Button } from "@web/components/ui/button";
 import DirectionsMapLayer from "@web/components/ui/directions-map-layer";
+import PlaceMapLayer from "@web/components/ui/place-map-layer";
 import { useUserLocation } from "@web/components/user-location-context";
 import { env } from "@web/env";
 import { trpc } from "@web/lib/trpc";
@@ -217,6 +218,9 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
 
       {/* Directions */}
       <DirectionsMapLayer />
+
+      {/* Place */}
+      <PlaceMapLayer />
 
       {/* Show user's location marker, if any */}
       {userLocation && (
