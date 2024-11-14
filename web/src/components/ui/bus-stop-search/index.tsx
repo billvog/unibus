@@ -16,8 +16,15 @@ import { useKeyPress } from "@web/hooks/useKeyPress";
 import { mbxGeocodingClient } from "@web/lib/mapbox";
 import { trpc } from "@web/lib/trpc";
 import { Events, Shortcuts } from "@web/lib/utils/constants";
+import { searchAndRankResults } from "@web/lib/utils/search-results";
 import { cn } from "@web/lib/utils/tailwind";
 import { type MapFlyToDetail } from "@web/types/events";
+
+// Minimum query length to start searching
+const QUERY_THRESHOLD = 3;
+
+// Debounce time for search query
+const QUERY_DEBOUNCE = 400;
 
 type BusStopsSearchProps = {
   onBusStopClick: (id: number) => void;
@@ -37,7 +44,7 @@ const BusStopSearch = ({
   const [focused, setFocused] = React.useState(false);
 
   const [query, setQuery] = React.useState("");
-  const [debouncedQuery] = useDebounce(query, 400);
+  const [debouncedQuery] = useDebounce(query, QUERY_DEBOUNCE);
 
   const [searchFeatures, setSearchFeatures] = React.useState<GeocodeFeature[]>(
     [],
@@ -46,7 +53,7 @@ const BusStopSearch = ({
   const searchQuery = trpc.searchBusStop.useQuery(
     { term: debouncedQuery },
     {
-      enabled: debouncedQuery.length > 1,
+      enabled: debouncedQuery.length > QUERY_THRESHOLD,
     },
   );
 
@@ -55,10 +62,18 @@ const BusStopSearch = ({
     [searchQuery.data],
   );
 
-  const hasResults = React.useMemo(
-    () => busStops.length > 0 || searchFeatures.length > 0,
-    [busStops, searchFeatures],
-  );
+  const results = React.useMemo(() => {
+    if (
+      debouncedQuery.length < QUERY_THRESHOLD ||
+      (!searchFeatures.length && !busStops.length)
+    ) {
+      return [];
+    }
+
+    return searchAndRankResults(debouncedQuery, searchFeatures, busStops);
+  }, [debouncedQuery, searchFeatures, busStops]);
+
+  const hasResults = React.useMemo(() => results.length > 0, [results.length]);
 
   // Focus input on "/" key press
   useKeyPress(
@@ -84,7 +99,7 @@ const BusStopSearch = ({
   }, []);
 
   React.useEffect(() => {
-    if (debouncedQuery.length < 3) return;
+    if (debouncedQuery.length < QUERY_THRESHOLD) return;
 
     const location = userLocation
       ? ([userLocation.longitude, userLocation.latitude] as [number, number])
@@ -242,21 +257,21 @@ const BusStopSearch = ({
             )}
           >
             <div className="flex flex-col gap-4">
-              {searchFeatures.map((feature) => (
-                <Place
-                  key={feature.id}
-                  feature={feature}
-                  onClick={() => onPlaceClick(feature.id)}
-                />
-              ))}
-
-              {busStops.map((busStop) => (
-                <BusStop
-                  key={busStop.id}
-                  busStop={busStop}
-                  onClick={() => onBusStopClick(busStop.id)}
-                />
-              ))}
+              {results.map((result) =>
+                result.type === "place" ? (
+                  <Place
+                    key={result.item.id}
+                    feature={result.item}
+                    onClick={() => onPlaceClick(result.item.id)}
+                  />
+                ) : result.type === "busStop" ? (
+                  <BusStop
+                    key={result.item.id}
+                    busStop={result.item}
+                    onClick={() => onBusStopClick(result.item.id)}
+                  />
+                ) : null,
+              )}
             </div>
           </div>
         ) : query.length > 0 ? (
