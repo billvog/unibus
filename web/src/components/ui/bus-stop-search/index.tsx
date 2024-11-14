@@ -122,6 +122,7 @@ const BusStopSearch = ({
   }, []);
 
   const closeSearch = React.useCallback(() => {
+    setSearchFeatures([]);
     setFocused(false);
     setQuery("");
   }, []);
@@ -203,7 +204,7 @@ const BusStopSearch = ({
             {/* Search Input */}
             <Input
               ref={inputRef}
-              placeholder="Αναζήτηση στάσης... 🔍"
+              placeholder="Πού θες να πας; 🔍"
               onFocus={() => setFocused(true)}
               onBlur={() => query.length === 0 && setFocused(false)}
               value={query}
@@ -213,10 +214,7 @@ const BusStopSearch = ({
             {focused && query.length > 0 && (
               <button
                 className="absolute bottom-0 right-0 top-0 my-1 mr-3 flex items-center justify-center rounded-full p-1 text-gray-400"
-                onClick={() => {
-                  setQuery("");
-                  setFocused(false);
-                }}
+                onClick={() => closeSearch()}
               >
                 <CircleX size={18} />
               </button>
