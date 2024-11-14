@@ -83,6 +83,24 @@ export const BusStopProvider = ({
     );
   }, [selectedStop?.id]);
 
+  // When the user selected a place, we want to
+  // reset the selected bus stop.
+  React.useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const handler = () => {
+      setSelectedStopId(null);
+    };
+
+    window.addEventListener(Events.PlaceChanged, handler);
+
+    return () => {
+      window.removeEventListener(Events.PlaceChanged, handler);
+    };
+  }, []);
+
   return (
     <BusStopContext.Provider
       value={{

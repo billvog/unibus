@@ -1,8 +1,8 @@
 "use client";
 
 import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
+import { Events } from "@web/lib/utils/constants";
 import React, { useState } from "react";
-
 
 type PlaceContextType = {
   selectedPlace: GeocodeFeature | null;
@@ -38,6 +38,24 @@ export const PlaceProvider = ({ children }: { children: React.ReactNode }) => {
   //     }),
   //   );
   // }, [selectedPlace?.id]);
+
+  // When the user selected a bus stop, we want to
+  // reset the selected place.
+  React.useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const handler = () => {
+      setSelectedPlace(null);
+    };
+
+    window.addEventListener(Events.BusStopChanged, handler);
+
+    return () => {
+      window.removeEventListener(Events.BusStopChanged, handler);
+    };
+  }, []);
 
   return (
     <PlaceContext.Provider

@@ -7,10 +7,13 @@ import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
 import BusStopContent from "@web/components/ui/drawer/content";
 import DirectionsContent from "@web/components/ui/drawer/content/directions";
+import { usePlace } from "@web/components/place-context";
+import PlaceContent from "@web/components/ui/drawer/content/place";
 
 const MyDrawer = () => {
   const { selectedStop, setSelectedStopId } = useBusStop();
   const { directions, resetDirections } = useDirections();
+  const { selectedPlace, setSelectedPlace } = usePlace();
 
   const [open, setOpen] = React.useState(false);
 
@@ -22,8 +25,8 @@ const MyDrawer = () => {
   const isFullyOpen = React.useMemo(() => snap === 1, [snap]);
 
   React.useEffect(() => {
-    setOpen(!!selectedStop);
-  }, [selectedStop]);
+    setOpen(!!selectedStop || !!selectedPlace);
+  }, [selectedStop, selectedPlace]);
 
   const onClose = React.useCallback(() => {
     // Reset drawer state
@@ -32,8 +35,16 @@ const MyDrawer = () => {
 
     // Reset selected stop & directions
     setSelectedStopId(null);
+    setSelectedPlace(null);
     resetDirections();
-  }, [snapPoints, setSnap, setOpen, setSelectedStopId, resetDirections]);
+  }, [
+    snapPoints,
+    setSnap,
+    setOpen,
+    setSelectedStopId,
+    setSelectedPlace,
+    resetDirections,
+  ]);
 
   const onCloseClick = React.useCallback(() => {
     onClose();
@@ -69,7 +80,7 @@ const MyDrawer = () => {
           className="fixed bottom-0 left-0 right-0 mx-auto h-full max-h-[90%] w-full rounded-none bg-white md:max-w-2xl md:rounded-t-2xl"
         >
           <Drawer.Title>
-            <VisuallyHidden.Root>Bus Stop</VisuallyHidden.Root>
+            <VisuallyHidden.Root>Drawer</VisuallyHidden.Root>
           </Drawer.Title>
           <div className={"relative flex h-full flex-col"}>
             {/* Resize Handle */}
@@ -81,11 +92,13 @@ const MyDrawer = () => {
             {/* Content */}
             {directions ? (
               <DirectionsContent isFullyOpen={isFullyOpen} />
-            ) : (
+            ) : selectedStop ? (
               <BusStopContent
                 minimizeDrawer={minimizeDrawer}
                 isFullyOpen={isFullyOpen}
               />
+            ) : (
+              <PlaceContent isFullyOpen={isFullyOpen} />
             )}
           </div>
         </Drawer.Content>

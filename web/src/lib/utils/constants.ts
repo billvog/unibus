@@ -3,6 +3,7 @@ export const Shortcuts = {
 };
 
 export const Events = {
+  PlaceChanged: "place:changed",
   BusStopChanged: "bus-stop:changed",
   Analytics: {
     LoginClick: "login click",
