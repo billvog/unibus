@@ -6,13 +6,11 @@ import { Drawer } from "vaul";
 import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
 import { usePlace } from "@web/components/place-context";
-import BusStopContent from "@web/components/ui/drawer/content";
-import DirectionsContent from "@web/components/ui/drawer/content/directions";
-import PlaceContent from "@web/components/ui/drawer/content/place";
+import DrawerContent from "@web/components/ui/drawer/content";
 
 const MyDrawer = () => {
   const { selectedStop, setSelectedStopId } = useBusStop();
-  const { directions, resetDirections } = useDirections();
+  const { resetDirections } = useDirections();
   const { selectedPlace, setSelectedPlace } = usePlace();
 
   const [open, setOpen] = React.useState(false);
@@ -90,16 +88,11 @@ const MyDrawer = () => {
               <X className="cursor-pointer" onClick={onCloseClick} />
             </div>
             {/* Content */}
-            {directions ? (
-              <DirectionsContent isFullyOpen={isFullyOpen} />
-            ) : selectedStop ? (
-              <BusStopContent
-                minimizeDrawer={minimizeDrawer}
-                isFullyOpen={isFullyOpen}
-              />
-            ) : (
-              <PlaceContent isFullyOpen={isFullyOpen} />
-            )}
+            <DrawerContent
+              isFullyOpen={isFullyOpen}
+              minimizeDrawer={minimizeDrawer}
+              closeDrawer={onClose}
+            />
           </div>
         </Drawer.Content>
       </Drawer.Portal>

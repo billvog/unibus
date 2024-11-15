@@ -5,12 +5,9 @@ import { usePlace } from "@web/components/place-context";
 import Content from "@web/components/ui/drawer/content/elements";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { formatFeatureAddress } from "@web/lib/utils/format-feature-address";
+import { type DrawerContentProps } from "@web/types/drawer";
 
-type PlaceContentProps = {
-  isFullyOpen: boolean;
-};
-
-const PlaceContent = ({ isFullyOpen }: PlaceContentProps) => {
+const PlaceContent = ({ isFullyOpen }: DrawerContentProps) => {
   const { selectedPlace } = usePlace();
 
   const formattedAddress = React.useMemo(
