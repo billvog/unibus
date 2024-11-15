@@ -1,5 +1,6 @@
 "use client";
 
+import { Coordinates } from "@mapbox/mapbox-sdk/lib/classes/mapi-request";
 import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
 import * as Sentry from "@sentry/nextjs";
 import { CircleUserRound, CircleX } from "lucide-react";
@@ -15,6 +16,7 @@ import Place from "@web/components/ui/place";
 import UserDropdown from "@web/components/ui/search/user-dropdown";
 import { Spinner } from "@web/components/ui/spinner";
 import { useUserLocation } from "@web/components/user-location-context";
+import { useInitialValue } from "@web/hooks/use-initial-value";
 import { useKeyPress } from "@web/hooks/useKeyPress";
 import { mbxGeocodingClient } from "@web/lib/mapbox";
 import { trpc } from "@web/lib/trpc";
@@ -42,6 +44,8 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
   const { setSelectedStopId } = useBusStop();
   const { resetDirections } = useDirections();
   const { setSelectedPlace } = usePlace();
+
+  const initialUserLocation = useInitialValue(userLocation);
 
   const [show, setShow] = React.useState(true);
   const [focused, setFocused] = React.useState(false);
@@ -111,8 +115,8 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
   React.useEffect(() => {
     if (debouncedQuery.length < QUERY_THRESHOLD) return;
 
-    const location = userLocation
-      ? ([userLocation.longitude, userLocation.latitude] as [number, number])
+    const location: Coordinates | undefined = initialUserLocation
+      ? [initialUserLocation.longitude, initialUserLocation.latitude]
       : undefined;
 
     setIsMapboxLoading(true);
@@ -134,7 +138,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
         Sentry.captureException(error);
       })
       .finally(() => setIsMapboxLoading(false));
-  }, [userLocation, debouncedQuery]);
+  }, [initialUserLocation, debouncedQuery]);
 
   const openSearch = React.useCallback(() => {
     // Reset stop, place and directions.
