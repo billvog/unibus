@@ -35,14 +35,7 @@ const MyDrawer = () => {
     setSelectedStopId(null);
     setSelectedPlace(null);
     resetDirections();
-  }, [
-    snapPoints,
-    setSnap,
-    setOpen,
-    setSelectedStopId,
-    setSelectedPlace,
-    resetDirections,
-  ]);
+  }, [snapPoints]);
 
   const onCloseClick = React.useCallback(() => {
     onClose();
