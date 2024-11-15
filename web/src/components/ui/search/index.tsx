@@ -29,11 +29,11 @@ const QUERY_THRESHOLD = 3;
 // Debounce time for search query
 const QUERY_DEBOUNCE = 400;
 
-type Search = {
+type SearchProps = {
   onBusStopClick: (id: number) => void;
 };
 
-const Search = ({ onBusStopClick: handleBusStopClick }: Search) => {
+const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const [searchSessionToken] = useState(() => crypto.randomUUID());
