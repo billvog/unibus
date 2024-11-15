@@ -29,18 +29,18 @@ export const PlaceProvider = ({ children }: { children: React.ReactNode }) => {
 
     window.dispatchEvent(new CustomEvent(Events.PlaceChanged));
 
-    // // Capture event
-    // window.dispatchEvent(
-    //   new CustomEvent(Events.Analytics.PlaceClick, {
-    //     detail: {
-    //       from: "Search",
-    //       place: {
-    //         id: selectedPlace.id,
-    //         name: selectedPlace.text,
-    //       },
-    //     },
-    //   }),
-    // );
+    // Capture event
+    window.dispatchEvent(
+      new CustomEvent(Events.Analytics.PlaceClick, {
+        detail: {
+          from: "Search",
+          place: {
+            id: selectedPlace.id,
+            name: selectedPlace.text,
+          },
+        },
+      }),
+    );
   }, [selectedPlace]);
 
   // When the user selected a bus stop, we want to

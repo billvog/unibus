@@ -9,6 +9,7 @@ export const Events = {
     LoginClick: "login click",
     Logout: "logout",
     OAuthLoginClick: "oauth login click",
+    PlaceClick: "place click",
     BusStopClick: "bus stop click",
     BusStopFavorite: "bus stop favorite",
     BusVehicleClick: "bus vehicle click",
