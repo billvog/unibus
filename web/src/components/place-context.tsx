@@ -21,32 +21,31 @@ export const PlaceProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedPlace, setSelectedPlace] =
     useState<PlaceContextType["selectedPlace"]>(null);
 
-  // React.useEffect(() => {
-  //   if (!selectedPlace) {
-  //     return;
-  //   }
+  // Emit an event when the selected place changes.
+  React.useEffect(() => {
+    if (!selectedPlace) {
+      return;
+    }
 
-  //   // Capture event
-  //   window.dispatchEvent(
-  //     new CustomEvent(Events.Analytics.PlaceClick, {
-  //       detail: {
-  //         from: "Search",
-  //         place: {
-  //           id: selectedPlace.id,
-  //           name: selectedPlace.text,
-  //         },
-  //       },
-  //     }),
-  //   );
-  // }, [selectedPlace?.id]);
+    window.dispatchEvent(new CustomEvent(Events.PlaceChanged));
+
+    // // Capture event
+    // window.dispatchEvent(
+    //   new CustomEvent(Events.Analytics.PlaceClick, {
+    //     detail: {
+    //       from: "Search",
+    //       place: {
+    //         id: selectedPlace.id,
+    //         name: selectedPlace.text,
+    //       },
+    //     },
+    //   }),
+    // );
+  }, [selectedPlace]);
 
   // When the user selected a bus stop, we want to
   // reset the selected place.
   React.useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
     const handler = () => {
       setSelectedPlace(null);
     };

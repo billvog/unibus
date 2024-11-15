@@ -62,7 +62,7 @@ const DirectionsButton = ({
     onDirectionsReceived,
   ]);
 
-  if (!walkingTime) {
+  if (walkingTime == null) {
     return null;
   }
 

@@ -17,21 +17,21 @@ const ContentMap: Record<State, React.ComponentType<DrawerContentProps>> = {
 };
 
 const DrawerContent = (props: DrawerContentProps) => {
-  const { selectedStop } = useBusStop();
+  const { selectedStopId } = useBusStop();
   const { directions } = useDirections();
   const { selectedPlace } = usePlace();
 
   const currentState: State | null = React.useMemo(() => {
     // Try to map the current state to a content component.
     if (directions) return "directions";
-    if (selectedStop) return "busStop";
+    if (selectedStopId) return "busStop";
     if (selectedPlace) return "place";
 
     // Close the drawer if no content is selected.
     props.closeDrawer();
 
     return null;
-  }, [selectedStop, directions, selectedPlace, props.closeDrawer]);
+  }, [selectedStopId, directions, selectedPlace, props.closeDrawer]);
 
   const Content = React.useMemo(
     () => (currentState ? ContentMap[currentState] : null),
