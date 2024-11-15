@@ -29,13 +29,11 @@ const QUERY_THRESHOLD = 3;
 // Debounce time for search query
 const QUERY_DEBOUNCE = 400;
 
-type BusStopsSearchProps = {
+type Search = {
   onBusStopClick: (id: number) => void;
 };
 
-const BusStopSearch = ({
-  onBusStopClick: handleBusStopClick,
-}: BusStopsSearchProps) => {
+const Search = ({ onBusStopClick: handleBusStopClick }: Search) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const [searchSessionToken] = useState(() => crypto.randomUUID());
@@ -311,4 +309,4 @@ const BusStopSearch = ({
   );
 };
 
-export default BusStopSearch;
+export default Search;

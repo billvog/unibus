@@ -6,7 +6,7 @@ import { useBusStop } from "@web/components/bus-stop-context";
 import MyDrawer from "@web/components/ui/drawer";
 import GraveError from "@web/components/ui/grave-error";
 import Map from "@web/components/ui/map";
-import BusStopSearch from "@web/components/ui/search";
+import Search from "@web/components/ui/search";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
 import { useBodyScroll } from "@web/hooks/useBodyScroll";
@@ -77,13 +77,8 @@ function Page() {
 
   return (
     <div className="relative flex h-full w-full flex-1 flex-col overflow-hidden">
-      {/* Loading Spinner */}
       {isLoading && <FullscreenSpinner display="absolute" />}
-
-      {/* Bus Stop Search */}
-      {busStops.length > 0 && <BusStopSearch onBusStopClick={onBusStopClick} />}
-
-      {/* Map */}
+      <Search onBusStopClick={onBusStopClick} />
       <Map
         busStops={busStops}
         onBusStopClick={(id) => onBusStopClick(id, false)}
