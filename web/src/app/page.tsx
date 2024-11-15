@@ -3,16 +3,16 @@
 import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
-import BusStopDrawer from "@web/components/ui/bus-stop-drawer";
-import BusStopSearch from "@web/components/ui/bus-stop-search";
+import MyDrawer from "@web/components/ui/drawer";
 import GraveError from "@web/components/ui/grave-error";
 import Map from "@web/components/ui/map";
+import Search from "@web/components/ui/search";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
 import { useBodyScroll } from "@web/hooks/useBodyScroll";
 import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
-import { Events } from "@web/lib/constants";
 import { trpc } from "@web/lib/trpc";
+import { Events } from "@web/lib/utils/constants";
 import { type MapFlyToDetail } from "@web/types/events";
 
 function Page() {
@@ -77,18 +77,13 @@ function Page() {
 
   return (
     <div className="relative flex h-full w-full flex-1 flex-col overflow-hidden">
-      {/* Loading Spinner */}
       {isLoading && <FullscreenSpinner display="absolute" />}
-
-      {/* Bus Stop Search */}
-      {busStops.length > 0 && <BusStopSearch onBusStopClick={onBusStopClick} />}
-
-      {/* Map */}
+      <Search onBusStopClick={onBusStopClick} />
       <Map
         busStops={busStops}
         onBusStopClick={(id) => onBusStopClick(id, false)}
       />
-      <BusStopDrawer />
+      <MyDrawer />
     </div>
   );
 }

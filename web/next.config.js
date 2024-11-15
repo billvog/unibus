@@ -71,4 +71,11 @@ const config = withSentryConfig(
   },
 );
 
-export default config;
+export default {
+  ...config,
+  experimental: {
+    ...config.experimental,
+    // Only enable Sentry in production
+    instrumentationHook: process.env.NODE_ENV === "production",
+  },
+};

@@ -2,9 +2,10 @@ import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
-import ActionButton from "@web/components/ui/bus-stop-drawer/content/action-button";
+import ActionButton from "@web/components/ui/drawer/content/action-button";
 import { useUserLocation } from "@web/components/user-location-context";
-import { calculateWalkingDistance } from "@web/lib/walking-distance";
+import { Events } from "@web/lib/utils/constants";
+import { calculateWalkingDistance } from "@web/lib/utils/walking-distance";
 
 type DirectionsButtonProps = {
   isFullyOpen: boolean;
@@ -40,6 +41,20 @@ const DirectionsButton = ({
       return;
     }
 
+    // Capture event
+    window.dispatchEvent(
+      new CustomEvent(Events.Analytics.DirectionsClick, {
+        detail: {
+          from: "Drawer",
+          destination: {
+            type: "BusStop",
+            id: selectedStop.id,
+            name: selectedStop.name,
+          },
+        },
+      }),
+    );
+
     // Fetch directions with transition.
     startDirectionsTransition(async () => {
       await getDirections([
@@ -62,7 +77,7 @@ const DirectionsButton = ({
     onDirectionsReceived,
   ]);
 
-  if (!walkingTime) {
+  if (walkingTime == null) {
     return null;
   }
 

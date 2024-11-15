@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Events } from "@web/lib/constants";
+import { Events } from "@web/lib/utils/constants";
 
 type GeolocationError = {
   code: number;

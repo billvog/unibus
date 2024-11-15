@@ -1,43 +1,89 @@
 "use client";
 
+import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
+import * as Sentry from "@sentry/nextjs";
 import { CircleUserRound, CircleX } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { useDebounce } from "use-debounce";
 
 import { useBusStop } from "@web/components/bus-stop-context";
+import { useDirections } from "@web/components/directions-context";
+import { usePlace } from "@web/components/place-context";
 import BusStop from "@web/components/ui/bus-stop";
-import UserDropdown from "@web/components/ui/bus-stop-search/user-dropdown";
 import { Input } from "@web/components/ui/input";
+import Place from "@web/components/ui/place";
+import UserDropdown from "@web/components/ui/search/user-dropdown";
+import { Spinner } from "@web/components/ui/spinner";
+import { useUserLocation } from "@web/components/user-location-context";
 import { useKeyPress } from "@web/hooks/useKeyPress";
-import { Events, Shortcuts } from "@web/lib/constants";
+import { mbxGeocodingClient } from "@web/lib/mapbox";
 import { trpc } from "@web/lib/trpc";
-import { cn } from "@web/lib/utils";
+import { Events, Shortcuts } from "@web/lib/utils/constants";
+import { searchAndRankResults } from "@web/lib/utils/search-results";
+import { cn } from "@web/lib/utils/tailwind";
+import { type MapFlyToDetail } from "@web/types/events";
 
-type BusStopsSearchProps = {
+// Minimum query length to start searching
+const QUERY_THRESHOLD = 3;
+
+// Debounce time for search query
+const QUERY_DEBOUNCE = 400;
+
+type SearchProps = {
   onBusStopClick: (id: number) => void;
 };
 
-const BusStopSearch = ({
-  onBusStopClick: handleBusStopClick,
-}: BusStopsSearchProps) => {
+const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  const [searchSessionToken] = useState(() => crypto.randomUUID());
+
+  const { userLocation } = useUserLocation();
   const { setSelectedStopId } = useBusStop();
+  const { resetDirections } = useDirections();
+  const { setSelectedPlace } = usePlace();
 
   const [show, setShow] = React.useState(true);
   const [focused, setFocused] = React.useState(false);
 
   const [query, setQuery] = React.useState("");
-  const [debouncedQuery] = useDebounce(query, 400);
+  const [debouncedQuery] = useDebounce(query, QUERY_DEBOUNCE);
+
+  const [isMapboxLoading, setIsMapboxLoading] = React.useState(false);
+
+  const [searchFeatures, setSearchFeatures] = React.useState<GeocodeFeature[]>(
+    [],
+  );
 
   const searchQuery = trpc.searchBusStop.useQuery(
     { term: debouncedQuery },
     {
-      enabled: debouncedQuery.length > 1,
+      enabled: debouncedQuery.length > QUERY_THRESHOLD,
     },
   );
 
-  const busStops = searchQuery.data ?? [];
+  const busStops = React.useMemo(
+    () => searchQuery.data ?? [],
+    [searchQuery.data],
+  );
+
+  const results = React.useMemo(() => {
+    if (
+      debouncedQuery.length < QUERY_THRESHOLD ||
+      (!searchFeatures.length && !busStops.length)
+    ) {
+      return [];
+    }
+
+    return searchAndRankResults(debouncedQuery, searchFeatures, busStops);
+  }, [debouncedQuery, searchFeatures, busStops]);
+
+  const hasResults = React.useMemo(() => results.length > 0, [results.length]);
+
+  const isLoading = React.useMemo(
+    () => searchQuery.isLoading || isMapboxLoading,
+    [searchQuery.isLoading, isMapboxLoading],
+  );
 
   // Focus input on "/" key press
   useKeyPress(
@@ -62,11 +108,43 @@ const BusStopSearch = ({
     };
   }, []);
 
+  React.useEffect(() => {
+    if (debouncedQuery.length < QUERY_THRESHOLD) return;
+
+    const location = userLocation
+      ? ([userLocation.longitude, userLocation.latitude] as [number, number])
+      : undefined;
+
+    setIsMapboxLoading(true);
+
+    mbxGeocodingClient
+      .forwardGeocode({
+        query: debouncedQuery,
+        mode: "mapbox.places",
+        countries: ["GR"],
+        language: ["el"],
+        proximity: location ?? "ip",
+        session_token: searchSessionToken,
+        limit: 5,
+      })
+      .send()
+      .then((response) => setSearchFeatures(response.body.features))
+      .catch((error) => {
+        // Send error to Sentry
+        Sentry.captureException(error);
+      })
+      .finally(() => setIsMapboxLoading(false));
+  }, [userLocation, debouncedQuery]);
+
   const openSearch = React.useCallback(() => {
-    // Reset selected stop
+    // Reset stop, place and directions.
     setSelectedStopId(null);
+    setSelectedPlace(null);
+    resetDirections();
+
     // Enter focused state
     setFocused(true);
+
     // Wait for the animation to finish, then focus the input
     setTimeout(() => {
       if (inputRef.current) {
@@ -76,9 +154,35 @@ const BusStopSearch = ({
   }, []);
 
   const closeSearch = React.useCallback(() => {
+    setSearchFeatures([]);
     setFocused(false);
     setQuery("");
   }, []);
+
+  const onPlaceClick = React.useCallback(
+    (id: string) => {
+      const feature = searchFeatures.find((feature) => feature.id === id);
+
+      if (!feature || feature.geometry.coordinates.length !== 2) return;
+
+      closeSearch();
+
+      setSelectedPlace(feature);
+
+      // Emit event to fly map to place
+      window.dispatchEvent(
+        new CustomEvent<MapFlyToDetail>("map:fly-to", {
+          detail: {
+            coordinates: {
+              longitude: feature.geometry.coordinates[0]!,
+              latitude: feature.geometry.coordinates[1]!,
+            },
+          },
+        }),
+      );
+    },
+    [searchFeatures],
+  );
 
   const onBusStopClick = React.useCallback(
     (id: number) => {
@@ -134,7 +238,7 @@ const BusStopSearch = ({
             {/* Search Input */}
             <Input
               ref={inputRef}
-              placeholder="Αναζήτηση στάσης... 🔍"
+              placeholder="Πού θες να πας; 🔍"
               onFocus={() => setFocused(true)}
               onBlur={() => query.length === 0 && setFocused(false)}
               value={query}
@@ -144,10 +248,7 @@ const BusStopSearch = ({
             {focused && query.length > 0 && (
               <button
                 className="absolute bottom-0 right-0 top-0 my-1 mr-3 flex items-center justify-center rounded-full p-1 text-gray-400"
-                onClick={() => {
-                  setQuery("");
-                  setFocused(false);
-                }}
+                onClick={() => closeSearch()}
               >
                 <CircleX size={18} />
               </button>
@@ -167,7 +268,11 @@ const BusStopSearch = ({
           </UserDropdown>
         </div>
 
-        {busStops.length > 0 ? (
+        {isLoading ? (
+          <div className="py-6">
+            <Spinner className="text-white" />
+          </div>
+        ) : hasResults ? (
           <div
             className={cn(
               "w-full max-w-lg transition-[transform,opacity] duration-300 ease-out will-change-transform",
@@ -175,13 +280,21 @@ const BusStopSearch = ({
             )}
           >
             <div className="flex flex-col gap-4">
-              {busStops.map((busStop) => (
-                <BusStop
-                  key={busStop.id}
-                  onClick={() => onBusStopClick(busStop.id)}
-                  busStop={busStop}
-                />
-              ))}
+              {results.map((result) =>
+                result.type === "place" ? (
+                  <Place
+                    key={result.item.id}
+                    feature={result.item}
+                    onClick={() => onPlaceClick(result.item.id)}
+                  />
+                ) : result.type === "busStop" ? (
+                  <BusStop
+                    key={result.item.id}
+                    busStop={result.item}
+                    onClick={() => onBusStopClick(result.item.id)}
+                  />
+                ) : null,
+              )}
             </div>
           </div>
         ) : query.length > 0 ? (
@@ -196,4 +309,4 @@ const BusStopSearch = ({
   );
 };
 
-export default BusStopSearch;
+export default Search;

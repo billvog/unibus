@@ -2,35 +2,31 @@ import { useFeatureFlagEnabled } from "posthog-js/react";
 import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
-import ActionButton from "@web/components/ui/bus-stop-drawer/content/action-button";
-import DirectionsButton from "@web/components/ui/bus-stop-drawer/content/action-button/directions";
-import FavoriteButton from "@web/components/ui/bus-stop-drawer/content/action-button/favorite";
-import Content from "@web/components/ui/bus-stop-drawer/content/elements";
 import BusStopSchedule from "@web/components/ui/bus-stop-schedule";
 import BusVehicle from "@web/components/ui/bus-vehicle";
+import ActionButton from "@web/components/ui/drawer/content/action-button";
+import DirectionsButton from "@web/components/ui/drawer/content/action-button/directions";
+import FavoriteButton from "@web/components/ui/drawer/content/action-button/favorite";
+import Content from "@web/components/ui/drawer/content/elements";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { Spinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
-import { Events, FeatureFlags } from "@web/lib/constants";
-import { PrettifyName } from "@web/lib/prettify-name";
 import { trpc } from "@web/lib/trpc";
-import { cn } from "@web/lib/utils";
+import { Events, FeatureFlags } from "@web/lib/utils/constants";
+import { PrettifyName } from "@web/lib/utils/prettify-name";
+import { cn } from "@web/lib/utils/tailwind";
 import { type Coordinates } from "@web/types/coordinates";
+import { type DrawerContentProps } from "@web/types/drawer";
 import { type MapFlyToDetail } from "@web/types/events";
 
 const BusLiveQueryRefetchInterval = 30 * 1000; // 30 seconds
 
 type ViewMode = "live" | "schedule";
 
-type BusStopContentProps = {
-  isFullyOpen: boolean;
-  minimizeDrawer: () => void;
-};
-
 const BusStopContent = ({
   isFullyOpen,
   minimizeDrawer,
-}: BusStopContentProps) => {
+}: DrawerContentProps) => {
   const directionsEnabled = useFeatureFlagEnabled(FeatureFlags.Directions);
 
   const { user } = useUser();
@@ -164,7 +160,11 @@ const BusStopContent = ({
   return (
     <>
       <Content.Header isFullyOpen={isFullyOpen}>
-        <DynamicTitle title={prettyStopName} onClick={onBusStopNameClick} />
+        <DynamicTitle
+          title={prettyStopName}
+          className="cursor-pointer"
+          onClick={onBusStopNameClick}
+        />
         <div
           className={cn(
             "flex items-center gap-2",

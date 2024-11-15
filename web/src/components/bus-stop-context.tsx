@@ -3,8 +3,8 @@
 import { type DbBusStop } from "@api/types/models";
 import React, { useState } from "react";
 
-import { Events } from "@web/lib/constants";
 import { trpc } from "@web/lib/trpc";
+import { Events } from "@web/lib/utils/constants";
 import { type Coordinates } from "@web/types/coordinates";
 
 type BusStopContextType = {
@@ -82,6 +82,24 @@ export const BusStopProvider = ({
       }),
     );
   }, [selectedStop?.id]);
+
+  // When the user selected a place, we want to
+  // reset the selected bus stop.
+  React.useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const handler = () => {
+      setSelectedStopId(null);
+    };
+
+    window.addEventListener(Events.PlaceChanged, handler);
+
+    return () => {
+      window.removeEventListener(Events.PlaceChanged, handler);
+    };
+  }, []);
 
   return (
     <BusStopContext.Provider

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button } from "@web/components/ui/button";
-import { cn } from "@web/lib/utils";
+import { cn } from "@web/lib/utils/tailwind";
 
 type ActionButtonProps = {
   icon: React.ReactNode;

@@ -4,18 +4,16 @@ import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
-import Content from "@web/components/ui/bus-stop-drawer/content/elements";
+import { Detail } from "@web/components/ui/drawer/content/detail";
+import Content from "@web/components/ui/drawer/content/elements";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import ManeuverIcon from "@web/components/ui/maneuver-icon";
-import { formatDistance } from "@web/lib/format-distance";
-import { PrettifyName } from "@web/lib/prettify-name";
-import { cn } from "@web/lib/utils";
+import { formatDistance } from "@web/lib/utils/format-distance";
+import { PrettifyName } from "@web/lib/utils/prettify-name";
+import { cn } from "@web/lib/utils/tailwind";
+import { type DrawerContentProps } from "@web/types/drawer";
 
-type DirectionsContentProps = {
-  isFullyOpen: boolean;
-};
-
-const DirectionsContent = ({ isFullyOpen }: DirectionsContentProps) => {
+const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
   const { selectedStop } = useBusStop();
   const { directions, maneuvers, activeManeuverId, resetDirections } =
     useDirections();
@@ -85,7 +83,12 @@ const DirectionsContent = ({ isFullyOpen }: DirectionsContentProps) => {
 
         <div className="mt-2 space-y-4 rounded-2xl border p-6">
           <span className="text-lg font-bold">Οδηγίες:</span>
-          <div className="fade-bottom relative flex max-h-[200px] flex-col gap-8 overflow-hidden overflow-y-hidden">
+          <div
+            className={cn(
+              "relative flex max-h-[200px] flex-col gap-8 overflow-hidden overflow-y-hidden",
+              maneuvers.length > 4 && "fade-bottom",
+            )}
+          >
             <div className="absolute bottom-5 left-[11px] top-5 border-r-2 border-dotted" />
             {maneuvers.map(({ id, maneuver }) => (
               <div
@@ -113,19 +116,3 @@ const DirectionsContent = ({ isFullyOpen }: DirectionsContentProps) => {
 };
 
 export default DirectionsContent;
-
-type DetailProps = {
-  label: string;
-  text: string;
-};
-
-const Detail = ({ label, text }: DetailProps) => {
-  return (
-    <div className="flex h-full w-full flex-col gap-1 rounded-xl bg-gray-50 p-4">
-      <span className="text-xs sm:text-sm">{label}</span>
-      <span className="text-base font-extrabold sm:text-lg md:text-xl">
-        {text}
-      </span>
-    </div>
-  );
-};

@@ -3,11 +3,14 @@ export const Shortcuts = {
 };
 
 export const Events = {
+  PlaceChanged: "place:changed",
   BusStopChanged: "bus-stop:changed",
   Analytics: {
     LoginClick: "login click",
     Logout: "logout",
     OAuthLoginClick: "oauth login click",
+    DirectionsClick: "directions click",
+    PlaceClick: "place click",
     BusStopClick: "bus stop click",
     BusStopFavorite: "bus stop favorite",
     BusVehicleClick: "bus vehicle click",

@@ -10,9 +10,9 @@ import { type LineString, type MultiLineString } from "geojson";
 import React, { createContext, useContext } from "react";
 
 import { useUserLocation } from "@web/components/user-location-context";
-import { Events } from "@web/lib/constants";
-import { fixGreek } from "@web/lib/fix-greek";
 import { mbxDirectionsClient } from "@web/lib/mapbox";
+import { Events } from "@web/lib/utils/constants";
+import { fixGreek } from "@web/lib/utils/fix-greek";
 
 type DirectionsGeometry = MultiLineString | LineString;
 type DirectionsManeuver = {
@@ -108,16 +108,28 @@ export function DirectionsProvider({
     [],
   );
 
-  // Reset directions when bus stop changes
+  // Reset directions when selected stop or place changes.
   React.useEffect(() => {
-    const handleBusStopChanged = () => {
+    const handler = () => {
       resetDirections();
     };
 
-    window.addEventListener(Events.BusStopChanged, handleBusStopChanged);
+    // Events that trigger a reset of the directions.
+    const directionResetTriggerEvents = [
+      Events.BusStopChanged,
+      Events.PlaceChanged,
+    ];
+
+    // Register events.
+    directionResetTriggerEvents.forEach((event) =>
+      window.addEventListener(event, handler),
+    );
 
     return () => {
-      window.removeEventListener(Events.BusStopChanged, handleBusStopChanged);
+      // Unregister events.
+      directionResetTriggerEvents.forEach((event) =>
+        window.removeEventListener(event, handler),
+      );
     };
   }, [resetDirections]);
 
