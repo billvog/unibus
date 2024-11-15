@@ -160,7 +160,11 @@ const BusStopContent = ({
   return (
     <>
       <Content.Header isFullyOpen={isFullyOpen}>
-        <DynamicTitle title={prettyStopName} onClick={onBusStopNameClick} />
+        <DynamicTitle
+          title={prettyStopName}
+          className="cursor-pointer"
+          onClick={onBusStopNameClick}
+        />
         <div
           className={cn(
             "flex items-center gap-2",

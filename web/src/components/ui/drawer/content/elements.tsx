@@ -31,7 +31,7 @@ Content.Body = function ({ isFullyOpen, children }: ContentBodyProps) {
   return (
     <div
       className={cn(
-        "flex h-full flex-col gap-4 px-10 pb-8 pt-5",
+        "flex h-full flex-col gap-6 px-10 pb-8 pt-7",
         isFullyOpen && "no-scrollbar overflow-y-auto",
       )}
     >

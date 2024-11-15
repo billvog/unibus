@@ -4,7 +4,7 @@ import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
-import { Detail } from "@web/components/ui/drawer/content/directions/detail";
+import { Detail } from "@web/components/ui/drawer/content/detail";
 import Content from "@web/components/ui/drawer/content/elements";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import ManeuverIcon from "@web/components/ui/maneuver-icon";
@@ -83,7 +83,12 @@ const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
 
         <div className="mt-2 space-y-4 rounded-2xl border p-6">
           <span className="text-lg font-bold">Οδηγίες:</span>
-          <div className="fade-bottom relative flex max-h-[200px] flex-col gap-8 overflow-hidden overflow-y-hidden">
+          <div
+            className={cn(
+              "relative flex max-h-[200px] flex-col gap-8 overflow-hidden overflow-y-hidden",
+              maneuvers.length > 4 && "fade-bottom",
+            )}
+          >
             <div className="absolute bottom-5 left-[11px] top-5 border-r-2 border-dotted" />
             {maneuvers.map(({ id, maneuver }) => (
               <div

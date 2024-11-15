@@ -1,5 +1,6 @@
 import * as turf from "@turf/distance";
 
+import { formatDistance } from "@web/lib/utils/format-distance";
 import { type Coordinates } from "@web/types/coordinates";
 
 // Function to calculate distance and estimated walking time
@@ -16,9 +17,11 @@ export function calculateWalkingDistance(
     units: "meters",
   });
 
+  const formattedDistance = formatDistance(distance);
+
   // Estimate walking time in minutes (assuming 1.2 m/s walking speed)
   const walkingSpeed = 1.2; // meters per second
   const walkingTime = Math.round(distance / walkingSpeed / 60);
 
-  return { distance, walkingTime };
+  return { distance, formattedDistance, walkingTime };
 }

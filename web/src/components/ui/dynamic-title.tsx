@@ -14,7 +14,7 @@ const DynamicTitle = ({ title, className, ...props }: DynamicTitleProps) => {
       const titleElement = titleRef.current;
       if (!titleElement) return;
 
-      let fontSize = 1.25; // in rem
+      let fontSize = 1.2; // in rem
       titleElement.style.fontSize = `${fontSize}rem`;
 
       while (
@@ -37,7 +37,7 @@ const DynamicTitle = ({ title, className, ...props }: DynamicTitleProps) => {
   return (
     <h1
       ref={titleRef}
-      className={cn("dynamic-title font-bold", className)}
+      className={cn("dynamic-title font-extrabold", className)}
       {...props}
     >
       {title}

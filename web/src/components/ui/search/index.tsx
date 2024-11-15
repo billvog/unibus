@@ -125,7 +125,7 @@ const BusStopSearch = ({
         mode: "mapbox.places",
         countries: ["GR"],
         language: ["el"],
-        proximity: location,
+        proximity: location ?? "ip",
         session_token: searchSessionToken,
         limit: 5,
       })
@@ -139,8 +139,9 @@ const BusStopSearch = ({
   }, [userLocation, debouncedQuery]);
 
   const openSearch = React.useCallback(() => {
-    // Reset stop and directions.
+    // Reset stop, place and directions.
     setSelectedStopId(null);
+    setSelectedPlace(null);
     resetDirections();
 
     // Enter focused state
