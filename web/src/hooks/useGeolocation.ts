@@ -54,7 +54,7 @@ export const useGeolocation = () => {
     );
   }, []);
 
-  React.useEffect(() => {
+  const startLocationWatch = React.useCallback(() => {
     if (typeof window === "undefined" || "navigator" in window === false) {
       return;
     }
@@ -87,5 +87,5 @@ export const useGeolocation = () => {
     };
   }, [successCallback, errorCallback, permissionChangeCallback]);
 
-  return { position, error };
+  return { startLocationWatch, position, error };
 };

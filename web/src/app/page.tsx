@@ -5,10 +5,12 @@ import React from "react";
 import { useBusStop } from "@web/components/bus-stop-context";
 import MyDrawer from "@web/components/ui/drawer";
 import GraveError from "@web/components/ui/grave-error";
+import LocationPromptModal from "@web/components/ui/location-prompt-modal";
 import Map from "@web/components/ui/map";
 import Search from "@web/components/ui/search";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
 import { useUser } from "@web/components/user-context";
+import { useUserLocation } from "@web/components/user-location-context";
 import { useBodyScroll } from "@web/hooks/useBodyScroll";
 import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
 import { trpc } from "@web/lib/trpc";
@@ -20,7 +22,13 @@ function Page() {
   useBodyScroll(true); // disable scroll
 
   const { user } = useUser();
+  const { isLocationEnabled } = useUserLocation();
   const { setSelectedStopId } = useBusStop();
+
+  const showLocationPrompt = React.useMemo(
+    () => !isLocationEnabled,
+    [isLocationEnabled],
+  );
 
   // Fetch user's favorite bus stops.
   // We're are going to access these through cache.
@@ -78,6 +86,7 @@ function Page() {
   return (
     <div className="relative flex h-full w-full flex-1 flex-col overflow-hidden">
       {isLoading && <FullscreenSpinner display="absolute" />}
+      {showLocationPrompt && <LocationPromptModal />}
       <Search onBusStopClick={onBusStopClick} />
       <Map
         busStops={busStops}

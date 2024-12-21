@@ -1,6 +1,6 @@
 "use client";
 
-import { Coordinates } from "@mapbox/mapbox-sdk/lib/classes/mapi-request";
+import { type Coordinates } from "@mapbox/mapbox-sdk/lib/classes/mapi-request";
 import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
 import * as Sentry from "@sentry/nextjs";
 import { CircleUserRound, CircleX } from "lucide-react";

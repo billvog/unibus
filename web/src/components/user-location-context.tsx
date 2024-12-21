@@ -4,10 +4,13 @@ import React, { createContext, useContext } from "react";
 import { toast } from "sonner";
 
 import { useGeolocation } from "@web/hooks/useGeolocation";
+import { usePersistedState } from "@web/hooks/usePersistedState";
 import { type Coordinates } from "@web/types/coordinates";
 
 interface UserLocationContextType {
   userLocation: Coordinates | null;
+  isLocationEnabled: boolean;
+  enableLocation: () => void;
 }
 
 const UserLocationContext = createContext<UserLocationContextType | null>(null);
@@ -17,9 +20,25 @@ export function UserLocationProvider({
 }: {
   children: React.ReactNode;
 }) {
+  // A flag to determine if the user has enabled location.
+  // **Note**: This doesn't mean that we have permission to access the location.
+  // It just means that the user has been asked for location, and pressed "Enable".
+  const [isEnabled, setIsEnabled] = usePersistedState(
+    "user-location:enabled",
+    false,
+  );
+
   const [showedError, setShowedError] = React.useState(false);
 
   const geolocation = useGeolocation();
+
+  React.useEffect(() => {
+    // If the location is enabled, start the location watch.
+    // This will prompt the user for location access.
+    if (isEnabled) {
+      geolocation.startLocationWatch();
+    }
+  }, [isEnabled, geolocation.startLocationWatch]);
 
   React.useEffect(() => {
     if (showedError) {
@@ -27,7 +46,7 @@ export function UserLocationProvider({
     }
 
     // Show an error message if location could not be
-    // retrieved, but skip the error if the user denied
+    // retrieved, but skip the error if the user denied access.
     if (
       geolocation.error &&
       geolocation.error.code !== GeolocationPositionError.PERMISSION_DENIED
@@ -37,9 +56,19 @@ export function UserLocationProvider({
     }
   }, [showedError, geolocation.error]);
 
+  const enableLocation = React.useCallback(() => {
+    // Set that we have asked for location.
+    // Then the useEffect will start the location watch.
+    setIsEnabled(true);
+  }, [setIsEnabled]);
+
   return (
     <UserLocationContext.Provider
-      value={{ userLocation: geolocation.position }}
+      value={{
+        userLocation: geolocation.position,
+        isLocationEnabled: isEnabled,
+        enableLocation,
+      }}
     >
       {children}
     </UserLocationContext.Provider>
