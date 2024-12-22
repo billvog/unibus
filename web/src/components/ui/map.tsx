@@ -71,12 +71,15 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
   const mapRef = React.useRef<MapRef>(null);
 
   const mapFlyTo = React.useCallback(
-    (coordinates: Coordinates, overwriteZoom?: boolean) => {
+    (
+      coordinates: Coordinates,
+      options?: { overwriteZoom?: boolean; speed?: number },
+    ) => {
       if (!mapRef.current) {
         return false;
       }
 
-      const shouldOverwriteZoom = overwriteZoom ?? true;
+      const shouldOverwriteZoom = options?.overwriteZoom ?? true;
 
       const map = mapRef.current.getMap();
       const zoom = map.getZoom();
@@ -84,6 +87,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
       map.flyTo({
         center: [coordinates.longitude, coordinates.latitude],
         zoom: shouldOverwriteZoom && zoom < 16 ? 17 : zoom,
+        speed: options?.speed,
       });
 
       return true;
@@ -136,10 +140,9 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
 
     const handleMapFlyTo = (event: Event) => {
       const customEvent = event as CustomEvent<MapFlyToDetail>;
-      mapFlyTo(
-        customEvent.detail.coordinates,
-        customEvent.detail.overwriteZoom,
-      );
+      mapFlyTo(customEvent.detail.coordinates, {
+        overwriteZoom: customEvent.detail.overwriteZoom,
+      });
     };
 
     const map = mapRef.current.getMap();
@@ -168,10 +171,14 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
     window.dispatchEvent(new CustomEvent(Events.Analytics.MapResetZoom));
   }, [userLocation, mapFlyTo]);
 
+  // When we get user's location for the first time, zoom to it
   React.useEffect(() => {
     if (userLocation && !hasZoomedToUser) {
       setTimeout(() => {
-        const ok = mapFlyTo(userLocation);
+        const ok = mapFlyTo(userLocation, {
+          speed: 2,
+        });
+
         setHasZoomedToUser(ok);
       }, 500);
     }
@@ -186,9 +193,10 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
       ref={mapRef}
       attributionControl={false}
       initialViewState={{
-        longitude: 22.4337,
-        latitude: 38.8997,
-        zoom: 13,
+        // Hardcoded to Greece
+        longitude: 23.7275,
+        latitude: 37.9838,
+        zoom: 6,
       }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
       mapboxAccessToken={env.NEXT_PUBLIC_MAPBOX_TOKEN}
