@@ -79,15 +79,16 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
         return false;
       }
 
-      const shouldOverwriteZoom = options?.overwriteZoom ?? true;
+      const overwriteZoom = options?.overwriteZoom ?? true;
+      const speed = options?.speed ?? 1;
 
       const map = mapRef.current.getMap();
       const zoom = map.getZoom();
 
       map.flyTo({
         center: [coordinates.longitude, coordinates.latitude],
-        zoom: shouldOverwriteZoom && zoom < 16 ? 17 : zoom,
-        speed: options?.speed,
+        zoom: overwriteZoom && zoom < 16 ? 17 : zoom,
+        speed,
       });
 
       return true;
@@ -142,6 +143,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
       const customEvent = event as CustomEvent<MapFlyToDetail>;
       mapFlyTo(customEvent.detail.coordinates, {
         overwriteZoom: customEvent.detail.overwriteZoom,
+        speed: customEvent.detail.speed,
       });
     };
 
@@ -196,7 +198,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
         // Hardcoded to Greece
         longitude: 23.7275,
         latitude: 37.9838,
-        zoom: 6,
+        zoom: 5,
       }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
       mapboxAccessToken={env.NEXT_PUBLIC_MAPBOX_TOKEN}

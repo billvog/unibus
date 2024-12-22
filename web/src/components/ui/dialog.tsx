@@ -6,7 +6,6 @@ import * as React from "react";
 
 import { cn } from "@web/lib/utils/tailwind";
 
-
 const Dialog = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
@@ -74,7 +73,7 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+      "flex flex-row justify-center gap-2 sm:justify-end",
       className,
     )}
     {...props}

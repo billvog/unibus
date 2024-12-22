@@ -64,9 +64,11 @@ const LocationPromptModal = () => {
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={() => onEnableLocation()}>Ενεργοποίηση</Button>
-          <Button variant="secondary" onClick={() => onOpenChange(false)}>
+          <Button variant="ghost" onClick={() => onOpenChange(false)}>
             Αργότερα
+          </Button>
+          <Button onClick={() => onEnableLocation()}>
+            <span className="font-bold">Ενεργοποίηση</span>
           </Button>
         </DialogFooter>
       </DialogContent>
