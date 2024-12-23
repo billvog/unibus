@@ -1,15 +1,18 @@
 "use client";
 
+import { distance } from "@turf/distance";
 import React, { createContext, useContext } from "react";
 import { toast } from "sonner";
 
 import { useGeolocation } from "@web/hooks/useGeolocation";
 import { usePersistedState } from "@web/hooks/usePersistedState";
+import { SupportedLocations } from "@web/lib/supported-locations";
 import { type Coordinates } from "@web/types/coordinates";
 
 interface UserLocationContextType {
   userLocation: Coordinates | null;
   isLocationEnabled: boolean;
+  isLocationSupported: boolean;
   enableLocation: () => void;
 }
 
@@ -27,6 +30,9 @@ export function UserLocationProvider({
     "user-location:enabled",
     false,
   );
+
+  // A flag to determine if the user's location is supported from unibus.
+  const [isLocationSupported, setIsLocationSupported] = React.useState(false);
 
   const [showedError, setShowedError] = React.useState(false);
 
@@ -62,11 +68,36 @@ export function UserLocationProvider({
     setIsEnabled(true);
   }, [setIsEnabled]);
 
+  React.useEffect(() => {
+    // If the user has enabled location, and we have a position,
+    // check if the location is supported.
+    if (isEnabled && geolocation.position) {
+      let isSupported = false;
+
+      SupportedLocations.forEach((location) => {
+        const d = distance(
+          [location.coordinates.longitude, location.coordinates.latitude],
+          [geolocation.position!.longitude, geolocation.position!.latitude],
+          {
+            units: "kilometers",
+          },
+        );
+
+        if (d < location.range) {
+          isSupported = true;
+        }
+      });
+
+      setIsLocationSupported(isSupported);
+    }
+  }, [isEnabled, geolocation.position]);
+
   return (
     <UserLocationContext.Provider
       value={{
         userLocation: geolocation.position,
         isLocationEnabled: isEnabled,
+        isLocationSupported,
         enableLocation,
       }}
     >

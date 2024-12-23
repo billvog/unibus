@@ -17,6 +17,7 @@ export const Events = {
     MapResetZoom: "map reset zoom",
     GeolocationPrompt: "geolocation prompt",
     GraveErrorSendHelp: "grave error send help",
+    UnsupportedLocationSendHelp: "unsupported location send help",
   },
 };
 

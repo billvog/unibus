@@ -5,7 +5,8 @@ import React from "react";
 import { useBusStop } from "@web/components/bus-stop-context";
 import MyDrawer from "@web/components/ui/drawer";
 import GraveError from "@web/components/ui/grave-error";
-import LocationPromptModal from "@web/components/ui/location-prompt-modal";
+import LocationPromptModal from "@web/components/ui/location/location-prompt-modal";
+import UnsupportedLocationModal from "@web/components/ui/location/unsupported-location-modal";
 import Map from "@web/components/ui/map";
 import Search from "@web/components/ui/search";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
@@ -22,12 +23,18 @@ function Page() {
   useBodyScroll(true); // disable scroll
 
   const { user } = useUser();
-  const { isLocationEnabled } = useUserLocation();
+  const { userLocation, isLocationEnabled, isLocationSupported } =
+    useUserLocation();
   const { setSelectedStopId } = useBusStop();
 
   const showLocationPrompt = React.useMemo(
     () => !isLocationEnabled,
     [isLocationEnabled],
+  );
+
+  const showLocationNotSupported = React.useMemo(
+    () => userLocation && !isLocationSupported,
+    [userLocation, isLocationSupported],
   );
 
   // Fetch user's favorite bus stops.
@@ -86,7 +93,10 @@ function Page() {
   return (
     <div className="relative flex h-full w-full flex-1 flex-col overflow-hidden">
       {isLoading && <FullscreenSpinner display="absolute" />}
+
       {showLocationPrompt && <LocationPromptModal />}
+      {showLocationNotSupported && <UnsupportedLocationModal />}
+
       <Search onBusStopClick={onBusStopClick} />
       <Map
         busStops={busStops}
