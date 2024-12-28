@@ -45,7 +45,7 @@ const BusStopContent = ({
   );
 
   const busLiveQuery = trpc.getBusLiveStop.useQuery(
-    { stopCode: selectedStop?.code ?? "" },
+    { stopId: selectedStop?.id ?? 0 },
     {
       enabled: !!selectedStop && viewMode === "live",
       refetchInterval: BusLiveQueryRefetchInterval,

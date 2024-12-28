@@ -29,7 +29,7 @@ export const searchBusStop = publicProcedure
         ) @@ plainto_tsquery('greek', ${input.term})`
       )
       .innerJoin(busStopToLine, eq(busStop.id, busStopToLine.stopId))
-      .innerJoin(busLine, eq(busLine.code, busStopToLine.lineCode))
+      .innerJoin(busLine, eq(busLine.id, busStopToLine.lineId))
       .orderBy((t) => desc(t.rank))
       .limit(5);
 

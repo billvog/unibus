@@ -56,13 +56,27 @@ export const userAccount = pgTable(
   └─────────────────────────────────────────────────────────────────────────┘
  */
 
+export const agency = pgTable("agency", {
+  id: uuidPrimaryKey(),
+  code: integer("code").notNull().unique(),
+  name: varchar("name", { length: 100 }).notNull(),
+  nativeName: varchar("native_name", { length: 100 }).notNull(),
+  location: point("location"),
+  ...timestamps,
+});
+
 export const busLine = pgTable("bus_line", {
   id: serial().primaryKey().notNull(),
-  code: varchar("code", { length: 2 }).notNull().unique(),
+  code: varchar("code", { length: 2 }).notNull(),
   name: varchar("name", { length: 100 }).notNull(),
   bgColor: varchar("bg_color", { length: 7 }).notNull(),
   textColor: varchar("text_color", { length: 7 }).notNull(),
   borderColor: varchar("border_color", { length: 7 }).notNull(),
+  agencyId: uuid("agency_id")
+    .notNull()
+    .references(() => agency.id, {
+      onDelete: "cascade",
+    }),
 });
 
 export const busLinePoint = pgTable("bus_line_point", {
@@ -76,7 +90,7 @@ export const busLinePoint = pgTable("bus_line_point", {
 
 export const busRoute = pgTable("bus_route", {
   id: serial().primaryKey().notNull(),
-  code: varchar("code", { length: 10 }).notNull().unique(),
+  code: varchar("code", { length: 10 }).notNull(),
   name: varchar("name", { length: 100 }).notNull(),
   direction: integer().notNull(),
   lineId: integer("line_id")
@@ -86,9 +100,14 @@ export const busRoute = pgTable("bus_route", {
 
 export const busStop = pgTable("bus_stop", {
   id: serial().primaryKey().notNull(),
-  code: varchar("code", { length: 10 }).notNull().unique(),
+  code: varchar("code", { length: 10 }).notNull(),
   name: varchar("name", { length: 100 }).notNull(),
   location: point("location").notNull(),
+  agencyId: uuid("agency_id")
+    .notNull()
+    .references(() => agency.id, {
+      onDelete: "cascade",
+    }),
 });
 
 export const busStopTime = pgTable(
@@ -100,14 +119,19 @@ export const busStopTime = pgTable(
     time: text().notNull(),
     timeHour: integer("time_hour").notNull(),
     timeMinute: integer("time_minute").notNull(),
-    lineCode: varchar("line_code", { length: 10 })
+    agencyId: uuid("agency_id")
       .notNull()
-      .references(() => busLine.code, {
+      .references(() => agency.id, {
         onDelete: "cascade",
       }),
-    routeCode: varchar("route_code", { length: 10 })
+    lineId: integer("line_id")
       .notNull()
-      .references(() => busRoute.code, { onDelete: "cascade" }),
+      .references(() => busLine.id, {
+        onDelete: "cascade",
+      }),
+    routeId: integer("route_id")
+      .notNull()
+      .references(() => busRoute.id, { onDelete: "cascade" }),
     stopId: integer("stop_id")
       .notNull()
       .references(() => busStop.id, { onDelete: "cascade" }),
@@ -116,8 +140,8 @@ export const busStopTime = pgTable(
     busStopTimeUniqueIndex: unique("bus_stop_time_unique_index").on(
       t.tripId,
       t.stopId,
-      t.lineCode,
-      t.routeCode
+      t.lineId,
+      t.routeId
     ),
   })
 );
@@ -128,12 +152,12 @@ export const busStopToLine = pgTable(
     stopId: integer("stop_id")
       .notNull()
       .references(() => busStop.id, { onDelete: "cascade" }),
-    lineCode: varchar("line_code", { length: 10 })
+    lineId: integer("line_id")
       .notNull()
-      .references(() => busLine.code, { onDelete: "cascade" }),
+      .references(() => busLine.id, { onDelete: "cascade" }),
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.stopId, t.lineCode] }),
+    pk: primaryKey({ columns: [t.stopId, t.lineId] }),
   })
 );
 
@@ -143,12 +167,12 @@ export const busStopToRoute = pgTable(
     stopId: integer("stop_id")
       .notNull()
       .references(() => busStop.id, { onDelete: "cascade" }),
-    routeCode: varchar("route_code", { length: 10 })
+    routeId: integer("route_id")
       .notNull()
-      .references(() => busRoute.code, { onDelete: "cascade" }),
+      .references(() => busRoute.id, { onDelete: "cascade" }),
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.stopId, t.routeCode] }),
+    pk: primaryKey({ columns: [t.stopId, t.routeId] }),
   })
 );
 
@@ -221,12 +245,12 @@ export const busRouteRelations = relations(busRoute, ({ one, many }) => ({
 
 export const busStopTimeRelations = relations(busStopTime, ({ one }) => ({
   busLine: one(busLine, {
-    fields: [busStopTime.lineCode],
-    references: [busLine.code],
+    fields: [busStopTime.lineId],
+    references: [busLine.id],
   }),
   busRoute: one(busRoute, {
-    fields: [busStopTime.routeCode],
-    references: [busRoute.code],
+    fields: [busStopTime.routeId],
+    references: [busRoute.id],
   }),
   busStop: one(busStop, {
     fields: [busStopTime.stopId],
@@ -246,8 +270,8 @@ export const busStopToLineRelations = relations(busStopToLine, ({ one }) => ({
     references: [busStop.id],
   }),
   busLine: one(busLine, {
-    fields: [busStopToLine.lineCode],
-    references: [busLine.code],
+    fields: [busStopToLine.lineId],
+    references: [busLine.id],
   }),
 }));
 
@@ -257,7 +281,7 @@ export const busStopToRouteRelations = relations(busStopToRoute, ({ one }) => ({
     references: [busStop.id],
   }),
   busRoute: one(busRoute, {
-    fields: [busStopToRoute.routeCode],
-    references: [busRoute.code],
+    fields: [busStopToRoute.routeId],
+    references: [busRoute.id],
   }),
 }));

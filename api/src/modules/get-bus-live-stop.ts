@@ -1,16 +1,33 @@
 import { AxiosError } from "axios";
 import { z } from "zod";
 
+import { db } from "@api/db";
 import { citybusClient } from "@api/lib/axios";
 import { publicProcedure } from "@api/lib/trpc";
 import { GetBusLiveStopAPIResponse } from "@api/types/citybus";
 
 export const getBusLiveStop = publicProcedure
-  .input(z.object({ stopCode: z.string() }))
+  .input(z.object({ stopId: z.number() }))
   .query(async ({ input }) => {
     try {
+      const stop = await db.query.busStop.findFirst({
+        where: ({ id }, { eq }) => eq(id, input.stopId),
+      });
+
+      if (!stop) {
+        return { ok: false as const };
+      }
+
+      const agency = await db.query.agency.findFirst({
+        where: ({ id }, { eq }) => eq(id, stop.agencyId),
+      });
+
+      if (!agency) {
+        return { ok: false as const };
+      }
+
       const response = await citybusClient.get<GetBusLiveStopAPIResponse>(
-        `/stops/live/${input.stopCode}`
+        `/${agency.code}/stops/live/${stop.code}`
       );
 
       const vehicles = response.data.vehicles;
