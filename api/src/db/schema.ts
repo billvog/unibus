@@ -229,7 +229,11 @@ export const busLinePointRelations = relations(busLinePoint, ({ one }) => ({
   }),
 }));
 
-export const busLineRelations = relations(busLine, ({ many }) => ({
+export const busLineRelations = relations(busLine, ({ one, many }) => ({
+  agency: one(agency, {
+    fields: [busLine.agencyId],
+    references: [agency.id],
+  }),
   busLinePoints: many(busLinePoint),
   busRoutes: many(busRoute),
   busStops: many(busStop),
@@ -244,6 +248,10 @@ export const busRouteRelations = relations(busRoute, ({ one, many }) => ({
 }));
 
 export const busStopTimeRelations = relations(busStopTime, ({ one }) => ({
+  agency: one(agency, {
+    fields: [busStopTime.agencyId],
+    references: [agency.id],
+  }),
   busLine: one(busLine, {
     fields: [busStopTime.lineId],
     references: [busLine.id],
@@ -258,7 +266,11 @@ export const busStopTimeRelations = relations(busStopTime, ({ one }) => ({
   }),
 }));
 
-export const busStopRelations = relations(busStop, ({ many }) => ({
+export const busStopRelations = relations(busStop, ({ one, many }) => ({
+  agency: one(agency, {
+    fields: [busStop.agencyId],
+    references: [agency.id],
+  }),
   busStopTimes: many(busStopTime),
   busRoutes: many(busRoute),
   busLines: many(busStopToLine),
