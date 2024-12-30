@@ -10,6 +10,7 @@ import {
   busStopToRoute,
   user,
   userAccount,
+  agency,
 } from "@api/db/schema";
 
 /* 
@@ -29,6 +30,11 @@ export type DbUserAccount = InferSelectModel<typeof userAccount> & {
   │ Bus Model Types                                                         │
   └─────────────────────────────────────────────────────────────────────────┘
  */
+
+export type DbAgency = Omit<
+  InferSelectModel<typeof agency>,
+  "createdAt" | "updatedAt"
+>;
 
 export type DbBusLine = InferSelectModel<typeof busLine>;
 
@@ -65,5 +71,6 @@ export type DbBusStopTime = InferSelectModel<typeof busStopTime> & {
 // When bus stops are fetched in search
 export type DbSearchedBusStop = InferSelectModel<typeof busStop> & {
   busLines: DbBusStopToLine[];
+  agency: DbAgency;
   rank: number;
 };

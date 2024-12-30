@@ -45,10 +45,12 @@ const BusStopContent = ({
   );
 
   const busLiveQuery = trpc.getBusLiveStop.useQuery(
-    { stopCode: selectedStop?.code ?? "" },
+    { stopId: selectedStop?.id ?? 0 },
     {
-      enabled: !!selectedStop && viewMode === "live",
+      // We change the stale time to a lower value to make sure we get fresh data
+      staleTime: 5 * 1000, // 5 seconds
       refetchInterval: BusLiveQueryRefetchInterval,
+      enabled: !!selectedStop && viewMode === "live",
     },
   );
 

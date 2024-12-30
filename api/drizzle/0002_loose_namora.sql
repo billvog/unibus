@@ -1,0 +1,1 @@
+ALTER TABLE "agency" ADD COLUMN "location" geometry(point);

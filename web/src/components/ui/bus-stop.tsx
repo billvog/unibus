@@ -1,4 +1,4 @@
-import { type DbBusStop } from "@api/types/models";
+import { type DbSearchedBusStop } from "@api/types/models";
 import { BusFront, Star } from "lucide-react";
 import React from "react";
 
@@ -7,7 +7,7 @@ import { trpc } from "@web/lib/trpc";
 import { PrettifyName } from "@web/lib/utils/prettify-name";
 
 type BusStopProps = {
-  busStop: DbBusStop;
+  busStop: DbSearchedBusStop;
   onClick: () => void;
 };
 
@@ -45,7 +45,7 @@ const BusStop = ({ busStop, onClick }: BusStopProps) => {
           </div>
           {isFavorite && (
             <div title="Είναι στα αγαπημένα">
-              <Star size={20} color="#facc15" fill="#facc15" />
+              <Star size={16} color="#facc15" fill="#facc15" />
             </div>
           )}
         </div>

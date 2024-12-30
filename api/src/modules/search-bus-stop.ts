@@ -2,7 +2,7 @@ import { desc, eq, getTableColumns, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@api/db";
-import { busLine, busStop, busStopToLine } from "@api/db/schema";
+import { agency, busLine, busStop, busStopToLine } from "@api/db/schema";
 import { publicProcedure } from "@api/lib/trpc";
 import { DbSearchedBusStop } from "@api/types/models";
 
@@ -16,6 +16,13 @@ export const searchBusStop = publicProcedure
 
     const stops = await db
       .select({
+        agency: {
+          id: agency.id,
+          code: agency.code,
+          name: agency.name,
+          nativeName: agency.nativeName,
+          location: agency.location,
+        },
         busStop: getTableColumns(busStop),
         busStopToLine: getTableColumns(busStopToLine),
         busLine: getTableColumns(busLine),
@@ -28,8 +35,9 @@ export const searchBusStop = publicProcedure
           setweight(to_tsvector('greek', ${busStop.code}), 'B')
         ) @@ plainto_tsquery('greek', ${input.term})`
       )
+      .innerJoin(agency, eq(busStop.agencyId, agency.id))
       .innerJoin(busStopToLine, eq(busStop.id, busStopToLine.stopId))
-      .innerJoin(busLine, eq(busLine.code, busStopToLine.lineCode))
+      .innerJoin(busLine, eq(busLine.id, busStopToLine.lineId))
       .orderBy((t) => desc(t.rank))
       .limit(5);
 
@@ -47,8 +55,9 @@ export const searchBusStop = publicProcedure
       } else {
         acc.push({
           ...curr.busStop,
-          rank: curr.rank,
+          agency: curr.agency,
           busLines: [stopToLine],
+          rank: curr.rank,
         });
       }
 
