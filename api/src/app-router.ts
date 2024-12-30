@@ -3,6 +3,7 @@ import { Express } from "express";
 
 import { createContext, t } from "@api/lib/trpc";
 import { busStopRouter } from "@api/modules/bus-stop-router";
+import { hasSupportedAgency } from "@api/modules/has-supported-agency";
 import { getBusLinePoints } from "@api/modules/get-bus-line-points";
 import { getBusLines } from "@api/modules/get-bus-lines";
 import { getBusLiveStop } from "@api/modules/get-bus-live-stop";
@@ -12,6 +13,7 @@ import { searchBusStop } from "@api/modules/search-bus-stop";
 import { userRouter } from "@api/modules/user-router";
 
 export const appRouter = t.router({
+  hasSupportedAgency,
   searchBusStop,
   getBusStops,
   getBusLines,

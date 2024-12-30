@@ -22,6 +22,7 @@ import { trpc } from "@web/lib/trpc";
 import { Events } from "@web/lib/utils/constants";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
+import { useUser } from "@web/components/user-context";
 
 type MapProps = {
   busStops: DbMassBusStop[];
@@ -29,13 +30,19 @@ type MapProps = {
 };
 
 const Map = ({ busStops, onBusStopClick }: MapProps) => {
+  const { user } = useUser();
   const { userLocation } = useUserLocation();
   const { selectedStop, liveBusCoordinates } = useBusStop();
 
   const [hasZoomedToUser, setHasZoomedToUser] = React.useState(false);
   const [canResetZoom, setCanResetZoom] = React.useState(false);
 
-  const { data: favoriteBusStops } = trpc.busStop.favorites.useQuery();
+  const { data: favoriteBusStops } = trpc.busStop.favorites.useQuery(
+    undefined,
+    {
+      enabled: !!user,
+    },
+  );
 
   const stopsGeojson = React.useMemo(() => {
     const stopsToGeojson = (stops: DbMassBusStop[]) =>

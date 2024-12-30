@@ -37,12 +37,6 @@ function Page() {
     [userLocation, isLocationSupported],
   );
 
-  // Fetch user's favorite bus stops.
-  // We're are going to access these through cache.
-  trpc.busStop.favorites.useQuery(undefined, {
-    enabled: !!user,
-  });
-
   const busStopsQuery = trpc.getBusStops.useQuery();
 
   const isLoading = busStopsQuery.isLoading;

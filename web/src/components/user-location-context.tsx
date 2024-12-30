@@ -1,12 +1,11 @@
 "use client";
 
-import { distance } from "@turf/distance";
 import React, { createContext, useContext } from "react";
 import { toast } from "sonner";
 
 import { useGeolocation } from "@web/hooks/useGeolocation";
 import { usePersistedState } from "@web/hooks/usePersistedState";
-import { SupportedLocations } from "@web/lib/supported-locations";
+import { trpc } from "@web/lib/trpc";
 import { type Coordinates } from "@web/types/coordinates";
 
 interface UserLocationContextType {
@@ -37,6 +36,18 @@ export function UserLocationProvider({
   const [showedError, setShowedError] = React.useState(false);
 
   const geolocation = useGeolocation();
+
+  const { data: hasSupportedAgency } = trpc.hasSupportedAgency.useQuery(
+    {
+      location: {
+        x: geolocation.position?.longitude ?? 0,
+        y: geolocation.position?.latitude ?? 0,
+      },
+    },
+    {
+      enabled: isEnabled && geolocation.position !== null,
+    },
+  );
 
   React.useEffect(() => {
     // If the location is enabled, start the location watch.
@@ -69,28 +80,10 @@ export function UserLocationProvider({
   }, [setIsEnabled]);
 
   React.useEffect(() => {
-    // If the user has enabled location, and we have a position,
-    // check if the location is supported.
-    if (isEnabled && geolocation.position) {
-      let isSupported = false;
-
-      SupportedLocations.forEach((location) => {
-        const d = distance(
-          [location.coordinates.longitude, location.coordinates.latitude],
-          [geolocation.position!.longitude, geolocation.position!.latitude],
-          {
-            units: "kilometers",
-          },
-        );
-
-        if (d < location.range) {
-          isSupported = true;
-        }
-      });
-
-      setIsLocationSupported(isSupported);
+    if (hasSupportedAgency !== undefined) {
+      setIsLocationSupported(hasSupportedAgency);
     }
-  }, [isEnabled, geolocation.position]);
+  }, [hasSupportedAgency]);
 
   return (
     <UserLocationContext.Provider
