@@ -107,6 +107,7 @@ export const fetchStaticCitybusFeed = async () => {
         `/${agency.code}/lines/${line.code}/points`
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!lpResponse) {
         console.log("    └─ ❌ No points found.");
         continue;
@@ -232,6 +233,7 @@ export const fetchStaticCitybusFeed = async () => {
         `${agency.code}/trips/stop/${stop.code}`
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!stopTripsResponse) {
         console.log("    └─ ❌ No trips found");
         continue;

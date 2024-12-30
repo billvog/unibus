@@ -11,7 +11,7 @@ import {
 import { relations } from "drizzle-orm/relations";
 
 import { point, timestamps, uuidPrimaryKey } from "@api/db/fields";
-import { polygon } from "@api/db/custom/polygon";
+import { polygon } from "@api/db/fields/custom/polygon";
 
 /* 
   ┌─────────────────────────────────────────────────────────────────────────┐

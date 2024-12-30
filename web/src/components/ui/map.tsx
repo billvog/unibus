@@ -16,13 +16,13 @@ import BusLinePointsMapLayer from "@web/components/ui/bus-line-points-map-layer"
 import { Button } from "@web/components/ui/button";
 import DirectionsMapLayer from "@web/components/ui/directions-map-layer";
 import PlaceMapLayer from "@web/components/ui/place-map-layer";
+import { useUser } from "@web/components/user-context";
 import { useUserLocation } from "@web/components/user-location-context";
 import { env } from "@web/env";
 import { trpc } from "@web/lib/trpc";
 import { Events } from "@web/lib/utils/constants";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
-import { useUser } from "@web/components/user-context";
 
 type MapProps = {
   busStops: DbMassBusStop[];

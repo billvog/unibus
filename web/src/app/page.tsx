@@ -10,7 +10,6 @@ import UnsupportedLocationModal from "@web/components/ui/location/unsupported-lo
 import Map from "@web/components/ui/map";
 import Search from "@web/components/ui/search";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
-import { useUser } from "@web/components/user-context";
 import { useUserLocation } from "@web/components/user-location-context";
 import { useBodyScroll } from "@web/hooks/useBodyScroll";
 import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
@@ -22,7 +21,6 @@ function Page() {
   useCaptureAnalytics();
   useBodyScroll(true); // disable scroll
 
-  const { user } = useUser();
   const { userLocation, isLocationEnabled, isLocationSupported } =
     useUserLocation();
   const { setSelectedStopId } = useBusStop();
