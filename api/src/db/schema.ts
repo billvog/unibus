@@ -11,7 +11,7 @@ import {
 import { relations } from "drizzle-orm/relations";
 
 import { point, timestamps, uuidPrimaryKey } from "@api/db/fields";
-import { customGeometry } from "@api/db/custom/polygon";
+import { polygon } from "@api/db/custom/polygon";
 
 /* 
   ┌─────────────────────────────────────────────────────────────────────────┐
@@ -63,7 +63,7 @@ export const agency = pgTable("agency", {
   name: varchar("name", { length: 100 }).notNull(),
   nativeName: varchar("native_name", { length: 100 }).notNull(),
   location: point("location"),
-  polygon: customGeometry("polygon"),
+  polygon: polygon("polygon"),
   ...timestamps,
 });
 

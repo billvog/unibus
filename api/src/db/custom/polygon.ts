@@ -1,6 +1,6 @@
 import { customType } from "drizzle-orm/pg-core";
 
-export const customGeometry = customType<{ data: string }>({
+export const polygon = customType<{ data: string }>({
   dataType() {
     return "geometry(polygon, 4326)";
   },
