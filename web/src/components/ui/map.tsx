@@ -16,6 +16,7 @@ import BusLinePointsMapLayer from "@web/components/ui/bus-line-points-map-layer"
 import { Button } from "@web/components/ui/button";
 import DirectionsMapLayer from "@web/components/ui/directions-map-layer";
 import PlaceMapLayer from "@web/components/ui/place-map-layer";
+import { useUser } from "@web/components/user-context";
 import { useUserLocation } from "@web/components/user-location-context";
 import { env } from "@web/env";
 import { trpc } from "@web/lib/trpc";
@@ -29,13 +30,19 @@ type MapProps = {
 };
 
 const Map = ({ busStops, onBusStopClick }: MapProps) => {
+  const { user } = useUser();
   const { userLocation } = useUserLocation();
   const { selectedStop, liveBusCoordinates } = useBusStop();
 
   const [hasZoomedToUser, setHasZoomedToUser] = React.useState(false);
   const [canResetZoom, setCanResetZoom] = React.useState(false);
 
-  const { data: favoriteBusStops } = trpc.busStop.favorites.useQuery();
+  const { data: favoriteBusStops } = trpc.busStop.favorites.useQuery(
+    undefined,
+    {
+      enabled: !!user,
+    },
+  );
 
   const stopsGeojson = React.useMemo(() => {
     const stopsToGeojson = (stops: DbMassBusStop[]) =>

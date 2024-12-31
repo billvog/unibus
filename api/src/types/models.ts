@@ -33,7 +33,7 @@ export type DbUserAccount = InferSelectModel<typeof userAccount> & {
 
 export type DbAgency = Omit<
   InferSelectModel<typeof agency>,
-  "createdAt" | "updatedAt"
+  "polygon" | "createdAt" | "updatedAt"
 >;
 
 export type DbBusLine = InferSelectModel<typeof busLine>;

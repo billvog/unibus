@@ -8,10 +8,12 @@ import { getBusLines } from "@api/modules/get-bus-lines";
 import { getBusLiveStop } from "@api/modules/get-bus-live-stop";
 import { getBusStopSchedule } from "@api/modules/get-bus-stop-schedule";
 import { getBusStops } from "@api/modules/get-bus-stops";
+import { hasSupportedAgency } from "@api/modules/has-supported-agency";
 import { searchBusStop } from "@api/modules/search-bus-stop";
 import { userRouter } from "@api/modules/user-router";
 
 export const appRouter = t.router({
+  hasSupportedAgency,
   searchBusStop,
   getBusStops,
   getBusLines,
