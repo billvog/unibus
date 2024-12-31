@@ -11,7 +11,7 @@ import { type Coordinates } from "@web/types/coordinates";
 interface UserLocationContextType {
   userLocation: Coordinates | null;
   isLocationEnabled: boolean;
-  isLocationSupported: boolean;
+  isLocationSupported: boolean | undefined;
   enableLocation: () => void;
 }
 
@@ -29,9 +29,6 @@ export function UserLocationProvider({
     "user-location:enabled",
     false,
   );
-
-  // A flag to determine if the user's location is supported from unibus.
-  const [isLocationSupported, setIsLocationSupported] = React.useState(false);
 
   const [showedError, setShowedError] = React.useState(false);
 
@@ -79,18 +76,12 @@ export function UserLocationProvider({
     setIsEnabled(true);
   }, [setIsEnabled]);
 
-  React.useEffect(() => {
-    if (hasSupportedAgency !== undefined) {
-      setIsLocationSupported(hasSupportedAgency);
-    }
-  }, [hasSupportedAgency]);
-
   return (
     <UserLocationContext.Provider
       value={{
         userLocation: geolocation.position,
         isLocationEnabled: isEnabled,
-        isLocationSupported,
+        isLocationSupported: hasSupportedAgency,
         enableLocation,
       }}
     >

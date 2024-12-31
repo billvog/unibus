@@ -31,7 +31,7 @@ function Page() {
   );
 
   const showLocationNotSupported = React.useMemo(
-    () => userLocation && !isLocationSupported,
+    () => userLocation && isLocationSupported === false,
     [userLocation, isLocationSupported],
   );
 
