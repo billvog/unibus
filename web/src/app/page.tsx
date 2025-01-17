@@ -11,15 +11,15 @@ import Map from "@web/components/ui/map";
 import Search from "@web/components/ui/search";
 import { FullscreenSpinner } from "@web/components/ui/spinner";
 import { useUserLocation } from "@web/components/user-location-context";
-import { useBodyScroll } from "@web/hooks/useBodyScroll";
-import { useCaptureAnalytics } from "@web/hooks/useCaptureAnalytics";
+import { useBodyScroll } from "@web/hooks/use-body-scroll";
+import { useCaptureAnalytics } from "@web/hooks/use-capture-analytics";
 import { trpc } from "@web/lib/trpc";
 import { Events } from "@web/lib/utils/constants";
 import { type MapFlyToDetail } from "@web/types/events";
 
 function Page() {
   useCaptureAnalytics();
-  useBodyScroll(true); // disable scroll
+  useBodyScroll(false); // disable scroll
 
   const { userLocation, isLocationEnabled, isLocationSupported } =
     useUserLocation();

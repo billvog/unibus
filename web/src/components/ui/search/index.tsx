@@ -17,7 +17,7 @@ import UserDropdown from "@web/components/ui/search/user-dropdown";
 import { Spinner } from "@web/components/ui/spinner";
 import { useUserLocation } from "@web/components/user-location-context";
 import { useInitialValue } from "@web/hooks/use-initial-value";
-import { useKeyPress } from "@web/hooks/useKeyPress";
+import { useKeyPress } from "@web/hooks/use-key-press";
 import { mbxGeocodingClient } from "@web/lib/mapbox";
 import { trpc } from "@web/lib/trpc";
 import { Events, Shortcuts } from "@web/lib/utils/constants";
