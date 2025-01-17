@@ -7,11 +7,14 @@ import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
 import { usePlace } from "@web/components/place-context";
 import DrawerContent from "@web/components/ui/drawer/content";
+import { useIsMobile } from "@web/hooks/use-is-mobile";
 
 const MyDrawer = () => {
   const { selectedStop, setSelectedStopId } = useBusStop();
   const { resetDirections } = useDirections();
   const { selectedPlace, setSelectedPlace } = usePlace();
+
+  const isMobile = useIsMobile();
 
   const [open, setOpen] = React.useState(false);
 
@@ -76,6 +79,17 @@ const MyDrawer = () => {
           <div className={"relative flex h-full flex-col"}>
             {/* Resize Handle */}
             <div className="absolute top-2 h-1 w-12 flex-shrink-0 self-center rounded-full bg-gray-200" />
+            <div
+              className="absolute left-0 right-0 top-0 h-7"
+              // Resize on double, only on desktop
+              onDoubleClick={
+                isMobile
+                  ? undefined
+                  : () => {
+                      setSnap(snap === 1 ? snapPoints[0]! : 1);
+                    }
+              }
+            />
             {/* Close Button */}
             <div className="absolute right-0 top-0 p-4 text-gray-400">
               <X className="cursor-pointer" onClick={onCloseClick} />
