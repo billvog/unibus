@@ -3,7 +3,7 @@ import React from "react";
 import { Layer, Marker, Source } from "react-map-gl";
 
 import { useDirections } from "@web/components/directions-context";
-import ManeuverIcon from "@web/components/ui/maneuver-icon";
+import ManeuverIcon from "@web/components/ui/map/layers/directions/maneuver-icon";
 
 const DirectionsMapLayer = () => {
   const { directions, maneuvers, activeManeuverId } = useDirections();

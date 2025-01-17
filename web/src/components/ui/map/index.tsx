@@ -12,10 +12,10 @@ import MapGL, {
 } from "react-map-gl";
 
 import { useBusStop } from "@web/components/bus-stop-context";
-import BusLinePointsMapLayer from "@web/components/ui/bus-line-points-map-layer";
 import { Button } from "@web/components/ui/button";
-import DirectionsMapLayer from "@web/components/ui/directions-map-layer";
-import PlaceMapLayer from "@web/components/ui/place-map-layer";
+import BusLinePointsMapLayer from "@web/components/ui/map/layers/bus-line-points";
+import DirectionsMapLayer from "@web/components/ui/map/layers/directions";
+import PlaceMapLayer from "@web/components/ui/map/layers/place";
 import { useUser } from "@web/components/user-context";
 import { useUserLocation } from "@web/components/user-location-context";
 import { env } from "@web/env";
@@ -27,9 +27,10 @@ import { type MapFlyToDetail } from "@web/types/events";
 type MapProps = {
   busStops: DbMassBusStop[];
   onBusStopClick: (id: number) => void;
+  onLoadFinish?: () => void;
 };
 
-const Map = ({ busStops, onBusStopClick }: MapProps) => {
+const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
   const { user } = useUser();
   const { userLocation } = useUserLocation();
   const { selectedStop, liveBusCoordinates } = useBusStop();
@@ -95,7 +96,8 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
       map.flyTo({
         center: [coordinates.longitude, coordinates.latitude],
         zoom: overwriteZoom && zoom < 16 ? 17 : zoom,
-        speed,
+        speed: speed > 0 ? speed : 1,
+        animate: speed > 0,
       });
 
       return true;
@@ -146,6 +148,11 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
       return;
     }
 
+    // Add 200ms timeout for smoother transition
+    setTimeout(() => {
+      onLoadFinish?.();
+    }, 200);
+
     const handleMapFlyTo = (event: Event) => {
       const customEvent = event as CustomEvent<MapFlyToDetail>;
       mapFlyTo(customEvent.detail.coordinates, {
@@ -167,7 +174,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
       map.off("click", "unclustered-point.favorite", onMapClick);
       window.removeEventListener("map:fly-to", handleMapFlyTo);
     };
-  }, [mapFlyTo, onMapMove, onMapClick]);
+  }, [onLoadFinish, mapFlyTo, onMapMove, onMapClick]);
 
   const onResetZoom = React.useCallback(() => {
     if (!userLocation) {
@@ -185,7 +192,7 @@ const Map = ({ busStops, onBusStopClick }: MapProps) => {
     if (userLocation && !hasZoomedToUser) {
       setTimeout(() => {
         const ok = mapFlyTo(userLocation, {
-          speed: 2,
+          speed: 16,
         });
 
         setHasZoomedToUser(ok);

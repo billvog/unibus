@@ -55,7 +55,8 @@ const BusLinePointsMapLayer = ({
         }}
         paint={{
           "line-color": lineColor,
-          "line-width": 4,
+          "line-width": 6,
+          "line-opacity": 0.4,
         }}
       />
     </Source>

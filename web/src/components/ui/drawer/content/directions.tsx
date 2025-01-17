@@ -7,7 +7,7 @@ import { useDirections } from "@web/components/directions-context";
 import { Detail } from "@web/components/ui/drawer/content/detail";
 import Content from "@web/components/ui/drawer/content/elements";
 import DynamicTitle from "@web/components/ui/dynamic-title";
-import ManeuverIcon from "@web/components/ui/maneuver-icon";
+import ManeuverIcon from "@web/components/ui/map/layers/directions/maneuver-icon";
 import { formatDistance } from "@web/lib/utils/format-distance";
 import { PrettifyName } from "@web/lib/utils/prettify-name";
 import { cn } from "@web/lib/utils/tailwind";

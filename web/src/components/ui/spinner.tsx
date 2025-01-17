@@ -29,7 +29,7 @@ const fullscreenSpinnerVariants = cva(
     variants: {
       display: {
         default: null,
-        absolute: "absolute backdrop-filter backdrop-blur-sm z-50",
+        absolute: "absolute backdrop-filter backdrop-blur-md z-50",
       },
     },
   },

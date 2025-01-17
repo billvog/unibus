@@ -37,7 +37,9 @@ function Page() {
 
   const busStopsQuery = trpc.getBusStops.useQuery();
 
-  const isLoading = busStopsQuery.isLoading;
+  const isQueryLoading = busStopsQuery.isLoading;
+  const [isMapLoading, setIsMapLoading] = React.useState(true);
+  const isLoading = isQueryLoading || isMapLoading;
 
   const busStops = React.useMemo(
     () => busStopsQuery.data ?? [],
@@ -93,6 +95,7 @@ function Page() {
       <Map
         busStops={busStops}
         onBusStopClick={(id) => onBusStopClick(id, false)}
+        onLoadFinish={() => setIsMapLoading(false)}
       />
       <MyDrawer />
     </div>
