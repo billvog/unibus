@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { LogIn, LogOut } from "lucide-react";
+import { CircleHelp, LogIn, LogOut } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { toast } from "sonner";
@@ -9,18 +9,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@web/components/ui/dropdown-menu";
 import { useUser } from "@web/components/user-context";
 import { trpc } from "@web/lib/trpc";
 import { Events } from "@web/lib/utils/constants";
-import { cn } from "@web/lib/utils/tailwind";
 
-type UserDropdownProps = {
+type MenuDropdownProps = {
   children: React.ReactNode;
 };
 
-const UserDropdown = ({ children }: UserDropdownProps) => {
+const MenuDropdown = ({ children }: MenuDropdownProps) => {
   const { user } = useUser();
 
   const queryClient = useQueryClient();
@@ -41,11 +41,7 @@ const UserDropdown = ({ children }: UserDropdownProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        className={cn(user ? "text-zinc-700" : "text-zinc-400")}
-      >
-        {children}
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {user ? (
           <>
@@ -77,9 +73,16 @@ const UserDropdown = ({ children }: UserDropdownProps) => {
             </Link>
           </DropdownMenuItem>
         )}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/company">
+            <CircleHelp />
+            Τι είναι αυτό;
+          </Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
-export default UserDropdown;
+export default MenuDropdown;

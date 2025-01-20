@@ -3,7 +3,7 @@
 import { type Coordinates } from "@mapbox/mapbox-sdk/lib/classes/mapi-request";
 import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
 import * as Sentry from "@sentry/nextjs";
-import { CircleUserRound, CircleX } from "lucide-react";
+import { CircleEllipsis, CircleX } from "lucide-react";
 import React, { useState } from "react";
 import { useDebounce } from "use-debounce";
 
@@ -13,7 +13,7 @@ import { usePlace } from "@web/components/place-context";
 import BusStop from "@web/components/ui/bus-stop";
 import { Input } from "@web/components/ui/input";
 import Place from "@web/components/ui/place";
-import UserDropdown from "@web/components/ui/search/user-dropdown";
+import MenuDropdown from "@web/components/ui/search/menu-dropdown";
 import { Spinner } from "@web/components/ui/spinner";
 import { useUserLocation } from "@web/components/user-location-context";
 import { useInitialValue } from "@web/hooks/use-initial-value";
@@ -219,7 +219,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
     <>
       <div
         className={cn(
-          "will-change-opacity absolute bottom-0 left-0 right-0 top-0 bg-black/20 backdrop-blur-sm transition-[opacity] duration-300 ease-out",
+          "absolute bottom-0 left-0 right-0 top-0 bg-black/20 backdrop-blur-sm transition-[opacity] duration-300 ease-out will-change-[opacity]",
           focused ? "z-20 opacity-100" : "-z-10 opacity-0",
         )}
       />
@@ -260,16 +260,16 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
           </div>
 
           {/* User Account */}
-          <UserDropdown>
+          <MenuDropdown>
             <div
               className={cn(
-                "will-change-opacity scale-100 border-l-2 border-gray-200 transition-opacity duration-300 ease-out",
+                "scale-100 border-l-2 border-gray-200 transition-opacity duration-300 ease-out will-change-[opacity]",
                 focused ? "opacity-0" : "p-2.5 opacity-100",
               )}
             >
-              <CircleUserRound size={focused ? 0 : 24} />
+              <CircleEllipsis color="#808080" size={focused ? 0 : 24} />
             </div>
-          </UserDropdown>
+          </MenuDropdown>
         </div>
 
         {isLoading ? (
