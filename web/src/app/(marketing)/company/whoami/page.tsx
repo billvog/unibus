@@ -26,7 +26,7 @@ const Page = () => {
   return (
     <Card className="m-4 w-full max-w-xl">
       <CardHeader>
-        <CardTitle className="text-center">$ whoami</CardTitle>
+        <CardTitle className="text-center font-mono">$ whoami</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-6 text-balance text-center">
         <p>
