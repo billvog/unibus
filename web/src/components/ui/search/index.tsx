@@ -245,7 +245,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
             {/* Search Input */}
             <Input
               ref={inputRef}
-              placeholder={t`Πού θες να πας;` + "  🔍"}
+              placeholder={t`Where to?` + "  🔍"}
               onFocus={() => setFocused(true)}
               onBlur={() => query.length === 0 && setFocused(false)}
               value={query}
@@ -307,7 +307,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
         ) : query.length > 0 ? (
           <div>
             <div className="text-center text-lg font-bold text-white">
-              <Trans>Δεν βρέθηκαν αποτελέσματα</Trans>
+              <Trans>No results found</Trans>
             </div>
           </div>
         ) : null}

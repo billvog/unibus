@@ -27,7 +27,7 @@ const UnsupportedLocationModal = () => {
     window.dispatchEvent(
       new CustomEvent(Events.Analytics.UnsupportedLocationSendHelp),
     );
-    toast.success(t`Η αστρική βοήθεια στάλθηκε!` + "  🛸");
+    toast.success(t`Stellar help sent!` + "  🛸");
   }, []);
 
   return (
@@ -36,9 +36,9 @@ const UnsupportedLocationModal = () => {
         <DialogHeader>
           <DialogTitle className="text-balance leading-snug">
             <Trans>
-              Χμμ.. φαίνεται πως το unibus{" "}
+              Hmm.. it seems unibus{" "}
               <span className="underline decoration-red-400 decoration-wavy">
-                δεν είναι διαθέσιμο στην περιοχή σου
+                is not available in your region
               </span>
             </Trans>{" "}
             🙁
@@ -47,16 +47,15 @@ const UnsupportedLocationModal = () => {
         <div className="space-y-4 text-sm">
           <p>
             <Trans>
-              Δυστυχώς, προς το παρόν, το unibus δεν υποστηρίζεται στην περιοχή
-              σου. Εργαζόμαστε συνεχώς για να προσθέσουμε νέες πόλεις και
-              περιοχές!
+              Unfortunately, unibus is currently not supported in your region.
+              We are constantly working to add new cities and regions!
             </Trans>
           </p>
           <p>
-            <Trans>Ελπίζουμε να είμαστε κοντά σου σύντομα!</Trans>
+            <Trans>We hope to be with you soon!</Trans>
           </p>
           <p>
-            <Trans>Μέχρι τότε, μπορείς να στείλεις αστρική βοήθεια</Trans>{" "}
+            <Trans>Until then, you can send stellar help</Trans>{" "}
             <span aria-label="spaceship" role="img">
               🛸
             </span>
@@ -64,7 +63,7 @@ const UnsupportedLocationModal = () => {
         </div>
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            <Trans>Κλείσιμο</Trans>
+            <Trans>Close</Trans>
           </Button>
           <Button
             variant="default"
@@ -72,7 +71,7 @@ const UnsupportedLocationModal = () => {
             onClick={onSendHelpClick}
           >
             <span>
-              <Trans>Στείλε αστρική βοήθεια</Trans>
+              <Trans>Send stellar help</Trans>
             </span>
             <span aria-label="alien" role="img">
               👽

@@ -178,7 +178,7 @@ const BusStopContent = ({
           {/* View mode toggle */}
           <ActionButton
             icon={<span>{viewMode === "live" ? "🗓️" : "🚍"}</span>}
-            label={viewMode === "live" ? t`Πρόγραμμα` : t`Τώρα`}
+            label={viewMode === "live" ? t`Schedule` : t`Now`}
             isCompact={!isFullyOpen}
             onClick={onViewModeToggle}
           />
@@ -214,7 +214,7 @@ const BusStopContent = ({
             </div>
           ) : (
             <div>
-              <Trans>Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά</Trans> 😢
+              <Trans>No buses expected in the next 30 minutes</Trans> 😢
             </div>
           ))}
 

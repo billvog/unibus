@@ -39,7 +39,7 @@ const OAuthButton = ({ providerId, providerName }: OAuthButtonProps) => {
           height={20}
         />
         <span>
-          <Trans>Σύνδεση με {providerName}</Trans>
+          <Trans>Login with {providerName}</Trans>
         </span>
       </Button>
     </Link>

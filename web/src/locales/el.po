@@ -13,192 +13,204 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/ui/drawer/content/action-button/directions.tsx:90
-msgid "{walkingTime, plural, one {# λεπτό} other {# λεπτά}}"
+#: src/components/ui/drawer/content/action-button/directions.tsx:88
+msgid "{walkingTime, plural, one {# minute} other {# minutes}}"
 msgstr "{walkingTime, plural, one {# λεπτό} other {# λεπτά}}"
 
-#: src/components/ui/drawer/content/place.tsx:98
-msgid "<0>Βεβαιώσου ότι έχεις ενεργοποιήσει την τοποθεσία σου!</0><1>Έτσι θα μπορούμε να σου δείξουμε περισσότερες πληροφορίες για τον προορισμό σου.</1><2>Δώσε μας την άδεια μέσα από τις ρυθμίσεις του περιηγητή σου!</2>"
+#: src/components/ui/drawer/content/place.tsx:99
+msgid "<0>Make sure you have enabled your location!</0><1>This way we can show you more information about your destination.</1><2>Give us permission through your browser settings!</2>"
 msgstr "<0>Βεβαιώσου ότι έχεις ενεργοποιήσει την τοποθεσία σου!</0><1>Έτσι θα μπορούμε να σου δείξουμε περισσότερες πληροφορίες για τον προορισμό σου.</1><2>Δώσε μας την άδεια μέσα από τις ρυθμίσεις του περιηγητή σου!</2>"
 
-#: src/hooks/use-geolocation.ts:34
-msgid "Το αίτημα για την πρόσβαση στην τοποθεσία σου έληξε."
-msgstr "Το αίτημα για την πρόσβαση στην τοποθεσία σου έληξε."
+#: src/components/ui/drawer/content/action-button/favorite.tsx:72
+msgid "Add to favorites"
+msgstr "Προσθήκη στα αγαπημένα"
 
-#: src/hooks/use-geolocation.ts:28
-msgid "Αρνήθηκες την πρόσβαση στην τοποθεσία σου."
-msgstr "Αρνήθηκες την πρόσβαση στην τοποθεσία σου."
+#: src/components/ui/drawer/content/action-button/favorite.tsx:54
+msgid "An error occurred while updating favorites"
+msgstr "Προέκυψε ένα σφάλμα κατά την ενημέρωση των αγαπημένων"
 
-#: src/hooks/use-geolocation.ts:31
-msgid "Η τοποθεσία σου δεν είναι διαθέσιμη."
-msgstr "Η τοποθεσία σου δεν είναι διαθέσιμη."
+#: src/components/ui/location/unsupported-location-modal.tsx:66
+msgid "Close"
+msgstr "Κλείσιμο"
 
-#: src/components/ui/grave-error.tsx:21
-msgid "Αντιμετωπίζουμε κάποιο πρόβλημα"
-msgstr "Αντιμετωπίζουμε κάποιο πρόβλημα"
+#: src/components/ui/drawer/content/directions.tsx:89
+msgid "Directions"
+msgstr "Οδηγίες"
 
-#: src/components/ui/search/menu-dropdown.tsx:61
-msgid "Αποσύνδεση"
-msgstr "Αποσύνδεση"
+#: src/components/ui/drawer/content/place.tsx:78
+msgid "Distance"
+msgstr "Απόσταση"
 
-#: src/components/ui/location/location-prompt-modal.tsx:80
-msgid "Αργότερα"
+#: src/components/ui/drawer/content/place.tsx:82
+msgid "Duration"
+msgstr "Διάρκεια"
+
+#: src/components/ui/location/location-prompt-modal.tsx:83
+msgid "Enable now"
+msgstr "Ενεργοποίηση τώρα"
+
+#: src/app/(auth)/login/_components/error-message.tsx:19
+msgid "Error!"
+msgstr "Σφάλμα!"
+
+#: src/components/ui/location/unsupported-location-modal.tsx:38
+msgid "Hmm.. it seems unibus <0>is not available in your region</0>"
+msgstr "Χμμ.. φαίνεται πως το unibus <0>δεν είναι διαθέσιμο στην περιοχή σου</0>"
+
+#: src/components/ui/drawer/content/place.tsx:90
+msgid "Hmm.. it's a bit far! <0>Maybe take a bus?</0>"
+msgstr "Χμμ.. είναι λίγο μακριά! <0>Μήπως να πάρεις αστικό;</0>"
+
+#: src/app/(auth)/login/_components/client-page.tsx:46
+msgid "How we use your data."
+msgstr "Πώς χρησιμοποιούμε τα δεδομένα σου."
+
+#: src/components/ui/location/location-prompt-modal.tsx:79
+msgid "Later"
 msgstr "Αργότερα"
 
-#: src/components/ui/grave-error.tsx:24
-msgid "Αυτή τη στιγμή δεν μπορούμε να εμφανίσουμε την σελίδα. <0/>Παρακαλώ δοκίμασε ξανά αργότερα."
-msgstr "Αυτή τη στιγμή δεν μπορούμε να εμφανίσουμε την σελίδα. <0/>Παρακαλώ δοκίμασε ξανά αργότερα."
+#: src/components/ui/search/menu-dropdown.tsx:77
+msgid "Login"
+msgstr "Σύνδεση"
 
-#: src/components/ui/drawer/content/action-button/favorite.tsx:72
-msgid "Αφαίρεση από αγαπημένα"
-msgstr "Αφαίρεση από αγαπημένα"
+#: src/app/(auth)/login/_components/client-page.tsx:24
+msgid "Login to unlock personalized features that make your trips smoother."
+msgstr "Συνδέσου για να ξεκλειδώσεις εξατομικευμένες λειτουργίες που κάνουν τις μετακινήσεις σου πιο ομαλές."
+
+#: src/app/(auth)/login/_components/oauth-button.tsx:42
+msgid "Login with {providerName}"
+msgstr "Σύνδεση με {providerName}"
+
+#: src/components/ui/search/menu-dropdown.tsx:61
+msgid "Logout"
+msgstr "Αποσύνδεση"
 
 #: src/components/ui/drawer/content/bus-stop.tsx:217
-msgid "Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά"
+msgid "No buses expected in the next 30 minutes"
 msgstr "Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά"
 
-#: src/components/ui/location/location-prompt-modal.tsx:54
-msgid "Δεν αποθηκεύουμε την τοποθεσία σου"
-msgstr "Δεν αποθηκεύουμε την τοποθεσία σου"
-
 #: src/components/ui/search/index.tsx:310
-msgid "Δεν βρέθηκαν αποτελέσματα"
+msgid "No results found"
 msgstr "Δεν βρέθηκαν αποτελέσματα"
 
-#: src/components/ui/location/unsupported-location-modal.tsx:49
-msgid "Δυστυχώς, προς το παρόν, το unibus δεν υποστηρίζεται στην περιοχή σου. Εργαζόμαστε συνεχώς για να προσθέσουμε νέες πόλεις και περιοχές!"
-msgstr "Δυστυχώς, προς το παρόν, το unibus δεν υποστηρίζεται στην περιοχή σου. Εργαζόμαστε συνεχώς για να προσθέσουμε νέες πόλεις και περιοχές!"
+#: src/components/ui/drawer/content/bus-stop.tsx:181
+msgid "Now"
+msgstr "Τώρα"
 
-#: src/components/ui/location/unsupported-location-modal.tsx:56
-msgid "Ελπίζουμε να είμαστε κοντά σου σύντομα!"
-msgstr "Ελπίζουμε να είμαστε κοντά σου σύντομα!"
+#: src/app/(auth)/login/_components/client-page.tsx:43
+msgid "Privacy policy."
+msgstr "Πολιτική απορρήτου."
 
-#: src/components/ui/location/location-prompt-modal.tsx:84
-msgid "Ενεργοποίηση"
-msgstr "Ενεργοποίηση"
+#: src/components/ui/drawer/content/action-button/favorite.tsx:72
+msgid "Remove from favorites"
+msgstr "Αφαίρεση από αγαπημένα"
 
 #: src/components/ui/map/index.tsx:234
-msgid "Επαναφορά"
+msgid "Reset"
 msgstr "Επαναφορά"
 
-#: src/components/ui/search/menu-dropdown.tsx:40
-msgid "Επιτυχής αποσύνδεση"
-msgstr "Επιτυχής αποσύνδεση"
+#: src/components/ui/drawer/content/bus-stop.tsx:181
+msgid "Schedule"
+msgstr "Πρόγραμμα"
+
+#: src/components/ui/grave-error.tsx:30
+#: src/components/ui/location/unsupported-location-modal.tsx:74
+msgid "Send stellar help"
+msgstr "Στείλε αστρική βοήθεια"
+
+#: src/components/ui/search/menu-dropdown.tsx:43
+msgid "Something went wrong during logout"
+msgstr "Κάτι πήγε στραβά κατά την αποσύνδεση"
+
+#: src/app/(auth)/login/_components/error-message.tsx:22
+msgid "Something went wrong during your login. Please try again."
+msgstr "Κάτι πήγε λάθος κατά την είσοδό σου. Παρακαλώ δοκίμασε ξανά."
+
+#: src/components/ui/bus-stop-schedule.tsx:94
+msgid "Something went wrong! Try again"
+msgstr "Κάτι πήγε στραβά! Προσπαθήστε ξανά"
 
 #: src/components/ui/grave-error.tsx:15
 #: src/components/ui/location/unsupported-location-modal.tsx:30
-msgid "Η αστρική βοήθεια στάλθηκε!"
+msgid "Stellar help sent!"
 msgstr "Η αστρική βοήθεια στάλθηκε!"
 
-#: src/components/ui/location/location-prompt-modal.tsx:57
-msgid "Θα τη χρησιμοποιήσουμε μόνο για να σου προσφέρουμε την καλύτερη εμπειρία"
-msgstr "Θα τη χρησιμοποιήσουμε μόνο για να σου προσφέρουμε την καλύτερη εμπειρία"
+#: src/components/ui/search/menu-dropdown.tsx:40
+msgid "Successful logout"
+msgstr "Επιτυχής αποσύνδεση"
 
-#: src/app/(auth)/login/_components/client-page.tsx:20
-msgid "Καλώς ήρθες!"
-msgstr "Καλώς ήρθες!"
-
-#: src/app/(auth)/login/_components/error-message.tsx:22
-msgid "Κάτι πήγε λάθος κατά την είσοδό σου. Παρακαλώ δοκίμασε ξανά."
-msgstr "Κάτι πήγε λάθος κατά την είσοδό σου. Παρακαλώ δοκίμασε ξανά."
-
-#: src/components/ui/search/menu-dropdown.tsx:43
-msgid "Κάτι πήγε στραβά κατά την αποσύνδεση"
-msgstr "Κάτι πήγε στραβά κατά την αποσύνδεση"
-
-#: src/components/ui/bus-stop-schedule.tsx:94
-msgid "Κάτι πήγε στραβά! Προσπαθήστε ξανά"
-msgstr "Κάτι πήγε στραβά! Προσπαθήστε ξανά"
-
-#: src/components/ui/location/unsupported-location-modal.tsx:67
-msgid "Κλείσιμο"
-msgstr "Κλείσιμο"
-
-#: src/components/ui/location/unsupported-location-modal.tsx:59
-msgid "Μέχρι τότε, μπορείς να στείλεις αστρική βοήθεια"
-msgstr "Μέχρι τότε, μπορείς να στείλεις αστρική βοήθεια"
-
-#: src/components/ui/location/location-prompt-modal.tsx:68
-msgid "Μπορείς να μάθεις πως χρησιμοποιούμε τα δεδομένα σου στην <0>πολιτική απορρήτου μας</0>."
-msgstr "Μπορείς να μάθεις πως χρησιμοποιούμε τα δεδομένα σου στην <0>πολιτική απορρήτου μας</0>."
-
-#: src/components/ui/drawer/content/directions.tsx:89
-msgid "Οδηγίες"
-msgstr "Οδηγίες"
-
-#: src/app/(auth)/login/_components/client-page.tsx:43
-msgid "Πολιτική απορρήτου."
-msgstr "Πολιτική απορρήτου."
-
-#: src/components/ui/search/index.tsx:248
-msgid "Πού θες να πας;"
-msgstr "Πού θες να πας;"
-
-#: src/components/ui/drawer/content/bus-stop.tsx:181
-msgid "Πρόγραμμα"
-msgstr "Πρόγραμμα"
-
-#: src/components/ui/drawer/content/action-button/favorite.tsx:54
-msgid "Προέκυψε ένα σφάλμα κατά την ενημέρωση των αγαπημένων"
-msgstr "Προέκυψε ένα σφάλμα κατά την ενημέρωση των αγαπημένων"
+#: src/hooks/use-geolocation.ts:34
+msgid "The request to get your location timed out."
+msgstr "Το αίτημα για την πρόσβαση στην τοποθεσία σου έληξε."
 
 #: src/components/ui/drawer/content/directions.tsx:76
-msgid "Προς {stopName}"
+msgid "To {stopName}"
 msgstr "Προς {stopName}"
 
-#: src/components/ui/drawer/content/action-button/favorite.tsx:72
-msgid "Προσθήκη στα αγαπημένα"
-msgstr "Προσθήκη στα αγαπημένα"
-
-#: src/app/(auth)/login/_components/client-page.tsx:46
-msgid "Πώς χρησιμοποιούμε τα δεδομένα σου."
-msgstr "Πώς χρησιμοποιούμε τα δεδομένα σου."
-
-#: src/components/ui/grave-error.tsx:30
-#: src/components/ui/location/unsupported-location-modal.tsx:75
-msgid "Στείλε αστρική βοήθεια"
-msgstr "Στείλε αστρική βοήθεια"
-
-#: src/components/ui/search/menu-dropdown.tsx:77
-msgid "Σύνδεση"
-msgstr "Σύνδεση"
-
-#: src/app/(auth)/login/_components/oauth-button.tsx:42
-msgid "Σύνδεση με {providerName}"
-msgstr "Σύνδεση με {providerName}"
-
-#: src/app/(auth)/login/_components/client-page.tsx:23
-msgid "Συνδέσου για να ξεκλειδώσεις εξατομικευμένες λειτουργίες που κάνουν τις μετακινήσεις σου πιο ομαλές."
-msgstr "Συνδέσου για να ξεκλειδώσεις εξατομικευμένες λειτουργίες που κάνουν τις μετακινήσεις σου πιο ομαλές."
+#: src/components/ui/drawer/content/directions.tsx:84
+msgid "Total distance"
+msgstr "Συνολική απόσταση"
 
 #: src/components/ui/drawer/content/directions.tsx:81
-msgid "Συνολική διάρκεια"
+msgid "Total duration"
 msgstr "Συνολική διάρκεια"
 
-#: src/app/(auth)/login/_components/error-message.tsx:19
-msgid "Σφάλμα!"
-msgstr "Σφάλμα!"
-
-#: src/components/ui/search/menu-dropdown.tsx:85
-msgid "Τι είναι αυτό;"
-msgstr "Τι είναι αυτό;"
+#: src/components/ui/location/unsupported-location-modal.tsx:49
+msgid "Unfortunately, unibus is currently not supported in your region. We are constantly working to add new cities and regions!"
+msgstr "Δυστυχώς, προς το παρόν, το unibus δεν υποστηρίζεται στην περιοχή σου. Εργαζόμαστε συνεχώς για να προσθέσουμε νέες πόλεις και περιοχές!"
 
 #: src/components/ui/location/location-prompt-modal.tsx:38
-msgid "Το unibus είναι καλύτερο όταν έχεις <0>ενεργοποιημένη την τοποθεσία σου</0>"
+msgid "unibus is better when you have <0>your location enabled</0>"
 msgstr "Το unibus είναι καλύτερο όταν έχεις <0>ενεργοποιημένη την τοποθεσία σου</0>"
 
-#: src/components/ui/drawer/content/bus-stop.tsx:181
-msgid "Τώρα"
-msgstr "Τώρα"
+#: src/components/ui/location/unsupported-location-modal.tsx:58
+msgid "Until then, you can send stellar help"
+msgstr "Μέχρι τότε, μπορείς να στείλεις αστρική βοήθεια"
+
+#: src/components/ui/grave-error.tsx:24
+msgid "We are currently unable to display the page. <0/>Please try again later."
+msgstr "Αυτή τη στιγμή δεν μπορούμε να εμφανίσουμε την σελίδα. <0/>Παρακαλώ δοκίμασε ξανά αργότερα."
+
+#: src/components/ui/location/location-prompt-modal.tsx:54
+msgid "We don't store your location"
+msgstr "Δεν αποθηκεύουμε την τοποθεσία σου"
+
+#: src/components/ui/location/unsupported-location-modal.tsx:55
+msgid "We hope to be with you soon!"
+msgstr "Ελπίζουμε να είμαστε κοντά σου σύντομα!"
 
 #: src/components/ui/location/location-prompt-modal.tsx:50
-msgid "Υποσχόμαστε πως"
+msgid "We promise that"
 msgstr "Υποσχόμαστε πως"
 
-#: src/components/ui/drawer/content/place.tsx:88
-msgid "Χμμ.. είναι λίγο μακριά! <0>Μήπως να πάρεις αστικό;</0>"
-msgstr "Χμμ.. είναι λίγο μακριά! <0>Μήπως να πάρεις αστικό;</0>"
+#: src/components/ui/location/location-prompt-modal.tsx:57
+msgid "We will only use it to give you the best experience"
+msgstr "Θα τη χρησιμοποιήσουμε μόνο για να σου προσφέρουμε την καλύτερη εμπειρία"
 
-#: src/components/ui/location/unsupported-location-modal.tsx:38
-msgid "Χμμ.. φαίνεται πως το unibus <0>δεν είναι διαθέσιμο στην περιοχή σου</0>"
-msgstr "Χμμ.. φαίνεται πως το unibus <0>δεν είναι διαθέσιμο στην περιοχή σου</0>"
+#: src/components/ui/grave-error.tsx:21
+msgid "We're having a problem"
+msgstr "Αντιμετωπίζουμε κάποιο πρόβλημα"
+
+#: src/app/(auth)/login/_components/client-page.tsx:21
+msgid "Welcome!"
+msgstr "Καλώς ήρθες!"
+
+#: src/components/ui/search/menu-dropdown.tsx:85
+msgid "What is this?"
+msgstr "Τι είναι αυτό;"
+
+#: src/components/ui/search/index.tsx:248
+msgid "Where to?"
+msgstr "Πού θες να πας;"
+
+#: src/components/ui/location/location-prompt-modal.tsx:67
+msgid "You can learn how we use your data in our <0>privacy policy</0>."
+msgstr "Μπορείς να μάθεις πως χρησιμοποιούμε τα δεδομένα σου στην <0>πολιτική απορρήτου μας</0>."
+
+#: src/hooks/use-geolocation.ts:28
+msgid "You denied access to your location."
+msgstr "Αρνήθηκες την πρόσβαση στην τοποθεσία σου."
+
+#: src/hooks/use-geolocation.ts:31
+msgid "Your location information is unavailable."
+msgstr "Η τοποθεσία σου δεν είναι διαθέσιμη."

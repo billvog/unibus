@@ -16,11 +16,11 @@ function Message() {
       <Alert variant="destructive">
         <CircleAlert size={20} />
         <AlertTitle>
-          <Trans>Σφάλμα!</Trans>
+          <Trans>Error!</Trans>
         </AlertTitle>
         <AlertDescription>
           <Trans>
-            Κάτι πήγε λάθος κατά την είσοδό σου. Παρακαλώ δοκίμασε ξανά.
+            Something went wrong during your login. Please try again.
           </Trans>
         </AlertDescription>
       </Alert>

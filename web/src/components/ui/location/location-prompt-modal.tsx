@@ -36,9 +36,9 @@ const LocationPromptModal = () => {
         <DialogHeader>
           <DialogTitle className="text-balance leading-snug">
             <Trans>
-              Το unibus είναι καλύτερο όταν έχεις{" "}
+              unibus is better when you have{" "}
               <span className="underline decoration-blue-500 decoration-wavy">
-                ενεργοποιημένη την τοποθεσία σου
+                your location enabled
               </span>
             </Trans>
             📍
@@ -47,16 +47,15 @@ const LocationPromptModal = () => {
         <div className="flex flex-col gap-4">
           <div className="space-y-2 text-sm">
             <span className="font-bold">
-              <Trans>Υποσχόμαστε πως</Trans>:
+              <Trans>We promise that</Trans>:
             </span>
             <ul className="list-inside list-decimal space-y-1">
               <li>
-                <Trans>Δεν αποθηκεύουμε την τοποθεσία σου</Trans>
+                <Trans>We don't store your location</Trans>
               </li>
               <li>
                 <Trans>
-                  Θα τη χρησιμοποιήσουμε μόνο για να σου προσφέρουμε την
-                  καλύτερη εμπειρία
+                  We will only use it to give you the best experience
                 </Trans>{" "}
                 😎
               </li>
@@ -66,9 +65,9 @@ const LocationPromptModal = () => {
             <span className="text-xl">🕵️‍♂️</span>
             <span className="text-balance text-xs">
               <Trans>
-                Μπορείς να μάθεις πως χρησιμοποιούμε τα δεδομένα σου στην{" "}
+                You can learn how we use your data in our{" "}
                 <Link href="/company/privacy-policy" className="link">
-                  πολιτική απορρήτου μας
+                  privacy policy
                 </Link>
                 .
               </Trans>
@@ -77,11 +76,11 @@ const LocationPromptModal = () => {
         </div>
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            <Trans>Αργότερα</Trans>
+            <Trans>Later</Trans>
           </Button>
           <Button onClick={() => onEnableLocation()}>
             <span className="font-bold">
-              <Trans>Ενεργοποίηση</Trans>
+              <Trans>Enable now</Trans>
             </span>
           </Button>
         </DialogFooter>

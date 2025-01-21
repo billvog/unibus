@@ -231,7 +231,7 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
         >
           <Undo2 size={14} />
           <span>
-            <Trans>Επαναφορά</Trans>
+            <Trans>Reset</Trans>
           </span>
         </Button>
       )}

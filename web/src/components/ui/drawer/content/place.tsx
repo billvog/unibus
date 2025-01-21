@@ -1,4 +1,4 @@
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import dayjs from "dayjs";
 import { MapPin } from "lucide-react";
 import React from "react";
@@ -14,6 +14,8 @@ import { type DrawerContentProps } from "@web/types/drawer";
 import { type MapFlyToDetail } from "@web/types/events";
 
 const PlaceContent = ({ isFullyOpen }: DrawerContentProps) => {
+  const { t } = useLingui();
+
   const { userLocation } = useUserLocation();
   const { selectedPlace } = usePlace();
 
@@ -73,11 +75,11 @@ const PlaceContent = ({ isFullyOpen }: DrawerContentProps) => {
           <>
             <div className="flex items-center gap-2 text-center">
               <Detail
-                label="Απόσταση"
+                label={t`Distance`}
                 text={String(walkingDistance.formattedDistance)}
               />
               <Detail
-                label="Διάρκεια 🚶‍♂️"
+                label={t`Duration` + " 🚶‍♂️"}
                 text={dayjs
                   .duration(walkingDistance.walkingTime, "minutes")
                   .humanize()}
@@ -86,8 +88,7 @@ const PlaceContent = ({ isFullyOpen }: DrawerContentProps) => {
             {walkingDistance.distance > 1000 && (
               <div className="text-xs text-gray-500 sm:text-sm">
                 <Trans>
-                  Χμμ.. είναι λίγο μακριά!{" "}
-                  <strong>Μήπως να πάρεις αστικό;</strong>
+                  Hmm.. it's a bit far! <strong>Maybe take a bus?</strong>
                 </Trans>{" "}
                 🙄
               </div>
@@ -97,14 +98,14 @@ const PlaceContent = ({ isFullyOpen }: DrawerContentProps) => {
           <div className="mx-auto flex max-w-lg flex-col gap-3 text-balance text-center">
             <Trans>
               <span className="text-base font-bold sm:text-lg">
-                Βεβαιώσου ότι έχεις ενεργοποιήσει την τοποθεσία σου!
+                Make sure you have enabled your location!
               </span>
               <p className="text-sm text-gray-500">
-                Έτσι θα μπορούμε να σου δείξουμε περισσότερες πληροφορίες για
-                τον προορισμό σου.
+                This way we can show you more information about your
+                destination.
               </p>
               <p className="text-sm text-gray-700">
-                Δώσε μας την άδεια μέσα από τις ρυθμίσεις του περιηγητή σου!
+                Give us permission through your browser settings!
               </p>
             </Trans>
           </div>

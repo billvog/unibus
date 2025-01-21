@@ -12,22 +12,22 @@ const GraveError = () => {
 
   const onSendHelpClick = React.useCallback(() => {
     window.dispatchEvent(new CustomEvent(Events.Analytics.GraveErrorSendHelp));
-    toast.success(t`Η αστρική βοήθεια στάλθηκε!` + " 🛸");
+    toast.success(t`Stellar help sent!` + " 🛸");
   }, []);
 
   return (
     <div className="flex h-dvh w-screen flex-col items-center justify-center gap-4 p-10">
       <h1 className="text-center text-2xl font-extrabold sm:text-4xl">
-        <Trans>Αντιμετωπίζουμε κάποιο πρόβλημα</Trans> 🙁
+        <Trans>We're having a problem</Trans> 🙁
       </h1>
       <p className="text-center text-xs leading-normal sm:text-base">
         <Trans>
-          Αυτή τη στιγμή δεν μπορούμε να εμφανίσουμε την σελίδα. <br />
-          Παρακαλώ δοκίμασε ξανά αργότερα.
+          We are currently unable to display the page. <br />
+          Please try again later.
         </Trans>
       </p>
       <Button className="gap-2" onClick={onSendHelpClick}>
-        <Trans>Στείλε αστρική βοήθεια</Trans>{" "}
+        <Trans>Send stellar help</Trans>{" "}
         <span aria-label="alien" role="img">
           👽
         </span>

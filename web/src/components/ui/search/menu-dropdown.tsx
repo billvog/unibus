@@ -37,10 +37,10 @@ const MenuDropdown = ({ children }: MenuDropdownProps) => {
       // Reset all cache.
       void queryClient.resetQueries();
       // Show success message.
-      toast.success(t`Επιτυχής αποσύνδεση`);
+      toast.success(t`Successful logout`);
     },
     onError: () => {
-      toast.error(t`Κάτι πήγε στραβά κατά την αποσύνδεση`);
+      toast.error(t`Something went wrong during logout`);
     },
   });
 
@@ -58,7 +58,7 @@ const MenuDropdown = ({ children }: MenuDropdownProps) => {
                 onClick={() => logoutMutation.mutate()}
               >
                 <LogOut />
-                <Trans>Αποσύνδεση</Trans>
+                <Trans>Logout</Trans>
               </Button>
             </DropdownMenuItem>
           </>
@@ -74,7 +74,7 @@ const MenuDropdown = ({ children }: MenuDropdownProps) => {
           >
             <Link href="/login">
               <LogIn />
-              <Trans>Σύνδεση</Trans>
+              <Trans>Login</Trans>
             </Link>
           </DropdownMenuItem>
         )}
@@ -82,7 +82,7 @@ const MenuDropdown = ({ children }: MenuDropdownProps) => {
         <DropdownMenuItem asChild>
           <Link href="/company">
             <CircleHelp />
-            <Trans>Τι είναι αυτό;</Trans>
+            <Trans>What is this?</Trans>
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

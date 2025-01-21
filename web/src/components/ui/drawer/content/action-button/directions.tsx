@@ -85,7 +85,7 @@ const DirectionsButton = ({
   return (
     <ActionButton
       icon={<span>🚶‍♂️</span>}
-      label={<Plural value={walkingTime} one="# λεπτό" other="# λεπτά" />}
+      label={<Plural value={walkingTime} one="# minute" other="# minutes" />}
       isCompact={!isFullyOpen}
       loading={isDirectionsLoading}
       onClick={directionsPressed}

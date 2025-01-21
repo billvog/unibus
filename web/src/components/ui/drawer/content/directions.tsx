@@ -73,20 +73,20 @@ const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
         <button className="cursor-pointer" onClick={onBackPressed}>
           <ArrowLeft />
         </button>
-        <DynamicTitle title={t`Προς ${stopName}`} />
+        <DynamicTitle title={t`To ${stopName}`} />
       </Content.Header>
       <Content.Body isFullyOpen={isFullyOpen}>
         <div className="flex items-center gap-2 text-center">
           <Detail
-            label={t`Συνολική διάρκεια`}
+            label={t`Total duration`}
             text={dayjs.duration(totalDuration, "seconds").humanize()}
           />
-          <Detail label="Συνολική απόσταση" text={totalDistanceFormatted} />
+          <Detail label={t`Total distance`} text={totalDistanceFormatted} />
         </div>
 
         <div className="mt-2 space-y-4 rounded-2xl border p-6">
           <span className="text-lg font-bold">
-            <Trans>Οδηγίες</Trans>:
+            <Trans>Directions</Trans>:
           </span>
           <div
             className={cn(

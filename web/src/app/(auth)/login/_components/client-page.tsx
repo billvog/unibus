@@ -18,12 +18,11 @@ const ClientPage = () => {
     <Card className="w-full max-w-lg">
       <CardHeader>
         <CardTitle>
-          <Trans>Καλώς ήρθες!</Trans>
+          <Trans>Welcome!</Trans>
         </CardTitle>
         <CardDescription>
           <Trans>
-            Συνδέσου για να ξεκλειδώσεις εξατομικευμένες λειτουργίες που κάνουν
-            τις μετακινήσεις σου πιο ομαλές.
+            Login to unlock personalized features that make your trips smoother.
           </Trans>
         </CardDescription>
       </CardHeader>
@@ -41,10 +40,10 @@ const ClientPage = () => {
             <div className="text-base">🕵️‍♂️</div>
             <div className="link flex flex-col group-hover:underline">
               <span>
-                <Trans>Πολιτική απορρήτου.</Trans>
+                <Trans>Privacy policy.</Trans>
               </span>
               <span>
-                <Trans>Πώς χρησιμοποιούμε τα δεδομένα σου.</Trans>
+                <Trans>How we use your data.</Trans>
               </span>
             </div>
           </Link>

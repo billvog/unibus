@@ -25,13 +25,13 @@ export const useGeolocation = () => {
     let message = "";
     switch (error.code) {
       case GeolocationPositionError.PERMISSION_DENIED:
-        message = t`Αρνήθηκες την πρόσβαση στην τοποθεσία σου.`;
+        message = t`You denied access to your location.`;
         break;
       case GeolocationPositionError.POSITION_UNAVAILABLE:
-        message = t`Η τοποθεσία σου δεν είναι διαθέσιμη.`;
+        message = t`Your location information is unavailable.`;
         break;
       case GeolocationPositionError.TIMEOUT:
-        message = t`Το αίτημα για την πρόσβαση στην τοποθεσία σου έληξε.`;
+        message = t`The request to get your location timed out.`;
         break;
     }
 

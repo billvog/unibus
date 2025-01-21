@@ -91,7 +91,7 @@ const BusStopSchedule = ({
         ))
       ) : (
         <div>
-          <Trans>Κάτι πήγε στραβά! Προσπαθήστε ξανά</Trans> 😢
+          <Trans>Something went wrong! Try again</Trans> 😢
         </div>
       )}
     </div>

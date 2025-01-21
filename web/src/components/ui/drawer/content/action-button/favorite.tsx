@@ -51,7 +51,7 @@ const FavoriteButton = ({ isFullyOpen, busStop }: FavoriteButtonProps) => {
       setFavorite((prev) => !prev);
     },
     onError: () => {
-      toast.error(t`Προέκυψε ένα σφάλμα κατά την ενημέρωση των αγαπημένων`);
+      toast.error(t`An error occurred while updating favorites`);
     },
   });
 
@@ -69,7 +69,7 @@ const FavoriteButton = ({ isFullyOpen, busStop }: FavoriteButtonProps) => {
           fillOpacity={favorite ? 1 : 0}
         />
       }
-      label={favorite ? t`Αφαίρεση από αγαπημένα` : t`Προσθήκη στα αγαπημένα`}
+      label={favorite ? t`Remove from favorites` : t`Add to favorites`}
       loading={favoriteMutation.isPending}
       isCompact={!isFullyOpen}
       onClick={() =>
