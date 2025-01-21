@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Page = () => {
@@ -7,9 +8,9 @@ const Page = () => {
       <p className="text-center text-xs leading-normal sm:text-base">
         Μάλλον έκανες κάποιο λάθος. Αυτή η σελίδα δεν υπάρχει. <br />
         Πάτα{" "}
-        <a href="/" className="link">
+        <Link href="/" className="link">
           εδώ
-        </a>{" "}
+        </Link>{" "}
         για να γυρίσεις στην αρχική σελίδα.
       </p>
     </div>

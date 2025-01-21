@@ -2,9 +2,9 @@ import "@web/styles/globals.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import { type Metadata } from "next";
-import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 
+import PostHogPageView from "@web/components/posthog-page-view";
 import Providers from "@web/components/providers";
 
 const inter = Inter({
@@ -57,18 +57,11 @@ export const metadata: Metadata = {
   ],
 };
 
-const PostHogPageView = dynamic(
-  () => import("../components/posthog-page-view"),
-  {
-    ssr: false,
-  },
-);
-
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.className}`}>
+    <html lang="en" className={`${inter.className}`} suppressHydrationWarning>
       <head>
         <link
           rel="icon"
