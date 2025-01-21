@@ -24,13 +24,3 @@ export const Events = {
 export const FeatureFlags = {
   Directions: "feat-directions",
 };
-
-export const Days = [
-  "Δευτέρα",
-  "Τρίτη",
-  "Τετάρτη",
-  "Πέμπτη",
-  "Παρασκευή",
-  "Σάββατο",
-  "Κυριακή",
-];

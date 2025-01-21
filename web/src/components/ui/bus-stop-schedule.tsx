@@ -1,12 +1,12 @@
 "use client";
 
 import { type DbBusStopTime } from "@api/types/models";
-import { Trans } from "@lingui/react/macro";
-import React from "react";
+import { Trans, useLingui } from "@lingui/react/macro";
+import React, { useMemo } from "react";
 
 import BusStopTime from "@web/components/ui/bus-stop-time";
 import { Spinner } from "@web/components/ui/spinner";
-import { Days } from "@web/lib/utils/constants";
+import { getDaysInLocale } from "@web/lib/utils/days";
 import { cn } from "@web/lib/utils/tailwind";
 
 function formatDayIndex(day: number) {
@@ -26,6 +26,9 @@ const BusStopSchedule = ({
   onDayClick,
   isLoading,
 }: BusStopScheduleProps) => {
+  const { i18n } = useLingui();
+  const days = useMemo(() => getDaysInLocale(i18n.locale), [i18n]);
+
   const groupedTrips = React.useMemo(() => {
     const grouped = new Map<number, DbBusStopTime[]>();
     busStopTrips.forEach((trip) => {
@@ -48,7 +51,7 @@ const BusStopSchedule = ({
     <div className="flex flex-col gap-6">
       {/* Day selector */}
       <div className="no-scrollbar flex items-center justify-evenly gap-2 overflow-x-auto">
-        {Days.map((day, index) => (
+        {days.map((day, index) => (
           <div
             key={day}
             className={cn(
