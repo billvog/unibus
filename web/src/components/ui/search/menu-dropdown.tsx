@@ -1,3 +1,6 @@
+"use client";
+
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { CircleHelp, LogIn, LogOut } from "lucide-react";
 import Link from "next/link";
@@ -21,6 +24,8 @@ type MenuDropdownProps = {
 };
 
 const MenuDropdown = ({ children }: MenuDropdownProps) => {
+  const { t } = useLingui();
+
   const { user } = useUser();
 
   const queryClient = useQueryClient();
@@ -32,10 +37,10 @@ const MenuDropdown = ({ children }: MenuDropdownProps) => {
       // Reset all cache.
       void queryClient.resetQueries();
       // Show success message.
-      toast.success("Επιτυχής αποσύνδεση");
+      toast.success(t`Επιτυχής αποσύνδεση`);
     },
     onError: () => {
-      toast.error("Κάτι πήγε στραβά κατά την αποσύνδεση");
+      toast.error(t`Κάτι πήγε στραβά κατά την αποσύνδεση`);
     },
   });
 
@@ -53,7 +58,7 @@ const MenuDropdown = ({ children }: MenuDropdownProps) => {
                 onClick={() => logoutMutation.mutate()}
               >
                 <LogOut />
-                Αποσύνδεση
+                <Trans>Αποσύνδεση</Trans>
               </Button>
             </DropdownMenuItem>
           </>
@@ -69,7 +74,7 @@ const MenuDropdown = ({ children }: MenuDropdownProps) => {
           >
             <Link href="/login">
               <LogIn />
-              Σύνδεση
+              <Trans>Σύνδεση</Trans>
             </Link>
           </DropdownMenuItem>
         )}
@@ -77,7 +82,7 @@ const MenuDropdown = ({ children }: MenuDropdownProps) => {
         <DropdownMenuItem asChild>
           <Link href="/company">
             <CircleHelp />
-            Τι είναι αυτό;
+            <Trans>Τι είναι αυτό;</Trans>
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

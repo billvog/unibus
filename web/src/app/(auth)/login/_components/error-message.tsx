@@ -1,5 +1,6 @@
 "use client";
 
+import { Trans } from "@lingui/react/macro";
 import { CircleAlert } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense } from "react";
@@ -14,9 +15,13 @@ function Message() {
     return (
       <Alert variant="destructive">
         <CircleAlert size={20} />
-        <AlertTitle>Σφάλμα!</AlertTitle>
+        <AlertTitle>
+          <Trans>Σφάλμα!</Trans>
+        </AlertTitle>
         <AlertDescription>
-          Κάτι πήγε λάθος κατά την είσοδό σου. Παρακαλώ δοκίμασε ξανά.
+          <Trans>
+            Κάτι πήγε λάθος κατά την είσοδό σου. Παρακαλώ δοκίμασε ξανά.
+          </Trans>
         </AlertDescription>
       </Alert>
     );

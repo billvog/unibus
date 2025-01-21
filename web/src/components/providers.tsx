@@ -15,13 +15,13 @@ import superjson from "superjson";
 
 import { BusStopProvider } from "@web/components/bus-stop-context";
 import { DirectionsProvider } from "@web/components/directions-context";
+import { I18nProvider } from "@web/components/i18n-provider";
 import { PlaceProvider } from "@web/components/place-context";
 import { Toaster } from "@web/components/ui/sonner";
 import { UserProvider } from "@web/components/user-context";
 import { UserLocationProvider } from "@web/components/user-location-context";
 import { env } from "@web/env";
 import { trpc } from "@web/lib/trpc";
-import { I18nProvider } from "@web/components/i18n-provider";
 
 function makeQueryClient() {
   return new QueryClient({

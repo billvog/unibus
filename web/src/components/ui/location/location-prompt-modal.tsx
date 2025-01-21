@@ -1,5 +1,6 @@
 "use client";
 
+import { Trans } from "@lingui/react/macro";
 import Link from "next/link";
 import React from "react";
 
@@ -34,41 +35,54 @@ const LocationPromptModal = () => {
       <DialogContent className="gap-6">
         <DialogHeader>
           <DialogTitle className="text-balance leading-snug">
-            Το unibus είναι καλύτερο όταν έχεις{" "}
-            <span className="underline decoration-blue-500 decoration-wavy">
-              ενεργοποιημένη την τοποθεσία σου
-            </span>
+            <Trans>
+              Το unibus είναι καλύτερο όταν έχεις{" "}
+              <span className="underline decoration-blue-500 decoration-wavy">
+                ενεργοποιημένη την τοποθεσία σου
+              </span>
+            </Trans>
             📍
           </DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <div className="space-y-2 text-sm">
-            <span className="font-bold">Υποσχόμαστε πως:</span>
+            <span className="font-bold">
+              <Trans>Υποσχόμαστε πως</Trans>:
+            </span>
             <ul className="list-inside list-decimal space-y-1">
-              <li>Δεν αποθηκεύουμε την τοποθεσία σου</li>
               <li>
-                Θα τη χρησιμοποιήσουμε μόνο για να σου προσφέρουμε την καλύτερη
-                εμπειρία 😎
+                <Trans>Δεν αποθηκεύουμε την τοποθεσία σου</Trans>
+              </li>
+              <li>
+                <Trans>
+                  Θα τη χρησιμοποιήσουμε μόνο για να σου προσφέρουμε την
+                  καλύτερη εμπειρία
+                </Trans>{" "}
+                😎
               </li>
             </ul>
           </div>
           <div className="flex items-center gap-3 rounded-lg border-2 border-gray-100 bg-gray-50 p-3">
             <span className="text-xl">🕵️‍♂️</span>
             <span className="text-balance text-xs">
-              Μπορείς να μάθεις πως χρησιμοποιούμε τα δεδομένα σου στην{" "}
-              <Link href="/company/privacy-policy" className="link">
-                πολιτική απορρήτου μας
-              </Link>
-              .
+              <Trans>
+                Μπορείς να μάθεις πως χρησιμοποιούμε τα δεδομένα σου στην{" "}
+                <Link href="/company/privacy-policy" className="link">
+                  πολιτική απορρήτου μας
+                </Link>
+                .
+              </Trans>
             </span>
           </div>
         </div>
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Αργότερα
+            <Trans>Αργότερα</Trans>
           </Button>
           <Button onClick={() => onEnableLocation()}>
-            <span className="font-bold">Ενεργοποίηση</span>
+            <span className="font-bold">
+              <Trans>Ενεργοποίηση</Trans>
+            </span>
           </Button>
         </DialogFooter>
       </DialogContent>

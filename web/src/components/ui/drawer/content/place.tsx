@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react/macro";
 import dayjs from "dayjs";
 import { MapPin } from "lucide-react";
 import React from "react";
@@ -84,23 +85,28 @@ const PlaceContent = ({ isFullyOpen }: DrawerContentProps) => {
             </div>
             {walkingDistance.distance > 1000 && (
               <div className="text-xs text-gray-500 sm:text-sm">
-                Χμμ.. είναι λίγο μακριά!{" "}
-                <strong>Μήπως να πάρεις αστικό; 🙄</strong>
+                <Trans>
+                  Χμμ.. είναι λίγο μακριά!{" "}
+                  <strong>Μήπως να πάρεις αστικό;</strong>
+                </Trans>{" "}
+                🙄
               </div>
             )}
           </>
         ) : (
           <div className="mx-auto flex max-w-lg flex-col gap-3 text-balance text-center">
-            <span className="text-base font-bold sm:text-lg">
-              Βεβαιώσου ότι έχεις ενεργοποιήσει την τοποθεσία σου!
-            </span>
-            <p className="text-sm text-gray-500">
-              Έτσι θα μπορούμε να σου δείξουμε περισσότερες πληροφορίες για τον
-              προορισμό σου.
-            </p>
-            <p className="text-sm text-gray-700">
-              Δώσε μας την άδεια μέσα από τις ρυθμίσεις του περιηγητή σου!
-            </p>
+            <Trans>
+              <span className="text-base font-bold sm:text-lg">
+                Βεβαιώσου ότι έχεις ενεργοποιήσει την τοποθεσία σου!
+              </span>
+              <p className="text-sm text-gray-500">
+                Έτσι θα μπορούμε να σου δείξουμε περισσότερες πληροφορίες για
+                τον προορισμό σου.
+              </p>
+              <p className="text-sm text-gray-700">
+                Δώσε μας την άδεια μέσα από τις ρυθμίσεις του περιηγητή σου!
+              </p>
+            </Trans>
           </div>
         )}
       </Content.Body>

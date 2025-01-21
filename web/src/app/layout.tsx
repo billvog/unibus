@@ -13,8 +13,8 @@ const inter = Inter({
 });
 
 const marketing = {
-  title: "unibus ― Βρες το δρομολόγιο που σε ενδιαφέρει",
-  description: "Μέσα μαζικής μεταφοράς, χωρίς την ταλαιπωρία ― Με το unibus.",
+  title: "unibus",
+  description: "Public transit, without the buzz – with unibus.",
 };
 
 export const metadata: Metadata = {

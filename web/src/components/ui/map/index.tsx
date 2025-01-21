@@ -1,3 +1,5 @@
+"use client";
+
 import { type DbMassBusStop } from "@api/types/models";
 import { Trans } from "@lingui/react/macro";
 import * as turf from "@turf/distance";
@@ -229,7 +231,7 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
         >
           <Undo2 size={14} />
           <span>
-            <Trans>Reset</Trans>
+            <Trans>Επαναφορά</Trans>
           </span>
         </Button>
       )}

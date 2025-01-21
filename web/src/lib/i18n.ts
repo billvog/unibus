@@ -1,4 +1,4 @@
-import { i18n } from "@lingui/core";
+import { i18n, type Messages } from "@lingui/core";
 import { detect, fromNavigator, fromCookie } from "@lingui/detect-locale";
 
 export const locales = {
@@ -13,7 +13,10 @@ export const DEFAULT_LOCALE = "el";
  * @param locale any locale string
  */
 export async function dynamicActivate(locale: string) {
-  const { messages } = await import(`@lingui/loader!../locales/${locale}.po`);
+  const { messages } = (await import(
+    `@lingui/loader!../locales/${locale}.po`
+  )) as { messages: Messages };
+
   i18n.load(locale, messages);
   i18n.activate(locale);
 }

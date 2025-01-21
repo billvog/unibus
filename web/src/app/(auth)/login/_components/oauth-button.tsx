@@ -1,5 +1,6 @@
 "use client";
 
+import { Trans } from "@lingui/react/macro";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -37,7 +38,9 @@ const OAuthButton = ({ providerId, providerName }: OAuthButtonProps) => {
           width={20}
           height={20}
         />
-        <span>Σύνδεση με {providerName}</span>
+        <span>
+          <Trans>Σύνδεση με {providerName}</Trans>
+        </span>
       </Button>
     </Link>
   );

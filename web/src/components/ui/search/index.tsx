@@ -1,5 +1,6 @@
 "use client";
 
+import { Trans, useLingui } from "@lingui/react/macro";
 import { type Coordinates } from "@mapbox/mapbox-sdk/lib/classes/mapi-request";
 import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
 import * as Sentry from "@sentry/nextjs";
@@ -39,6 +40,8 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const [searchSessionToken] = useState(() => crypto.randomUUID());
+
+  const { t, i18n } = useLingui();
 
   const { userLocation } = useUserLocation();
   const { setSelectedStopId } = useBusStop();
@@ -126,7 +129,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
         query: debouncedQuery,
         mode: "mapbox.places",
         countries: ["GR"],
-        language: ["el"],
+        language: [i18n.locale],
         proximity: location ?? "ip",
         session_token: searchSessionToken,
         limit: 5,
@@ -138,7 +141,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
         Sentry.captureException(error);
       })
       .finally(() => setIsMapboxLoading(false));
-  }, [initialUserLocation, debouncedQuery]);
+  }, [initialUserLocation, debouncedQuery, i18n.locale]);
 
   const openSearch = React.useCallback(() => {
     // Reset stop, place and directions.
@@ -242,7 +245,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
             {/* Search Input */}
             <Input
               ref={inputRef}
-              placeholder="Πού θες να πας; 🔍"
+              placeholder={t`Πού θες να πας;` + "  🔍"}
               onFocus={() => setFocused(true)}
               onBlur={() => query.length === 0 && setFocused(false)}
               value={query}
@@ -304,7 +307,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
         ) : query.length > 0 ? (
           <div>
             <div className="text-center text-lg font-bold text-white">
-              Δεν βρέθηκαν αποτελέσματα
+              <Trans>Δεν βρέθηκαν αποτελέσματα</Trans>
             </div>
           </div>
         ) : null}

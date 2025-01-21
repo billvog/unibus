@@ -1,6 +1,7 @@
 "use client";
 
 import { type DbBusStopTime } from "@api/types/models";
+import { Trans } from "@lingui/react/macro";
 import React from "react";
 
 import BusStopTime from "@web/components/ui/bus-stop-time";
@@ -89,7 +90,9 @@ const BusStopSchedule = ({
           </div>
         ))
       ) : (
-        <div>Κάτι πήγε στραβά! Προσπαθήστε ξανά 😢</div>
+        <div>
+          <Trans>Κάτι πήγε στραβά! Προσπαθήστε ξανά</Trans> 😢
+        </div>
       )}
     </div>
   );

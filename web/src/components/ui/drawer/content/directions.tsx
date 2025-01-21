@@ -1,3 +1,4 @@
+import { Trans, useLingui } from "@lingui/react/macro";
 import dayjs from "dayjs";
 import { ArrowLeft } from "lucide-react";
 import React from "react";
@@ -14,11 +15,13 @@ import { cn } from "@web/lib/utils/tailwind";
 import { type DrawerContentProps } from "@web/types/drawer";
 
 const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
+  const { t } = useLingui();
+
   const { selectedStop } = useBusStop();
   const { directions, maneuvers, activeManeuverId, resetDirections } =
     useDirections();
 
-  const prettyStopName = React.useMemo(
+  const stopName = React.useMemo(
     () => (selectedStop ? PrettifyName(selectedStop.name) : ""),
     [selectedStop],
   );
@@ -70,19 +73,21 @@ const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
         <button className="cursor-pointer" onClick={onBackPressed}>
           <ArrowLeft />
         </button>
-        <DynamicTitle title={`Προς ${prettyStopName}`} />
+        <DynamicTitle title={t`Προς ${stopName}`} />
       </Content.Header>
       <Content.Body isFullyOpen={isFullyOpen}>
         <div className="flex items-center gap-2 text-center">
           <Detail
-            label="Συνολική διάρκεια"
+            label={t`Συνολική διάρκεια`}
             text={dayjs.duration(totalDuration, "seconds").humanize()}
           />
           <Detail label="Συνολική απόσταση" text={totalDistanceFormatted} />
         </div>
 
         <div className="mt-2 space-y-4 rounded-2xl border p-6">
-          <span className="text-lg font-bold">Οδηγίες:</span>
+          <span className="text-lg font-bold">
+            <Trans>Οδηγίες</Trans>:
+          </span>
           <div
             className={cn(
               "relative flex max-h-[200px] flex-col gap-8 overflow-hidden overflow-y-hidden",

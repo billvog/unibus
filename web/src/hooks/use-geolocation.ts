@@ -1,3 +1,4 @@
+import { useLingui } from "@lingui/react/macro";
 import React from "react";
 
 import { Events } from "@web/lib/utils/constants";
@@ -8,6 +9,8 @@ type GeolocationError = {
 };
 
 export const useGeolocation = () => {
+  const { t } = useLingui();
+
   const [position, setPosition] = React.useState<GeolocationCoordinates | null>(
     null,
   );
@@ -22,13 +25,13 @@ export const useGeolocation = () => {
     let message = "";
     switch (error.code) {
       case GeolocationPositionError.PERMISSION_DENIED:
-        message = "You denied access to your location.";
+        message = t`Αρνήθηκες την πρόσβαση στην τοποθεσία σου.`;
         break;
       case GeolocationPositionError.POSITION_UNAVAILABLE:
-        message = "Your location information is unavailable.";
+        message = t`Η τοποθεσία σου δεν είναι διαθέσιμη.`;
         break;
       case GeolocationPositionError.TIMEOUT:
-        message = "The request to get your location timed out.";
+        message = t`Το αίτημα για την πρόσβαση στην τοποθεσία σου έληξε.`;
         break;
     }
 
