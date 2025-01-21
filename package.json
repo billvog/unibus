@@ -1,7 +1,7 @@
 {
-  "name": "unibus-monorepo",
+  "name": "unibus",
   "private": true,
-  "packageManager": "pnpm@9.12.2",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
     "dev": "turbo dev",
     "dev:api": "turbo --filter=@repo/api dev",
