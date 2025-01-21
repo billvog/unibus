@@ -21,6 +21,7 @@ import { UserProvider } from "@web/components/user-context";
 import { UserLocationProvider } from "@web/components/user-location-context";
 import { env } from "@web/env";
 import { trpc } from "@web/lib/trpc";
+import { I18nProvider } from "@web/components/i18n-provider";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -83,23 +84,25 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <UserProvider>
-          <UserLocationProvider>
-            <PostHogProvider client={posthog}>
-              <BusStopProvider>
-                <PlaceProvider>
-                  <DirectionsProvider>
-                    {children}
-                    <Toaster richColors />
-                  </DirectionsProvider>
-                </PlaceProvider>
-              </BusStopProvider>
-            </PostHogProvider>
-          </UserLocationProvider>
-        </UserProvider>
-      </trpc.Provider>
-    </QueryClientProvider>
+    <I18nProvider>
+      <QueryClientProvider client={queryClient}>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+          <UserProvider>
+            <UserLocationProvider>
+              <PostHogProvider client={posthog}>
+                <BusStopProvider>
+                  <PlaceProvider>
+                    <DirectionsProvider>
+                      {children}
+                      <Toaster richColors />
+                    </DirectionsProvider>
+                  </PlaceProvider>
+                </BusStopProvider>
+              </PostHogProvider>
+            </UserLocationProvider>
+          </UserProvider>
+        </trpc.Provider>
+      </QueryClientProvider>
+    </I18nProvider>
   );
 }

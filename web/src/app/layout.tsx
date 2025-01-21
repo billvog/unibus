@@ -86,7 +86,10 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
         />
       </head>
-      <body className="h-dvh w-screen overflow-x-hidden">
+      <body
+        className="h-dvh w-screen overflow-x-hidden"
+        suppressHydrationWarning
+      >
         <Providers>
           <PostHogPageView />
           {children}

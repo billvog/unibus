@@ -33,6 +33,9 @@ const config = withSentryConfig(
       ignoreDuringBuilds: true,
     },
     serverExternalPackages: ["@mapbox/mapbox-sdk"],
+    experimental: {
+      swcPlugins: [["@lingui/swc-plugin", {}]],
+    },
   },
   {
     // For all available options, see:

@@ -1,0 +1,12 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-01-21 11:18+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: el\n"
+
+#: src/components/ui/map/index.tsx:232
+msgid "Reset"
+msgstr "Επαναφορά"
