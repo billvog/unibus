@@ -113,6 +113,10 @@ msgstr "Επαναφορά"
 msgid "Schedule"
 msgstr "Πρόγραμμα"
 
+#: src/components/ui/language-selector/index.tsx:48
+msgid "Select Language"
+msgstr "Επιλογή Γλώσσας"
+
 #: src/components/ui/grave-error.tsx:30
 #: src/components/ui/location/unsupported-location-modal.tsx:74
 msgid "Send stellar help"
@@ -126,7 +130,7 @@ msgstr "Κάτι πήγε στραβά κατά την αποσύνδεση"
 msgid "Something went wrong during your login. Please try again."
 msgstr "Κάτι πήγε λάθος κατά την είσοδό σου. Παρακαλώ δοκίμασε ξανά."
 
-#: src/components/ui/bus-stop-schedule.tsx:94
+#: src/components/ui/bus-stop-schedule.tsx:97
 msgid "Something went wrong! Try again"
 msgstr "Κάτι πήγε στραβά! Προσπαθήστε ξανά"
 

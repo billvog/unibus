@@ -113,6 +113,10 @@ msgstr "Reset"
 msgid "Schedule"
 msgstr "Schedule"
 
+#: src/components/ui/language-selector/index.tsx:48
+msgid "Select Language"
+msgstr "Select Language"
+
 #: src/components/ui/grave-error.tsx:30
 #: src/components/ui/location/unsupported-location-modal.tsx:74
 msgid "Send stellar help"
@@ -126,7 +130,7 @@ msgstr "Something went wrong during logout"
 msgid "Something went wrong during your login. Please try again."
 msgstr "Something went wrong during your login. Please try again."
 
-#: src/components/ui/bus-stop-schedule.tsx:94
+#: src/components/ui/bus-stop-schedule.tsx:97
 msgid "Something went wrong! Try again"
 msgstr "Something went wrong! Try again"
 

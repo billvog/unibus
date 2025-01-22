@@ -24,3 +24,7 @@ export const Events = {
 export const FeatureFlags = {
   Directions: "feat-directions",
 };
+
+export const Cookies = {
+  Language: "lang",
+};

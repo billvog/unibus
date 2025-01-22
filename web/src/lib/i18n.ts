@@ -1,12 +1,28 @@
 import { i18n, type Messages } from "@lingui/core";
 import { detect, fromNavigator, fromCookie } from "@lingui/detect-locale";
 
-export const locales = {
-  en: "English",
-  el: "Ελληνικά",
+import { Cookies } from "@web/lib/utils/constants";
+
+export type Locale = {
+  emoji: string;
+  code: string;
+  name: string;
 };
 
-export const DEFAULT_LOCALE = "el";
+export const locales: Locale[] = [
+  {
+    emoji: "🇺🇸",
+    code: "en",
+    name: "English",
+  },
+  {
+    emoji: "🇬🇷",
+    code: "el",
+    name: "Ελληνικά",
+  },
+];
+
+export const DEFAULT_LOCALE = "en";
 
 /**
  * We do a dynamic import of just the catalog that we need
@@ -26,10 +42,10 @@ export async function dynamicActivate(locale: string) {
  * @returns a string with the default locale
  */
 export function defaultLocale() {
-  const DEFAULT_FALLBACK = () => "en";
+  const DEFAULT_FALLBACK = () => DEFAULT_LOCALE;
   return (
-    detect(fromCookie("lang"), fromNavigator(), DEFAULT_FALLBACK) ??
-    DEFAULT_FALLBACK()
+    detect(fromCookie(Cookies.Language), fromNavigator(), DEFAULT_FALLBACK) ??
+    DEFAULT_LOCALE
   );
 }
 
