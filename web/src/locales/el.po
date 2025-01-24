@@ -13,6 +13,14 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/lib/utils/format-time.ts:4
+msgid "{minutes, plural, one {# minute} other {# minutes}}"
+msgstr "{minutes, plural, one {# λεπτό} other {# λεπτά}}"
+
+#: src/lib/utils/format-time.ts:13
+msgid "{seconds, plural, one {second} other {seconds}}"
+msgstr "{seconds, plural, one {δευτερόλεπτο} other {δευτερόλεπτα}}"
+
 #: src/components/ui/drawer/content/action-button/directions.tsx:88
 msgid "{walkingTime, plural, one {# minute} other {# minutes}}"
 msgstr "{walkingTime, plural, one {# λεπτό} other {# λεπτά}}"
@@ -29,7 +37,7 @@ msgstr "Προσθήκη στα αγαπημένα"
 msgid "An error occurred while updating favorites"
 msgstr "Προέκυψε ένα σφάλμα κατά την ενημέρωση των αγαπημένων"
 
-#: src/lib/utils/format-time.ts:22
+#: src/lib/utils/format-time.ts:25
 msgid "and"
 msgstr "και"
 
@@ -89,14 +97,6 @@ msgstr "Σύνδεση με {providerName}"
 msgid "Logout"
 msgstr "Αποσύνδεση"
 
-#: src/lib/utils/format-time.ts:4
-msgid "minute"
-msgstr "λεπτό"
-
-#: src/lib/utils/format-time.ts:4
-msgid "minutes"
-msgstr "λεπτά"
-
 #: src/components/ui/drawer/content/bus-stop.tsx:217
 msgid "No buses expected in the next 30 minutes"
 msgstr "Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά"
@@ -125,17 +125,9 @@ msgstr "Επαναφορά"
 msgid "Schedule"
 msgstr "Πρόγραμμα"
 
-#: src/lib/utils/format-time.ts:10
+#: src/lib/utils/format-time.ts:13
 msgid "sec."
 msgstr "δευτ."
-
-#: src/lib/utils/format-time.ts:10
-msgid "second"
-msgstr "δευτερόλεπτο"
-
-#: src/lib/utils/format-time.ts:10
-msgid "seconds"
-msgstr "δευτερόλεπτα"
 
 #: src/components/ui/language-selector/index.tsx:49
 msgid "Select Language"

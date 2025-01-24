@@ -1,13 +1,16 @@
-import { t } from "@lingui/core/macro";
+import { t, plural } from "@lingui/core/macro";
 
 function displayMinutes(minutes: number) {
-  return `${minutes} ${minutes === 1 ? t`minute` : t`minutes`}`;
+  return plural(minutes, {
+    one: "# minute",
+    other: "# minutes",
+  });
 }
 
 function displaySeconds(seconds: number, compact = false) {
   return (
     `${seconds} ` +
-    (compact ? t`sec.` : `${seconds === 1 ? t`second` : t`seconds`}`)
+    (compact ? t`sec.` : plural(seconds, { one: "second", other: "seconds" }))
   );
 }
 
