@@ -1,5 +1,6 @@
 "use client";
 
+import { useLingui } from "@lingui/react/macro";
 import {
   type Maneuver,
   type DirectionsResponse,
@@ -45,6 +46,8 @@ export function DirectionsProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const { i18n } = useLingui();
+
   const { userLocation } = useUserLocation();
 
   const [directions, setDirections] =
@@ -98,14 +101,14 @@ export function DirectionsProvider({
           waypoints,
           profile: "walking",
           geometries: "geojson",
-          language: "el",
+          language: i18n.locale,
           steps: true,
         })
         .send();
 
       setDirections(response.body);
     },
-    [],
+    [i18n.locale],
   );
 
   // Reset directions when selected stop or place changes.

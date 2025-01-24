@@ -2,9 +2,9 @@ import "@web/styles/globals.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import { type Metadata } from "next";
-import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 
+import PostHogPageView from "@web/components/posthog-page-view";
 import Providers from "@web/components/providers";
 
 const inter = Inter({
@@ -13,8 +13,8 @@ const inter = Inter({
 });
 
 const marketing = {
-  title: "unibus ― Βρες το δρομολόγιο που σε ενδιαφέρει",
-  description: "Μέσα μαζικής μεταφοράς, χωρίς την ταλαιπωρία ― Με το unibus.",
+  title: "unibus",
+  description: "Public transit, without the buzz – with unibus.",
 };
 
 export const metadata: Metadata = {
@@ -57,18 +57,11 @@ export const metadata: Metadata = {
   ],
 };
 
-const PostHogPageView = dynamic(
-  () => import("../components/posthog-page-view"),
-  {
-    ssr: false,
-  },
-);
-
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.className}`}>
+    <html lang="en" className={`${inter.className}`} suppressHydrationWarning>
       <head>
         <link
           rel="icon"
@@ -93,7 +86,10 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
         />
       </head>
-      <body className="h-dvh w-screen overflow-x-hidden">
+      <body
+        className="h-dvh w-screen overflow-x-hidden"
+        suppressHydrationWarning
+      >
         <Providers>
           <PostHogPageView />
           {children}

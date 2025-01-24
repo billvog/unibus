@@ -1,4 +1,7 @@
+"use client";
+
 import { type DbMassBusStop } from "@api/types/models";
+import { Trans } from "@lingui/react/macro";
 import * as turf from "@turf/distance";
 import { Undo2 } from "lucide-react";
 import { type MapEvent } from "mapbox-gl";
@@ -227,7 +230,9 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
           onClick={onResetZoom}
         >
           <Undo2 size={14} />
-          <span>Επαναφορά</span>
+          <span>
+            <Trans>Reset</Trans>
+          </span>
         </Button>
       )}
 

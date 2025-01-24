@@ -1,0 +1,236 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-01-21 11:36+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/lib/utils/format-time.ts:4
+msgid "{minutes, plural, one {# minute} other {# minutes}}"
+msgstr "{minutes, plural, one {# minute} other {# minutes}}"
+
+#: src/lib/utils/format-time.ts:13
+msgid "{seconds, plural, one {second} other {seconds}}"
+msgstr "{seconds, plural, one {second} other {seconds}}"
+
+#: src/components/ui/drawer/content/action-button/directions.tsx:88
+msgid "{walkingTime, plural, one {# minute} other {# minutes}}"
+msgstr "{walkingTime, plural, one {# minute} other {# minutes}}"
+
+#: src/components/ui/drawer/content/place.tsx:99
+msgid "<0>Make sure you have enabled your location!</0><1>This way we can show you more information about your destination.</1><2>Give us permission through your browser settings!</2>"
+msgstr "<0>Make sure you have enabled your location!</0><1>This way we can show you more information about your destination.</1><2>Give us permission through your browser settings!</2>"
+
+#: src/components/ui/drawer/content/action-button/favorite.tsx:72
+msgid "Add to favorites"
+msgstr "Add to favorites"
+
+#: src/components/ui/drawer/content/action-button/favorite.tsx:54
+msgid "An error occurred while updating favorites"
+msgstr "An error occurred while updating favorites"
+
+#: src/lib/utils/format-time.ts:25
+msgid "and"
+msgstr "and"
+
+#: src/components/ui/location/unsupported-location-modal.tsx:66
+msgid "Close"
+msgstr "Close"
+
+#: src/components/ui/drawer/content/directions.tsx:89
+msgid "Directions"
+msgstr "Directions"
+
+#: src/components/ui/drawer/content/place.tsx:78
+msgid "Distance"
+msgstr "Distance"
+
+#: src/components/ui/drawer/content/place.tsx:82
+msgid "Duration"
+msgstr "Duration"
+
+#: src/components/ui/location/location-prompt-modal.tsx:87
+msgid "Enable now"
+msgstr "Enable now"
+
+#: src/app/(auth)/login/_components/error-message.tsx:19
+msgid "Error!"
+msgstr "Error!"
+
+#: src/components/ui/location/unsupported-location-modal.tsx:38
+msgid "Hmm.. it seems unibus <0>is not available in your region</0>"
+msgstr "Hmm.. it seems unibus <0>is not available in your region</0>"
+
+#: src/components/ui/drawer/content/place.tsx:90
+msgid "Hmm.. it's a bit far! <0>Maybe take a bus?</0>"
+msgstr "Hmm.. it's a bit far! <0>Maybe take a bus?</0>"
+
+#: src/app/(auth)/login/_components/client-page.tsx:46
+msgid "How we use your data."
+msgstr "How we use your data."
+
+#: src/components/ui/location/location-prompt-modal.tsx:83
+msgid "Later"
+msgstr "Later"
+
+#: src/components/ui/search/menu-dropdown.tsx:77
+msgid "Login"
+msgstr "Login"
+
+#: src/app/(auth)/login/_components/client-page.tsx:24
+msgid "Login to unlock personalized features that make your trips smoother."
+msgstr "Login to unlock personalized features that make your trips smoother."
+
+#: src/app/(auth)/login/_components/oauth-button.tsx:42
+msgid "Login with {providerName}"
+msgstr "Login with {providerName}"
+
+#: src/components/ui/search/menu-dropdown.tsx:61
+msgid "Logout"
+msgstr "Logout"
+
+#: src/components/ui/drawer/content/bus-stop.tsx:217
+msgid "No buses expected in the next 30 minutes"
+msgstr "No buses expected in the next 30 minutes"
+
+#: src/components/ui/search/index.tsx:310
+msgid "No results found"
+msgstr "No results found"
+
+#: src/components/ui/drawer/content/bus-stop.tsx:181
+msgid "Now"
+msgstr "Now"
+
+#: src/app/(auth)/login/_components/client-page.tsx:43
+msgid "Privacy policy."
+msgstr "Privacy policy."
+
+#: src/components/ui/drawer/content/action-button/favorite.tsx:72
+msgid "Remove from favorites"
+msgstr "Remove from favorites"
+
+#: src/components/ui/map/index.tsx:234
+msgid "Reset"
+msgstr "Reset"
+
+#: src/components/ui/drawer/content/bus-stop.tsx:181
+msgid "Schedule"
+msgstr "Schedule"
+
+#: src/lib/utils/format-time.ts:13
+msgid "sec."
+msgstr "sec."
+
+#: src/components/ui/language-selector/index.tsx:49
+msgid "Select Language"
+msgstr "Select Language"
+
+#: src/components/ui/grave-error.tsx:30
+#: src/components/ui/location/unsupported-location-modal.tsx:74
+msgid "Send stellar help"
+msgstr "Send stellar help"
+
+#: src/components/ui/search/menu-dropdown.tsx:43
+msgid "Something went wrong during logout"
+msgstr "Something went wrong during logout"
+
+#: src/app/(auth)/login/_components/error-message.tsx:22
+msgid "Something went wrong during your login. Please try again."
+msgstr "Something went wrong during your login. Please try again."
+
+#: src/components/ui/bus-stop-schedule.tsx:97
+msgid "Something went wrong! Try again"
+msgstr "Something went wrong! Try again"
+
+#: src/components/ui/grave-error.tsx:15
+#: src/components/ui/location/unsupported-location-modal.tsx:30
+msgid "Stellar help sent!"
+msgstr "Stellar help sent!"
+
+#: src/components/ui/search/menu-dropdown.tsx:40
+msgid "Successful logout"
+msgstr "Successful logout"
+
+#: src/hooks/use-geolocation.ts:34
+msgid "The request to get your location timed out."
+msgstr "The request to get your location timed out."
+
+#: src/components/ui/drawer/content/directions.tsx:76
+msgid "To {stopName}"
+msgstr "To {stopName}"
+
+#: src/components/ui/drawer/content/directions.tsx:84
+msgid "Total distance"
+msgstr "Total distance"
+
+#: src/components/ui/drawer/content/directions.tsx:81
+msgid "Total duration"
+msgstr "Total duration"
+
+#: src/components/ui/location/unsupported-location-modal.tsx:49
+msgid "Unfortunately, unibus is currently not supported in your region. We are constantly working to add new cities and regions!"
+msgstr "Unfortunately, unibus is currently not supported in your region. We are constantly working to add new cities and regions!"
+
+#: src/components/ui/location/location-prompt-modal.tsx:38
+msgid "unibus is better when you have <0>your location enabled</0>"
+msgstr "unibus is better when you have <0>your location enabled</0>"
+
+#: src/components/ui/location/unsupported-location-modal.tsx:58
+msgid "Until then, you can send stellar help"
+msgstr "Until then, you can send stellar help"
+
+#: src/components/ui/grave-error.tsx:24
+msgid "We are currently unable to display the page. <0/>Please try again later."
+msgstr "We are currently unable to display the page. <0/>Please try again later."
+
+#: src/components/ui/location/location-prompt-modal.tsx:54
+msgid "We don't store your location"
+msgstr "We don't store your location"
+
+#: src/components/ui/location/unsupported-location-modal.tsx:55
+msgid "We hope to be with you soon!"
+msgstr "We hope to be with you soon!"
+
+#: src/components/ui/location/location-prompt-modal.tsx:50
+msgid "We promise that"
+msgstr "We promise that"
+
+#: src/components/ui/location/location-prompt-modal.tsx:57
+msgid "We will only use it to give you the best experience"
+msgstr "We will only use it to give you the best experience"
+
+#: src/components/ui/grave-error.tsx:21
+msgid "We're having a problem"
+msgstr "We're having a problem"
+
+#: src/app/(auth)/login/_components/client-page.tsx:21
+msgid "Welcome!"
+msgstr "Welcome!"
+
+#: src/components/ui/search/menu-dropdown.tsx:85
+msgid "What is this?"
+msgstr "What is this?"
+
+#: src/components/ui/search/index.tsx:248
+msgid "Where to?"
+msgstr "Where to?"
+
+#: src/components/ui/location/location-prompt-modal.tsx:67
+msgid "You can learn how we use your data in our <0>privacy policy</0>."
+msgstr "You can learn how we use your data in our <0>privacy policy</0>."
+
+#: src/hooks/use-geolocation.ts:28
+msgid "You denied access to your location."
+msgstr "You denied access to your location."
+
+#: src/hooks/use-geolocation.ts:31
+msgid "Your location information is unavailable."
+msgstr "Your location information is unavailable."

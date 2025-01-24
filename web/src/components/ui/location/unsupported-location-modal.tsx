@@ -1,5 +1,6 @@
 "use client";
 
+import { Trans, useLingui } from "@lingui/react/macro";
 import React from "react";
 import { toast } from "sonner";
 
@@ -14,6 +15,8 @@ import {
 import { Events } from "@web/lib/utils/constants";
 
 const UnsupportedLocationModal = () => {
+  const { t } = useLingui();
+
   const [open, setOpen] = React.useState(true);
 
   const onOpenChange = React.useCallback((value: boolean) => {
@@ -24,7 +27,7 @@ const UnsupportedLocationModal = () => {
     window.dispatchEvent(
       new CustomEvent(Events.Analytics.UnsupportedLocationSendHelp),
     );
-    toast.success("Η αστρική βοήθεια στάλθηκε! 🛸");
+    toast.success(t`Stellar help sent!` + "  🛸");
   }, []);
 
   return (
@@ -32,22 +35,27 @@ const UnsupportedLocationModal = () => {
       <DialogContent className="gap-6">
         <DialogHeader>
           <DialogTitle className="text-balance leading-snug">
-            Χμμ.. φαίνεται πως το unibus{" "}
-            <span className="underline decoration-red-400 decoration-wavy">
-              δεν είναι διαθέσιμο στην περιοχή σου
-            </span>{" "}
+            <Trans>
+              Hmm.. it seems unibus{" "}
+              <span className="underline decoration-red-400 decoration-wavy">
+                is not available in your region
+              </span>
+            </Trans>{" "}
             🙁
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-4 text-sm">
           <p>
-            Δυστυχώς, προς το παρόν, το unibus δεν υποστηρίζεται στην περιοχή
-            σου. Εργαζόμαστε συνεχώς για να προσθέσουμε νέες πόλεις και
-            περιοχές!
+            <Trans>
+              Unfortunately, unibus is currently not supported in your region.
+              We are constantly working to add new cities and regions!
+            </Trans>
           </p>
-          <p>Ελπίζουμε να είμαστε κοντά σου σύντομα!</p>
           <p>
-            Μέχρι τότε, μπορείς να στείλεις αστρική βοήθεια{" "}
+            <Trans>We hope to be with you soon!</Trans>
+          </p>
+          <p>
+            <Trans>Until then, you can send stellar help</Trans>{" "}
             <span aria-label="spaceship" role="img">
               🛸
             </span>
@@ -55,14 +63,16 @@ const UnsupportedLocationModal = () => {
         </div>
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Κλείσιμο
+            <Trans>Close</Trans>
           </Button>
           <Button
             variant="default"
             className="space-x-1 font-bold"
             onClick={onSendHelpClick}
           >
-            <span>Στείλε αστρική βοήθεια</span>
+            <span>
+              <Trans>Send stellar help</Trans>
+            </span>
             <span aria-label="alien" role="img">
               👽
             </span>

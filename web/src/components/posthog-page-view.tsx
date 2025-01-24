@@ -2,9 +2,9 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
-export default function PostHogPageView() {
+function PostHogPageView() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -25,4 +25,12 @@ export default function PostHogPageView() {
   }, [pathname, searchParams, posthog]);
 
   return null;
+}
+
+export default function SuspendedPostHogPageView() {
+  return (
+    <Suspense fallback={null}>
+      <PostHogPageView />
+    </Suspense>
+  );
 }

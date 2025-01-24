@@ -32,8 +32,9 @@ const config = withSentryConfig(
     eslint: {
       ignoreDuringBuilds: true,
     },
+    serverExternalPackages: ["@mapbox/mapbox-sdk"],
     experimental: {
-      serverComponentsExternalPackages: ["@mapbox/mapbox-sdk"],
+      swcPlugins: [["@lingui/swc-plugin", {}]],
     },
   },
   {
@@ -71,11 +72,4 @@ const config = withSentryConfig(
   },
 );
 
-export default {
-  ...config,
-  experimental: {
-    ...config.experimental,
-    // Only enable Sentry in production
-    instrumentationHook: process.env.NODE_ENV === "production",
-  },
-};
+export default config;

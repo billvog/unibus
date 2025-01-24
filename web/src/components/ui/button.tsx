@@ -59,8 +59,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <Slot ref={ref} {...props}>
           <>
             {React.Children.map(
-              children as React.ReactElement,
-              (child: React.ReactElement) => {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              children as React.ReactElement<any>,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (child: React.ReactElement<any>) => {
                 return React.cloneElement(child, {
                   className: cn(buttonVariants({ variant, size }), className),
                   children: (

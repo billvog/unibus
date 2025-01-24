@@ -1,3 +1,4 @@
+import { Plural } from "@lingui/react/macro";
 import React from "react";
 
 import { useBusStop } from "@web/components/bus-stop-context";
@@ -84,7 +85,7 @@ const DirectionsButton = ({
   return (
     <ActionButton
       icon={<span>🚶‍♂️</span>}
-      label={`${walkingTime} λεπτ${walkingTime > 1 ? "ά" : "ό"}`}
+      label={<Plural value={walkingTime} one="# minute" other="# minutes" />}
       isCompact={!isFullyOpen}
       loading={isDirectionsLoading}
       onClick={directionsPressed}

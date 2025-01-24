@@ -1,3 +1,4 @@
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useFeatureFlagEnabled } from "posthog-js/react";
 import React from "react";
 
@@ -27,10 +28,11 @@ const BusStopContent = ({
   isFullyOpen,
   minimizeDrawer,
 }: DrawerContentProps) => {
+  const { t } = useLingui();
+
   const directionsEnabled = useFeatureFlagEnabled(FeatureFlags.Directions);
 
   const { user } = useUser();
-
   const { selectedStop, setLiveBusCoordinates } = useBusStop();
 
   const [viewMode, setViewMode] = React.useState<ViewMode>("live");
@@ -176,7 +178,7 @@ const BusStopContent = ({
           {/* View mode toggle */}
           <ActionButton
             icon={<span>{viewMode === "live" ? "🗓️" : "🚍"}</span>}
-            label={viewMode === "live" ? "Πρόγραμμα" : "Τώρα"}
+            label={viewMode === "live" ? t`Schedule` : t`Now`}
             isCompact={!isFullyOpen}
             onClick={onViewModeToggle}
           />
@@ -211,7 +213,9 @@ const BusStopContent = ({
               ))}
             </div>
           ) : (
-            <div>Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά 😢</div>
+            <div>
+              <Trans>No buses expected in the next 30 minutes</Trans> 😢
+            </div>
           ))}
 
         {/* Bus Schedule */}

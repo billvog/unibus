@@ -8,18 +8,9 @@ import {
   CardTitle,
 } from "@web/components/ui/card";
 
-const description =
-  "Find out more about the creator of unibus, Vasilis Voyiadjis.";
-
 export const metadata: Metadata = {
   title: "unibus, the creator.",
-  description,
-  twitter: {
-    description,
-  },
-  openGraph: {
-    description,
-  },
+  description: "Find out more about the creator of unibus, Vasilis Voyiadjis.",
 };
 
 const Page = () => {

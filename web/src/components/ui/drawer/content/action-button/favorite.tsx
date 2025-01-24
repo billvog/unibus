@@ -1,4 +1,5 @@
 import { type DbBusStop } from "@api/types/models";
+import { useLingui } from "@lingui/react/macro";
 import { Star } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
@@ -13,6 +14,8 @@ type FavoriteButtonProps = {
 };
 
 const FavoriteButton = ({ isFullyOpen, busStop }: FavoriteButtonProps) => {
+  const { t } = useLingui();
+
   const {
     busStop: { favorites },
   } = trpc.useUtils();
@@ -48,7 +51,7 @@ const FavoriteButton = ({ isFullyOpen, busStop }: FavoriteButtonProps) => {
       setFavorite((prev) => !prev);
     },
     onError: () => {
-      toast.error("Προέκυψε ένα σφάλμα κατά την ενημέρωση των αγαπημένων");
+      toast.error(t`An error occurred while updating favorites`);
     },
   });
 
@@ -66,7 +69,7 @@ const FavoriteButton = ({ isFullyOpen, busStop }: FavoriteButtonProps) => {
           fillOpacity={favorite ? 1 : 0}
         />
       }
-      label={`${favorite ? "Αφαίρεση από" : "Προσθήκη στα"} αγαπημένα`}
+      label={favorite ? t`Remove from favorites` : t`Add to favorites`}
       loading={favoriteMutation.isPending}
       isCompact={!isFullyOpen}
       onClick={() =>

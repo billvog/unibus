@@ -35,6 +35,14 @@
         "^typecheck"
       ],
       "cache": false
+    },
+    "lingui:extract": {
+      "dependsOn": [
+        "^lingui:extract"
+      ],
+      "outputs": [
+        "src/locales/*.po"
+      ]
     }
   },
   "globalEnv": [

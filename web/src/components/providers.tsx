@@ -15,6 +15,7 @@ import superjson from "superjson";
 
 import { BusStopProvider } from "@web/components/bus-stop-context";
 import { DirectionsProvider } from "@web/components/directions-context";
+import { I18nProvider } from "@web/components/i18n-provider";
 import { PlaceProvider } from "@web/components/place-context";
 import { Toaster } from "@web/components/ui/sonner";
 import { UserProvider } from "@web/components/user-context";
@@ -83,23 +84,25 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <UserProvider>
-          <UserLocationProvider>
-            <PostHogProvider client={posthog}>
-              <BusStopProvider>
-                <PlaceProvider>
-                  <DirectionsProvider>
-                    {children}
-                    <Toaster richColors />
-                  </DirectionsProvider>
-                </PlaceProvider>
-              </BusStopProvider>
-            </PostHogProvider>
-          </UserLocationProvider>
-        </UserProvider>
-      </trpc.Provider>
-    </QueryClientProvider>
+    <I18nProvider>
+      <QueryClientProvider client={queryClient}>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+          <UserProvider>
+            <UserLocationProvider>
+              <PostHogProvider client={posthog}>
+                <BusStopProvider>
+                  <PlaceProvider>
+                    <DirectionsProvider>
+                      {children}
+                      <Toaster richColors />
+                    </DirectionsProvider>
+                  </PlaceProvider>
+                </BusStopProvider>
+              </PostHogProvider>
+            </UserLocationProvider>
+          </UserProvider>
+        </trpc.Provider>
+      </QueryClientProvider>
+    </I18nProvider>
   );
 }
