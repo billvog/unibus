@@ -29,6 +29,10 @@ msgstr "Προσθήκη στα αγαπημένα"
 msgid "An error occurred while updating favorites"
 msgstr "Προέκυψε ένα σφάλμα κατά την ενημέρωση των αγαπημένων"
 
+#: src/lib/utils/format-time.ts:22
+msgid "and"
+msgstr "και"
+
 #: src/components/ui/location/unsupported-location-modal.tsx:66
 msgid "Close"
 msgstr "Κλείσιμο"
@@ -45,7 +49,7 @@ msgstr "Απόσταση"
 msgid "Duration"
 msgstr "Διάρκεια"
 
-#: src/components/ui/location/location-prompt-modal.tsx:83
+#: src/components/ui/location/location-prompt-modal.tsx:87
 msgid "Enable now"
 msgstr "Ενεργοποίηση τώρα"
 
@@ -65,7 +69,7 @@ msgstr "Χμμ.. είναι λίγο μακριά! <0>Μήπως να πάρει
 msgid "How we use your data."
 msgstr "Πώς χρησιμοποιούμε τα δεδομένα σου."
 
-#: src/components/ui/location/location-prompt-modal.tsx:79
+#: src/components/ui/location/location-prompt-modal.tsx:83
 msgid "Later"
 msgstr "Αργότερα"
 
@@ -84,6 +88,14 @@ msgstr "Σύνδεση με {providerName}"
 #: src/components/ui/search/menu-dropdown.tsx:61
 msgid "Logout"
 msgstr "Αποσύνδεση"
+
+#: src/lib/utils/format-time.ts:4
+msgid "minute"
+msgstr "λεπτό"
+
+#: src/lib/utils/format-time.ts:4
+msgid "minutes"
+msgstr "λεπτά"
 
 #: src/components/ui/drawer/content/bus-stop.tsx:217
 msgid "No buses expected in the next 30 minutes"
@@ -113,7 +125,19 @@ msgstr "Επαναφορά"
 msgid "Schedule"
 msgstr "Πρόγραμμα"
 
-#: src/components/ui/language-selector/index.tsx:48
+#: src/lib/utils/format-time.ts:10
+msgid "sec."
+msgstr "δευτ."
+
+#: src/lib/utils/format-time.ts:10
+msgid "second"
+msgstr "δευτερόλεπτο"
+
+#: src/lib/utils/format-time.ts:10
+msgid "seconds"
+msgstr "δευτερόλεπτα"
+
+#: src/components/ui/language-selector/index.tsx:49
 msgid "Select Language"
 msgstr "Επιλογή Γλώσσας"
 

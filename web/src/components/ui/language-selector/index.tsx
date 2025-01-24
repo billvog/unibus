@@ -1,7 +1,6 @@
 "use client";
 
 import { useLingui } from "@lingui/react/macro";
-import Cookie from "js-cookie";
 import { useMemo } from "react";
 
 import LanguageSelectorItem from "@web/components/ui/language-selector/item";
@@ -12,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@web/components/ui/select";
+import { useLanguage } from "@web/hooks/use-language";
 import { dynamicActivate, locales } from "@web/lib/i18n";
-import { Cookies } from "@web/lib/utils/constants";
 import { cn } from "@web/lib/utils/tailwind";
 
 type LanguageSelectorProps = {
@@ -21,16 +20,17 @@ type LanguageSelectorProps = {
 };
 
 const LanguageSelector = ({ compact = false }: LanguageSelectorProps) => {
-  const { t, i18n } = useLingui();
+  const { t } = useLingui();
+
+  const [language, setLanguage] = useLanguage();
 
   const selectedLocale = useMemo(() => {
-    return locales.find((locale) => locale.code === i18n.locale) ?? locales[0]!;
-  }, [i18n.locale]);
+    return locales.find((locale) => locale.code === language) ?? locales[0]!;
+  }, [language]);
 
   const handleLanguageChange = (newLocale: string) => {
     void dynamicActivate(newLocale);
-    // Set cookie for 10 years.
-    Cookie.set(Cookies.Language, newLocale, { expires: 365 * 10 });
+    setLanguage(newLocale);
   };
 
   return (

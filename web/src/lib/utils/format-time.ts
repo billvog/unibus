@@ -1,10 +1,13 @@
+import { t } from "@lingui/core/macro";
+
 function displayMinutes(minutes: number) {
-  return `${minutes} λεπτ${minutes === 1 ? "ό" : "ά"}`;
+  return `${minutes} ${minutes === 1 ? t`minute` : t`minutes`}`;
 }
 
 function displaySeconds(seconds: number, compact = false) {
   return (
-    `${seconds} δευτ` + (compact ? "." : `ερόλεπτ${seconds === 1 ? "ο" : "α"}`)
+    `${seconds} ` +
+    (compact ? t`sec.` : `${seconds === 1 ? t`second` : t`seconds`}`)
   );
 }
 
@@ -14,7 +17,11 @@ export function formatTime(minutes: number, seconds: number) {
   }
 
   if (minutes === 1) {
-    return displayMinutes(minutes) + " και " + displaySeconds(seconds, true);
+    return [
+      displayMinutes(minutes),
+      t`and`,
+      displaySeconds(seconds, true),
+    ].join(" ");
   }
 
   return displaySeconds(seconds);

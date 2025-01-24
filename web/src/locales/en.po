@@ -29,6 +29,10 @@ msgstr "Add to favorites"
 msgid "An error occurred while updating favorites"
 msgstr "An error occurred while updating favorites"
 
+#: src/lib/utils/format-time.ts:22
+msgid "and"
+msgstr "and"
+
 #: src/components/ui/location/unsupported-location-modal.tsx:66
 msgid "Close"
 msgstr "Close"
@@ -45,7 +49,7 @@ msgstr "Distance"
 msgid "Duration"
 msgstr "Duration"
 
-#: src/components/ui/location/location-prompt-modal.tsx:83
+#: src/components/ui/location/location-prompt-modal.tsx:87
 msgid "Enable now"
 msgstr "Enable now"
 
@@ -65,7 +69,7 @@ msgstr "Hmm.. it's a bit far! <0>Maybe take a bus?</0>"
 msgid "How we use your data."
 msgstr "How we use your data."
 
-#: src/components/ui/location/location-prompt-modal.tsx:79
+#: src/components/ui/location/location-prompt-modal.tsx:83
 msgid "Later"
 msgstr "Later"
 
@@ -84,6 +88,14 @@ msgstr "Login with {providerName}"
 #: src/components/ui/search/menu-dropdown.tsx:61
 msgid "Logout"
 msgstr "Logout"
+
+#: src/lib/utils/format-time.ts:4
+msgid "minute"
+msgstr "minute"
+
+#: src/lib/utils/format-time.ts:4
+msgid "minutes"
+msgstr "minutes"
 
 #: src/components/ui/drawer/content/bus-stop.tsx:217
 msgid "No buses expected in the next 30 minutes"
@@ -113,7 +125,19 @@ msgstr "Reset"
 msgid "Schedule"
 msgstr "Schedule"
 
-#: src/components/ui/language-selector/index.tsx:48
+#: src/lib/utils/format-time.ts:10
+msgid "sec."
+msgstr "sec."
+
+#: src/lib/utils/format-time.ts:10
+msgid "second"
+msgstr "second"
+
+#: src/lib/utils/format-time.ts:10
+msgid "seconds"
+msgstr "seconds"
+
+#: src/components/ui/language-selector/index.tsx:49
 msgid "Select Language"
 msgstr "Select Language"
 

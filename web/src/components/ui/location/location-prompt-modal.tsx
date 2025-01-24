@@ -66,7 +66,11 @@ const LocationPromptModal = () => {
             <span className="text-balance text-xs">
               <Trans>
                 You can learn how we use your data in our{" "}
-                <Link href="/company/privacy-policy" className="link">
+                <Link
+                  className="link"
+                  href="/company/privacy-policy"
+                  target="_blank"
+                >
                   privacy policy
                 </Link>
                 .
