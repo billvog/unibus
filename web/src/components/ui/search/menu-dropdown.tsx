@@ -68,7 +68,7 @@ const MenuDropdown = ({ children }: MenuDropdownProps) => {
             onClick={() => {
               // Capture event.
               window.dispatchEvent(
-                new CustomEvent(Events.Analytics.LoginClick),
+                new CustomEvent(Events.Analytics.LoginClick)
               );
             }}
           >

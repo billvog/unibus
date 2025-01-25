@@ -14,11 +14,11 @@ const DirectionsMapLayer = () => {
       geometry: {
         type: "LineString",
         coordinates: (directions?.routes ?? []).flatMap(
-          (route) => route.geometry.coordinates as Position[],
+          (route) => route.geometry.coordinates as Position[]
         ),
       },
     }),
-    [directions],
+    [directions]
   );
 
   if (!directions) {

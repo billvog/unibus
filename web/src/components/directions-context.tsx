@@ -69,7 +69,7 @@ export function DirectionsProvider({
 
   const directionsSteps = React.useMemo(
     () => directions?.routes[0]?.legs[0]?.steps ?? [],
-    [directions],
+    [directions]
   );
 
   const maneuvers = React.useMemo(
@@ -80,9 +80,9 @@ export function DirectionsProvider({
             ...step.maneuver,
             id: generateRandomId(),
             instruction: fixGreek(step.maneuver.instruction),
-          }) as DirectionsManeuver,
+          }) as DirectionsManeuver
       ),
-    [directionsSteps],
+    [directionsSteps]
   );
 
   const activeManeuverId = React.useMemo(() => {
@@ -93,19 +93,19 @@ export function DirectionsProvider({
       distance: turf.distance(
         [userLocation.longitude, userLocation.latitude],
         [maneuver.location[0] ?? 0, maneuver.location[1] ?? 0],
-        { units: "meters" },
+        { units: "meters" }
       ),
     }));
 
     return maneuverDistances.reduce((closest, current) =>
-      current.distance < closest.distance ? current : closest,
+      current.distance < closest.distance ? current : closest
     ).id;
   }, [maneuvers, userLocation]);
 
   const activeManeuver = React.useMemo(
     () =>
       maneuvers.find((maneuver) => maneuver.id === activeManeuverId) ?? null,
-    [maneuvers, activeManeuverId],
+    [maneuvers, activeManeuverId]
   );
 
   const { mutateAsync: getDirections } = useMutation({
@@ -127,7 +127,7 @@ export function DirectionsProvider({
     onError: (error) => {
       Sentry.captureException(error);
       toast.error(
-        t`Hm... Something went wrong trying to get directions. Please try again.`,
+        t`Hm... Something went wrong trying to get directions. Please try again.`
       );
     },
   });
@@ -150,13 +150,13 @@ export function DirectionsProvider({
 
     // Register events.
     directionResetTriggerEvents.forEach((event) =>
-      window.addEventListener(event, handler),
+      window.addEventListener(event, handler)
     );
 
     return () => {
       // Unregister events.
       directionResetTriggerEvents.forEach((event) =>
-        window.removeEventListener(event, handler),
+        window.removeEventListener(event, handler)
       );
     };
   }, [resetDirections]);
@@ -184,7 +184,7 @@ export function DirectionsProvider({
           // Only overwrite zoom on first maneuver.
           overwriteZoom: activeManeuver.type === "depart",
         },
-      }),
+      })
     );
   }, [activeManeuver]);
 

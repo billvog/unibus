@@ -25,7 +25,7 @@ const MyDrawer = () => {
 
   const snapPoints = React.useMemo(() => ["300px", 1], []);
   const [snap, setSnap] = React.useState<number | string | null>(
-    snapPoints[0]!,
+    snapPoints[0]!
   );
 
   const isFullyOpen = React.useMemo(() => snap === 1, [snap]);
@@ -72,7 +72,7 @@ const MyDrawer = () => {
     window.dispatchEvent(
       new CustomEvent("drawer-resize", {
         detail: { snap: open ? String(snap) : "0" },
-      }),
+      })
     );
   }, [snap, open]);
 

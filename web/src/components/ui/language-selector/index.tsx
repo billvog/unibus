@@ -42,7 +42,7 @@ const LanguageSelector = ({ compact = false }: LanguageSelectorProps) => {
         <SelectTrigger
           className={cn(
             "border-gray-50 bg-white bg-opacity-50",
-            compact ? "h-7 w-14 px-2" : "w-[160px]",
+            compact ? "h-7 w-14 px-2" : "w-[160px]"
           )}
         >
           <SelectValue

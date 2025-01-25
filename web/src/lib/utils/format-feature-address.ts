@@ -7,7 +7,7 @@ export const formatFeatureAddress = (feature: GeocodeFeature) => {
     elements.push(feature.properties.address);
   }
 
-  const city = feature.context.find((c) => c.id.startsWith("place"));
+  const city = feature.context?.find((c) => c.id.startsWith("place"));
   if (city) {
     elements.push(city.text);
   }

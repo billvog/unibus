@@ -25,7 +25,7 @@ const UnsupportedLocationModal = () => {
 
   const onSendHelpClick = React.useCallback(() => {
     window.dispatchEvent(
-      new CustomEvent(Events.Analytics.UnsupportedLocationSendHelp),
+      new CustomEvent(Events.Analytics.UnsupportedLocationSendHelp)
     );
     toast.success(t`Stellar help sent!` + "  🛸");
   }, []);

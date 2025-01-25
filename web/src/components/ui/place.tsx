@@ -12,7 +12,7 @@ type PlaceProps = {
 const Place = ({ feature, onClick }: PlaceProps) => {
   const formattedAddress = React.useMemo(
     () => formatFeatureAddress(feature),
-    [feature],
+    [feature]
   );
 
   return (

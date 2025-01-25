@@ -29,7 +29,7 @@ export default [
   ...compat.extends(
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
-    "turbo",
+    "turbo"
   ),
   {
     plugins: {

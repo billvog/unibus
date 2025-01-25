@@ -37,7 +37,7 @@ export const BusStopProvider = ({
   children: React.ReactNode;
 }) => {
   const [selectedStopId, setSelectedStopId] = useState<DbBusStop["id"] | null>(
-    null,
+    null
   );
 
   const [liveBusCoordinates, setLiveBusCoordinates] =
@@ -47,7 +47,7 @@ export const BusStopProvider = ({
     { stopId: selectedStopId ?? -1 },
     {
       enabled: !!selectedStopId,
-    },
+    }
   );
 
   const selectedStop = React.useMemo(() => {
@@ -79,7 +79,7 @@ export const BusStopProvider = ({
             name: selectedStop.name,
           },
         },
-      }),
+      })
     );
   }, [selectedStop?.id]);
 

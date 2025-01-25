@@ -27,7 +27,7 @@ export function UserLocationProvider({
   // It just means that the user has been asked for location, and pressed "Enable".
   const [isEnabled, setIsEnabled] = usePersistedState(
     "user-location:enabled",
-    false,
+    false
   );
 
   const [showedError, setShowedError] = React.useState(false);
@@ -43,7 +43,7 @@ export function UserLocationProvider({
     },
     {
       enabled: isEnabled && geolocation.position !== null,
-    },
+    }
   );
 
   React.useEffect(() => {
@@ -94,7 +94,7 @@ export function useUserLocation() {
   const context = useContext(UserLocationContext);
   if (!context) {
     throw new Error(
-      "useUserLocation must be used within a UserLocationProvider",
+      "useUserLocation must be used within a UserLocationProvider"
     );
   }
 

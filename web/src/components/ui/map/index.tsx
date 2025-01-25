@@ -46,7 +46,7 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
     undefined,
     {
       enabled: !!user,
-    },
+    }
   );
 
   const stopsGeojson = React.useMemo(() => {
@@ -68,13 +68,13 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
         features: stopsToGeojson(
           favoriteBusStops
             ? busStops.filter((stop) => !favoriteBusStops.includes(stop.id))
-            : busStops,
+            : busStops
         ),
       },
       favorites: favoriteBusStops && {
         type: "FeatureCollection",
         features: stopsToGeojson(
-          busStops.filter((stop) => favoriteBusStops.includes(stop.id)),
+          busStops.filter((stop) => favoriteBusStops.includes(stop.id))
         ),
       },
     };
@@ -85,7 +85,7 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
   const mapFlyTo = React.useCallback(
     (
       coordinates: Coordinates,
-      options?: { overwriteZoom?: boolean; speed?: number },
+      options?: { overwriteZoom?: boolean; speed?: number }
     ) => {
       if (!mapRef.current) {
         return false;
@@ -106,7 +106,7 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
 
       return true;
     },
-    [],
+    []
   );
 
   const onMapClick = React.useCallback(
@@ -120,7 +120,7 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
 
       onBusStopClick(stopId);
     },
-    [onBusStopClick],
+    [onBusStopClick]
   );
 
   const onMapMove = React.useCallback(
@@ -137,14 +137,14 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
       const distance = turf.distance(
         [mapLocation.lng, mapLocation.lat],
         [userLocation.longitude, userLocation.latitude],
-        { units: "meters" },
+        { units: "meters" }
       );
 
       const threshold = 300 * Math.pow(2, 16 - mapZoom);
 
       setCanResetZoom(distance > threshold);
     },
-    [userLocation],
+    [userLocation]
   );
 
   const onMapLoad = React.useCallback(() => {
@@ -253,7 +253,7 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
       <PlaceMapLayer />
 
       {/* Show user's location marker, if any */}
-      <UserLocationMapLayer />
+      {userLocation && <UserLocationMapLayer />}
 
       {/* Show live bus coordinates */}
       {liveBusCoordinates && (

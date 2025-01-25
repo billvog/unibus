@@ -1,24 +1,23 @@
 "use client";
 
-import { type SpringOptions, useSpring } from "motion/react";
 import { Marker } from "react-map-gl";
 
 import { useUserLocation } from "@web/components/user-location-context";
-
-const springOptions: SpringOptions = { stiffness: 100, damping: 20 };
+import { useSmoothLocation } from "@web/hooks/use-smooth-location";
 
 const UserLocationMapLayer = () => {
   const { userLocation } = useUserLocation();
+  const { smoothLocation, isInitialized } = useSmoothLocation(userLocation);
 
-  const smoothLat = useSpring(userLocation?.latitude ?? 0, springOptions);
-  const smoothLng = useSpring(userLocation?.longitude ?? 0, springOptions);
-
-  if (!userLocation) {
+  if (!userLocation || !isInitialized) {
     return null;
   }
 
   return (
-    <Marker latitude={smoothLat.get()} longitude={smoothLng.get()}>
+    <Marker
+      latitude={smoothLocation.latitude}
+      longitude={smoothLocation.longitude}
+    >
       <div className="text-3xl">📍</div>
     </Marker>
   );

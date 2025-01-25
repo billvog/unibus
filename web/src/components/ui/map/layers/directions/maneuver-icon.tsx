@@ -29,7 +29,7 @@ import {
 
 const getManeuverIcon = (
   type: ManeuverType,
-  modifier: ManeuverModifier | undefined,
+  modifier: ManeuverModifier | undefined
 ): LucideIcon => {
   const modifierMap: Partial<
     Record<ManeuverType, Partial<Record<ManeuverModifier, LucideIcon>>>

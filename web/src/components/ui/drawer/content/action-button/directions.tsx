@@ -53,7 +53,7 @@ const DirectionsButton = ({
             name: selectedStop.name,
           },
         },
-      }),
+      })
     );
 
     // Fetch directions with transition.

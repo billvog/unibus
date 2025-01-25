@@ -27,12 +27,12 @@ function Page() {
 
   const showLocationPrompt = React.useMemo(
     () => !isLocationEnabled,
-    [isLocationEnabled],
+    [isLocationEnabled]
   );
 
   const showLocationNotSupported = React.useMemo(
     () => userLocation && isLocationSupported === false,
-    [userLocation, isLocationSupported],
+    [userLocation, isLocationSupported]
   );
 
   const busStopsQuery = trpc.getBusStops.useQuery();
@@ -43,12 +43,12 @@ function Page() {
 
   const busStops = React.useMemo(
     () => busStopsQuery.data ?? [],
-    [busStopsQuery.data],
+    [busStopsQuery.data]
   );
 
   const hasGraveError = React.useMemo(
     () => busStopsQuery.isError,
-    [busStopsQuery.isError],
+    [busStopsQuery.isError]
   );
 
   const onBusStopClick = React.useCallback(
@@ -73,10 +73,10 @@ function Page() {
             },
             overwriteZoom,
           },
-        }),
+        })
       );
     },
-    [busStops, setSelectedStopId],
+    [busStops, setSelectedStopId]
   );
 
   // Show message if we're getting a 500 from Citybus

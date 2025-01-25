@@ -32,7 +32,7 @@ const fullscreenSpinnerVariants = cva(
         absolute: "absolute backdrop-filter backdrop-blur-md z-50",
       },
     },
-  },
+  }
 );
 
 export type FullscreenSpinnerProps = React.HTMLAttributes<HTMLDivElement> &
