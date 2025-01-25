@@ -3,6 +3,7 @@ export const Shortcuts = {
 };
 
 export const Events = {
+  MapFlyTo: "map:fly-to",
   PlaceChanged: "place:changed",
   BusStopChanged: "bus-stop:changed",
   Analytics: {

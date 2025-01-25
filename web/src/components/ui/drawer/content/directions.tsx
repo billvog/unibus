@@ -95,13 +95,15 @@ const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
             )}
           >
             <div className="absolute bottom-5 left-[11px] top-5 border-r-2 border-dotted" />
-            {maneuvers.map(({ id, maneuver }) => (
+            {maneuvers.map((maneuver) => (
               <div
-                id={`maneuver-${id}`}
-                key={id}
+                id={`maneuver-${maneuver.id}`}
+                key={maneuver.id}
                 className={cn(
                   "flex items-center gap-4 text-sm md:text-base",
-                  id === activeManeuverId ? "text-black" : "text-black/40",
+                  maneuver.id === activeManeuverId
+                    ? "text-black"
+                    : "text-black/40",
                 )}
               >
                 <div className="z-10 bg-white ring-8 ring-white">

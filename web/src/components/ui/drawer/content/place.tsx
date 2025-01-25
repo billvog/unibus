@@ -8,6 +8,7 @@ import { Detail } from "@web/components/ui/drawer/content/detail";
 import Content from "@web/components/ui/drawer/content/elements";
 import DynamicTitle from "@web/components/ui/dynamic-title";
 import { useUserLocation } from "@web/components/user-location-context";
+import { Events } from "@web/lib/utils/constants";
 import { formatFeatureAddress } from "@web/lib/utils/format-feature-address";
 import { calculateWalkingDistance } from "@web/lib/utils/walking-distance";
 import { type DrawerContentProps } from "@web/types/drawer";
@@ -41,7 +42,7 @@ const PlaceContent = ({ isFullyOpen }: DrawerContentProps) => {
     }
 
     window.dispatchEvent(
-      new CustomEvent<MapFlyToDetail>("map:fly-to", {
+      new CustomEvent<MapFlyToDetail>(Events.MapFlyTo, {
         detail: {
           coordinates: {
             longitude: selectedPlace.geometry.coordinates[0]!,

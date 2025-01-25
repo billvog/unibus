@@ -22,6 +22,7 @@ import { useKeyPress } from "@web/hooks/use-key-press";
 import { mbxGeocodingClient } from "@web/lib/mapbox";
 import { trpc } from "@web/lib/trpc";
 import { Events, Shortcuts } from "@web/lib/utils/constants";
+import { generateRandomId } from "@web/lib/utils/random-id";
 import { searchAndRankResults } from "@web/lib/utils/search-results";
 import { cn } from "@web/lib/utils/tailwind";
 import { type MapFlyToDetail } from "@web/types/events";
@@ -39,7 +40,7 @@ type SearchProps = {
 const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const [searchSessionToken] = useState(() => crypto.randomUUID());
+  const [searchSessionToken] = useState(() => generateRandomId());
 
   const { t, i18n } = useLingui();
 
@@ -178,7 +179,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
 
       // Emit event to fly map to place
       window.dispatchEvent(
-        new CustomEvent<MapFlyToDetail>("map:fly-to", {
+        new CustomEvent<MapFlyToDetail>(Events.MapFlyTo, {
           detail: {
             coordinates: {
               longitude: feature.geometry.coordinates[0]!,

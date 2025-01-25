@@ -6,25 +6,31 @@ import {
   type DirectionsResponse,
   type DirectionsWaypoint,
 } from "@mapbox/mapbox-sdk/services/directions";
+import * as Sentry from "@sentry/nextjs";
 import * as turf from "@turf/distance";
 import { type LineString, type MultiLineString } from "geojson";
 import React, { createContext, useContext } from "react";
+import { toast } from "sonner";
 
 import { useUserLocation } from "@web/components/user-location-context";
 import { mbxDirectionsClient } from "@web/lib/mapbox";
 import { Events } from "@web/lib/utils/constants";
 import { fixGreek } from "@web/lib/utils/fix-greek";
+import { generateRandomId } from "@web/lib/utils/random-id";
+import { type Coordinates } from "@web/types/coordinates";
+import { type MapFlyToDetail } from "@web/types/events";
+
 
 type DirectionsGeometry = MultiLineString | LineString;
 type DirectionsManeuver = {
   id: string;
-  maneuver: Maneuver;
-};
+} & Maneuver;
 
 interface DirectionsContextType {
   directions: DirectionsResponse<DirectionsGeometry> | null;
   maneuvers: DirectionsManeuver[];
   activeManeuverId: string | null;
+  activeManeuver: DirectionsManeuver | null;
   resetDirections: () => void;
   getDirections: (waypoints: DirectionsWaypoint[]) => Promise<void>;
 }
@@ -33,6 +39,7 @@ const DirectionsContext = createContext<DirectionsContextType | null>({
   directions: null,
   maneuvers: [],
   activeManeuverId: null,
+  activeManeuver: null,
   resetDirections: () => {
     throw new Error("resetDirections not implemented");
   },
@@ -46,7 +53,7 @@ export function DirectionsProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { i18n } = useLingui();
+  const { t, i18n } = useLingui();
 
   const { userLocation } = useUserLocation();
 
@@ -63,11 +70,9 @@ export function DirectionsProvider({
       directionsSteps.map(
         (step) =>
           ({
-            id: crypto.randomUUID(),
-            maneuver: {
-              ...step.maneuver,
-              instruction: fixGreek(step.maneuver.instruction),
-            },
+            ...step.maneuver,
+            id: generateRandomId(),
+            instruction: fixGreek(step.maneuver.instruction),
           }) as DirectionsManeuver,
       ),
     [directionsSteps],
@@ -76,8 +81,8 @@ export function DirectionsProvider({
   const activeManeuverId = React.useMemo(() => {
     if (!userLocation || !maneuvers.length) return null;
 
-    const maneuverDistances = maneuvers.map(({ id, maneuver }) => ({
-      id,
+    const maneuverDistances = maneuvers.map((maneuver) => ({
+      id: maneuver.id,
       distance: turf.distance(
         [userLocation.longitude, userLocation.latitude],
         [maneuver.location[0] ?? 0, maneuver.location[1] ?? 0],
@@ -90,23 +95,36 @@ export function DirectionsProvider({
     ).id;
   }, [maneuvers, userLocation]);
 
+  const activeManeuver = React.useMemo(
+    () =>
+      maneuvers.find((maneuver) => maneuver.id === activeManeuverId) ?? null,
+    [maneuvers, activeManeuverId],
+  );
+
   const resetDirections = React.useCallback(() => {
     setDirections(null);
   }, []);
 
   const getDirections = React.useCallback(
     async (waypoints: DirectionsWaypoint[]) => {
-      const response = await mbxDirectionsClient
-        .getDirections({
-          waypoints,
-          profile: "walking",
-          geometries: "geojson",
-          language: i18n.locale,
-          steps: true,
-        })
-        .send();
+      try {
+        const response = await mbxDirectionsClient
+          .getDirections({
+            waypoints,
+            profile: "walking",
+            geometries: "geojson",
+            language: i18n.locale,
+            steps: true,
+          })
+          .send();
 
-      setDirections(response.body);
+        setDirections(response.body);
+      } catch (error) {
+        Sentry.captureException(error);
+        toast.error(
+          t`Hm... Something went wrong trying to get directions. Try again later.`,
+        );
+      }
     },
     [i18n.locale],
   );
@@ -136,12 +154,40 @@ export function DirectionsProvider({
     };
   }, [resetDirections]);
 
+  React.useEffect(() => {
+    if (!activeManeuver) {
+      return;
+    }
+
+    // If user has arrived at the destination, use user location.
+    // Otherwise, use the maneuver location.
+    const coordinates: Coordinates =
+      activeManeuver.type === "arrive" && userLocation
+        ? userLocation
+        : {
+            longitude: activeManeuver.location[0] ?? 0,
+            latitude: activeManeuver.location[1] ?? 0,
+          };
+
+    // Fly map to coordinates.
+    window.dispatchEvent(
+      new CustomEvent<MapFlyToDetail>(Events.MapFlyTo, {
+        detail: {
+          coordinates,
+          // Only overwrite zoom on first maneuver.
+          overwriteZoom: activeManeuver.type === "depart",
+        },
+      }),
+    );
+  }, [activeManeuver]);
+
   return (
     <DirectionsContext.Provider
       value={{
         directions,
         maneuvers,
         activeManeuverId,
+        activeManeuver,
         resetDirections,
         getDirections,
       }}
