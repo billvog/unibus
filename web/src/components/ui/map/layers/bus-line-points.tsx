@@ -22,7 +22,7 @@ const BusLinePointsMapLayer = ({
 
   const busLinePoints = React.useMemo(
     () => busLinePointsQuery.data ?? [],
-    [busLinePointsQuery.data],
+    [busLinePointsQuery.data]
   );
 
   const linePointsGeojson = React.useMemo(
@@ -36,7 +36,7 @@ const BusLinePointsMapLayer = ({
         ]),
       },
     }),
-    [busLinePoints],
+    [busLinePoints]
   );
 
   return (

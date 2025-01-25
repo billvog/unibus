@@ -23,7 +23,7 @@ const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
 
   const stopName = React.useMemo(
     () => (selectedStop ? PrettifyName(selectedStop.name) : ""),
-    [selectedStop],
+    [selectedStop]
   );
 
   const totalDuration = React.useMemo(
@@ -31,7 +31,7 @@ const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
       directions
         ? directions.routes.reduce((acc, route) => acc + route.duration, 0)
         : 0,
-    [directions],
+    [directions]
   );
 
   const totalDistanceFormatted = React.useMemo(() => {
@@ -41,7 +41,7 @@ const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
 
     const distance = directions.routes.reduce(
       (acc, route) => acc + route.distance,
-      0,
+      0
     );
 
     return formatDistance(distance);
@@ -91,7 +91,7 @@ const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
           <div
             className={cn(
               "relative flex max-h-[200px] flex-col gap-8 overflow-hidden overflow-y-hidden",
-              maneuvers.length > 4 && "fade-bottom",
+              maneuvers.length > 4 && "fade-bottom"
             )}
           >
             <div className="absolute bottom-5 left-[11px] top-5 border-r-2 border-dotted" />
@@ -103,7 +103,7 @@ const DirectionsContent = ({ isFullyOpen }: DrawerContentProps) => {
                   "flex items-center gap-4 text-sm md:text-base",
                   maneuver.id === activeManeuverId
                     ? "text-black"
-                    : "text-black/40",
+                    : "text-black/40"
                 )}
               >
                 <div className="z-10 bg-white ring-8 ring-white">

@@ -13,14 +13,14 @@ type BusVehicleProps = {
 const BusVehicle = ({ vehicle, onClick }: BusVehicleProps) => {
   const hasLiveLocation = React.useMemo(
     () => vehicle.latitude !== "0" && vehicle.longitude !== "0",
-    [vehicle.latitude, vehicle.longitude],
+    [vehicle.latitude, vehicle.longitude]
   );
 
   return (
     <div
       className={cn(
         "flex flex-col gap-1 rounded-xl p-4",
-        hasLiveLocation ? "cursor-pointer bg-gray-100" : "border-2",
+        hasLiveLocation ? "cursor-pointer bg-gray-100" : "border-2"
       )}
       onClick={onClick}
     >

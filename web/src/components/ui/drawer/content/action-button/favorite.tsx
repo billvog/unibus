@@ -33,7 +33,7 @@ const FavoriteButton = ({ isFullyOpen, busStop }: FavoriteButtonProps) => {
             },
             favorite: !favorite,
           },
-        }),
+        })
       );
 
       // Update cache

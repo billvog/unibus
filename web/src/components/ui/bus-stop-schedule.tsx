@@ -57,7 +57,7 @@ const BusStopSchedule = ({
             className={cn(
               "cursor-pointer rounded-lg border-2 border-gray-200 px-2 py-0.5 text-sm",
               selectedDay === formatDayIndex(index) && "bg-gray-200",
-              isLoading && "cursor-not-allowed opacity-40",
+              isLoading && "cursor-not-allowed opacity-40"
             )}
             onClick={() => {
               if (!isLoading) {

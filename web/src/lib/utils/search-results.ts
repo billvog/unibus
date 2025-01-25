@@ -20,7 +20,7 @@ export type SearchItem = (
 export const searchAndRankResults = (
   query: string,
   features: GeocodeFeature[],
-  busStops: DbSearchedBusStop[],
+  busStops: DbSearchedBusStop[]
 ) => {
   // Configure Fuse options
   const fuseOptions: IFuseOptions<FuseItem> = {
@@ -35,10 +35,10 @@ export const searchAndRankResults = (
   // Search places and get scored results
   const placeResults = placeFuse.search(query);
   const directPlaceMatches = placeResults.filter(
-    (result) => result.score! < 0.3,
+    (result) => result.score! < 0.3
   );
   const indirectPlaceMatches = placeResults.filter(
-    (result) => result.score! >= 0.3,
+    (result) => result.score! >= 0.3
   );
 
   // Search bus stops

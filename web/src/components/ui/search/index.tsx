@@ -59,19 +59,19 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
   const [debouncedQuery] = useDebounce(query, QUERY_DEBOUNCE);
 
   const [searchFeatures, setSearchFeatures] = React.useState<GeocodeFeature[]>(
-    [],
+    []
   );
 
   const searchQuery = trpc.searchBusStop.useQuery(
     { term: debouncedQuery },
     {
       enabled: debouncedQuery.length > QUERY_THRESHOLD,
-    },
+    }
   );
 
   const busStops = React.useMemo(
     () => searchQuery.data ?? [],
-    [searchQuery.data],
+    [searchQuery.data]
   );
 
   const results = React.useMemo(() => {
@@ -114,7 +114,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
 
   const isLoading = React.useMemo(
     () => searchQuery.isLoading || searchPlaces.isPending,
-    [searchQuery.isLoading, searchPlaces.isPending],
+    [searchQuery.isLoading, searchPlaces.isPending]
   );
 
   // Focus input on "/" key press
@@ -124,7 +124,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
       if (inputRef.current) {
         inputRef.current.focus();
       }
-    }, []),
+    }, [])
   );
 
   React.useEffect(() => {
@@ -154,7 +154,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
     (value: boolean) => {
       setSearchState((prev) => ({ ...prev, open: value }));
     },
-    [setSearchState],
+    [setSearchState]
   );
 
   const openSearch = React.useCallback(() => {
@@ -194,10 +194,10 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
               latitude: feature.geometry.coordinates[1]!,
             },
           },
-        }),
+        })
       );
     },
-    [searchFeatures],
+    [searchFeatures]
   );
 
   const onBusStopClick = React.useCallback(
@@ -221,10 +221,10 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
               name: busStop.name,
             },
           },
-        }),
+        })
       );
     },
-    [busStops, query, handleBusStopClick, closeSearch],
+    [busStops, query, handleBusStopClick, closeSearch]
   );
 
   return (
@@ -232,7 +232,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
       <div
         className={cn(
           "absolute bottom-0 left-0 right-0 top-0 bg-black/20 backdrop-blur-sm transition-[opacity] duration-300 ease-out will-change-[opacity]",
-          open ? "z-20 opacity-100" : "-z-10 opacity-0",
+          open ? "z-20 opacity-100" : "-z-10 opacity-0"
         )}
       />
       <div className="absolute left-0 right-0 top-0 z-30 mx-4 my-8 flex flex-col items-center justify-center gap-8">
@@ -240,7 +240,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
           className={cn(
             "flex w-full max-w-lg items-center gap-4 rounded-xl bg-white ring-1 ring-gray-200 transition-[transform,opacity,gap] duration-300 ease-out will-change-transform",
             show ? "scale-95 opacity-95" : "scale-90 opacity-0",
-            open && "scale-100 gap-0 ring-0",
+            open && "scale-100 gap-0 ring-0"
           )}
         >
           <div className="relative w-full rounded-lg p-1">
@@ -276,7 +276,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
             <div
               className={cn(
                 "scale-100 border-l-2 border-gray-200 transition-opacity duration-300 ease-out will-change-[opacity]",
-                open ? "opacity-0" : "p-2.5 opacity-100",
+                open ? "opacity-0" : "p-2.5 opacity-100"
               )}
             >
               <CircleEllipsis color="#808080" size={open ? 0 : 24} />
@@ -292,7 +292,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
           <div
             className={cn(
               "w-full max-w-lg transition-[transform,opacity] duration-300 ease-out will-change-transform",
-              open ? "scale-100 opacity-100" : "scale-90 opacity-0",
+              open ? "scale-100 opacity-100" : "scale-90 opacity-0"
             )}
           >
             <div className="flex flex-col gap-4">
@@ -309,7 +309,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
                     busStop={result.item}
                     onClick={() => onBusStopClick(result.item.id)}
                   />
-                ) : null,
+                ) : null
               )}
             </div>
           </div>

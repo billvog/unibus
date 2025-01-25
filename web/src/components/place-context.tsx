@@ -39,7 +39,7 @@ export const PlaceProvider = ({ children }: { children: React.ReactNode }) => {
             name: selectedPlace.text,
           },
         },
-      }),
+      })
     );
   }, [selectedPlace]);
 

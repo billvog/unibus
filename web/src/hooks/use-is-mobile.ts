@@ -14,7 +14,7 @@ export const useIsMobile = () => {
         // Check user agent for mobile devices
         () =>
           /android|webos|iphone|ipad|ipod|blackberry|windows phone/i.test(
-            userAgent,
+            userAgent
           ),
         // Check if device has touch capability
         () => "maxTouchPoints" in navigator && navigator.maxTouchPoints > 0,

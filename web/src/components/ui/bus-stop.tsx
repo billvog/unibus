@@ -18,12 +18,12 @@ const BusStop = ({ busStop, onClick }: BusStopProps) => {
 
   const prettyBusStopName = React.useMemo(
     () => PrettifyName(busStop.name),
-    [busStop.name],
+    [busStop.name]
   );
 
   const isFavorite = React.useMemo(
     () => favorites.getData()?.includes(busStop.id),
-    [busStop.id, favorites],
+    [busStop.id, favorites]
   );
 
   return (

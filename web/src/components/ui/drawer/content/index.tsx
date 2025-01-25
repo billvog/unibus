@@ -32,7 +32,7 @@ const DrawerContent = (props: DrawerContentProps) => {
 
   const Content = React.useMemo(
     () => (currentState ? ContentMap[currentState] : null),
-    [currentState],
+    [currentState]
   );
 
   return Content ? <Content {...props} /> : null;

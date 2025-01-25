@@ -14,7 +14,7 @@ Content.Header = function ({ isFullyOpen, children }: ContentProps) {
     <div
       className={cn(
         "flex border-b-2 border-gray-100 px-10 pb-4 pt-8",
-        isFullyOpen ? "flex-col items-start gap-2" : "items-center gap-4",
+        isFullyOpen ? "flex-col items-start gap-2" : "items-center gap-4"
       )}
     >
       {children}
@@ -32,7 +32,7 @@ Content.Body = function ({ isFullyOpen, children }: ContentBodyProps) {
     <div
       className={cn(
         "flex h-full flex-col gap-6 px-10 pb-8 pt-7",
-        isFullyOpen && "no-scrollbar overflow-y-auto",
+        isFullyOpen && "no-scrollbar overflow-y-auto"
       )}
     >
       {children}

@@ -43,7 +43,7 @@ const BusStopContent = ({
 
   const prettyStopName = React.useMemo(
     () => (selectedStop ? PrettifyName(selectedStop.name) : ""),
-    [selectedStop],
+    [selectedStop]
   );
 
   const busLiveQuery = trpc.getBusLiveStop.useQuery(
@@ -53,17 +53,17 @@ const BusStopContent = ({
       staleTime: 5 * 1000, // 5 seconds
       refetchInterval: BusLiveQueryRefetchInterval,
       enabled: !!selectedStop && viewMode === "live",
-    },
+    }
   );
 
   const vehicles = React.useMemo(
     () => (busLiveQuery.data?.ok ? (busLiveQuery.data.vehicles ?? []) : []),
-    [busLiveQuery.data],
+    [busLiveQuery.data]
   );
 
   const hasLiveVehicles = React.useMemo(
     () => busLiveQuery.data?.ok && busLiveQuery.data.vehicles.length > 0,
-    [busLiveQuery.data],
+    [busLiveQuery.data]
   );
 
   const busStopScheduleQuery = trpc.getBusStopSchedule.useQuery(
@@ -73,12 +73,12 @@ const BusStopContent = ({
     },
     {
       enabled: !!selectedStop && viewMode === "schedule",
-    },
+    }
   );
 
   const busStopTrips = React.useMemo(
     () => busStopScheduleQuery.data ?? [],
-    [busStopScheduleQuery.data],
+    [busStopScheduleQuery.data]
   );
 
   React.useEffect(() => {
@@ -106,7 +106,7 @@ const BusStopContent = ({
             latitude: selectedStop.location.y,
           },
         },
-      }),
+      })
     );
   }, [selectedStop]);
 
@@ -139,7 +139,7 @@ const BusStopContent = ({
               stopCode: selectedStop?.code,
             },
           },
-        }),
+        })
       );
 
       window.dispatchEvent(
@@ -147,10 +147,10 @@ const BusStopContent = ({
           detail: {
             coordinates,
           },
-        }),
+        })
       );
     },
-    [vehicles, selectedStop, minimizeDrawer, setLiveBusCoordinates],
+    [vehicles, selectedStop, minimizeDrawer, setLiveBusCoordinates]
   );
 
   const onViewModeToggle = React.useCallback(() => {
@@ -172,7 +172,7 @@ const BusStopContent = ({
         <div
           className={cn(
             "flex items-center gap-2",
-            isFullyOpen && "no-scrollbar w-full overflow-x-auto",
+            isFullyOpen && "no-scrollbar w-full overflow-x-auto"
           )}
         >
           {/* View mode toggle */}

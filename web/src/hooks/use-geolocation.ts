@@ -12,7 +12,7 @@ export const useGeolocation = () => {
   const { t } = useLingui();
 
   const [position, setPosition] = React.useState<GeolocationCoordinates | null>(
-    null,
+    null
   );
 
   const [error, setError] = React.useState<GeolocationError | null>(null);
@@ -53,7 +53,7 @@ export const useGeolocation = () => {
         detail: {
           geolocationState: state,
         },
-      }),
+      })
     );
   }, []);
 
@@ -81,7 +81,7 @@ export const useGeolocation = () => {
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 0,
-      },
+      }
     );
 
     return () => {

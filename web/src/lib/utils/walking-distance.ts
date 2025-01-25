@@ -6,7 +6,7 @@ import { type Coordinates } from "@web/types/coordinates";
 // Function to calculate distance and estimated walking time
 export function calculateWalkingDistance(
   userLocation: Coordinates,
-  stopLocation: Coordinates,
+  stopLocation: Coordinates
 ) {
   function toArray(coords: Coordinates) {
     return [coords.longitude, coords.latitude];

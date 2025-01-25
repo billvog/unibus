@@ -22,7 +22,7 @@ const PlaceContent = ({ isFullyOpen }: DrawerContentProps) => {
 
   const formattedAddress = React.useMemo(
     () => (selectedPlace ? formatFeatureAddress(selectedPlace) : ""),
-    [selectedPlace],
+    [selectedPlace]
   );
 
   const walkingDistance = React.useMemo(() => {
@@ -49,7 +49,7 @@ const PlaceContent = ({ isFullyOpen }: DrawerContentProps) => {
             latitude: selectedPlace.geometry.coordinates[1]!,
           },
         },
-      }),
+      })
     );
   }, [selectedPlace]);
 

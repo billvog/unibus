@@ -59,7 +59,7 @@ const storage = {
 export const usePersistedState = <TState>(
   key: string,
   defaultState: TState,
-  options: PersistedStateOptions = {},
+  options: PersistedStateOptions = {}
 ) => {
   const { storage: storageType = "localStorage", format = "json" } = options;
   const storageBackend = storage[storageType];
@@ -74,7 +74,7 @@ export const usePersistedState = <TState>(
       }
       return String(value);
     },
-    [format],
+    [format]
   );
 
   const deserialize = React.useCallback(
@@ -87,7 +87,7 @@ export const usePersistedState = <TState>(
       }
       return value;
     },
-    [defaultState, format],
+    [defaultState, format]
   );
 
   React.useEffect(() => {

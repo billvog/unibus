@@ -11,7 +11,7 @@ type BusStopTimeProps = {
 const BusStopTime = ({ trip }: BusStopTimeProps) => {
   const prettyRouteName = React.useMemo(
     () => PrettifyName(trip.busRoute.name),
-    [trip.busRoute],
+    [trip.busRoute]
   );
 
   return (

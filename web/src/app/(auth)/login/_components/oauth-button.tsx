@@ -28,7 +28,7 @@ const OAuthButton = ({ providerId, providerName }: OAuthButtonProps) => {
           setIsLoading(true);
           // Capture event.
           window.dispatchEvent(
-            new CustomEvent(Events.Analytics.OAuthLoginClick),
+            new CustomEvent(Events.Analytics.OAuthLoginClick)
           );
         }}
       >
