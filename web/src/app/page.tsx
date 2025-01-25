@@ -65,7 +65,7 @@ function Page() {
 
       // Emit event to fly map to bus stop
       window.dispatchEvent(
-        new CustomEvent<MapFlyToDetail>("map:fly-to", {
+        new CustomEvent<MapFlyToDetail>(Events.MapFlyTo, {
           detail: {
             coordinates: {
               longitude: busStop.location.x,

@@ -1,8 +1,10 @@
 {
   "name": "unibus",
+  "type": "module",
   "private": true,
   "packageManager": "pnpm@9.15.4",
   "scripts": {
+    "prepare": "husky",
     "dev": "turbo dev",
     "dev:api": "turbo --filter=@repo/api dev",
     "dev:web": "turbo --filter=@repo/web dev",
@@ -15,6 +17,8 @@
     "lingui:extract": "turbo --filter=@repo/web lingui:extract --"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.2",
     "turbo": "^2.3.4"
   },
   "pnpm": {

@@ -10,7 +10,6 @@ import * as React from "react";
 
 import { cn } from "@web/lib/utils/tailwind";
 
-
 const Select = SelectPrimitive.Root;
 
 const SelectGroup = SelectPrimitive.Group;

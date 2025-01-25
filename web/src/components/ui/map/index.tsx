@@ -19,6 +19,7 @@ import { Button } from "@web/components/ui/button";
 import BusLinePointsMapLayer from "@web/components/ui/map/layers/bus-line-points";
 import DirectionsMapLayer from "@web/components/ui/map/layers/directions";
 import PlaceMapLayer from "@web/components/ui/map/layers/place";
+import UserLocationMapLayer from "@web/components/ui/map/layers/user-location";
 import { useUser } from "@web/components/user-context";
 import { useUserLocation } from "@web/components/user-location-context";
 import { env } from "@web/env";
@@ -169,13 +170,13 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
     map.on("move", onMapMove);
     map.on("click", "unclustered-point", onMapClick);
     map.on("click", "unclustered-point.favorite", onMapClick);
-    window.addEventListener("map:fly-to", handleMapFlyTo);
+    window.addEventListener(Events.MapFlyTo, handleMapFlyTo);
 
     return () => {
       map.off("move", onMapMove);
       map.off("click", "unclustered-point", onMapClick);
       map.off("click", "unclustered-point.favorite", onMapClick);
-      window.removeEventListener("map:fly-to", handleMapFlyTo);
+      window.removeEventListener(Events.MapFlyTo, handleMapFlyTo);
     };
   }, [onLoadFinish, mapFlyTo, onMapMove, onMapClick]);
 
@@ -252,14 +253,7 @@ const Map = ({ busStops, onBusStopClick, onLoadFinish }: MapProps) => {
       <PlaceMapLayer />
 
       {/* Show user's location marker, if any */}
-      {userLocation && (
-        <Marker
-          latitude={userLocation.latitude}
-          longitude={userLocation.longitude}
-        >
-          <div className="text-3xl">📍</div>
-        </Marker>
-      )}
+      <UserLocationMapLayer />
 
       {/* Show live bus coordinates */}
       {liveBusCoordinates && (

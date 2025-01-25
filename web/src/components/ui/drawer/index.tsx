@@ -1,8 +1,10 @@
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { useAtomValue } from "jotai";
 import { X } from "lucide-react";
 import React from "react";
 import { Drawer } from "vaul";
 
+import { searchAtom } from "@web/atoms/search";
 import { useBusStop } from "@web/components/bus-stop-context";
 import { useDirections } from "@web/components/directions-context";
 import { usePlace } from "@web/components/place-context";
@@ -16,7 +18,10 @@ const MyDrawer = () => {
 
   const isMobile = useIsMobile();
 
+  const prevOpen = React.useRef(false);
   const [open, setOpen] = React.useState(false);
+
+  const searchState = useAtomValue(searchAtom);
 
   const snapPoints = React.useMemo(() => ["300px", 1], []);
   const [snap, setSnap] = React.useState<number | string | null>(
@@ -24,6 +29,20 @@ const MyDrawer = () => {
   );
 
   const isFullyOpen = React.useMemo(() => snap === 1, [snap]);
+
+  React.useEffect(() => {
+    // If we're opening search, store current drawer state and close.
+    if (searchState.open) {
+      setOpen((prev) => {
+        prevOpen.current = prev;
+        return false;
+      });
+      return;
+    }
+
+    // If we're closing search, restore previous drawer state.
+    setOpen(prevOpen.current);
+  }, [searchState.open]);
 
   React.useEffect(() => {
     setOpen(!!selectedStop || !!selectedPlace);

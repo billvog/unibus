@@ -25,7 +25,7 @@ msgstr "{seconds, plural, one {δευτερόλεπτο} other {δευτερόλ
 msgid "{walkingTime, plural, one {# minute} other {# minutes}}"
 msgstr "{walkingTime, plural, one {# λεπτό} other {# λεπτά}}"
 
-#: src/components/ui/drawer/content/place.tsx:99
+#: src/components/ui/drawer/content/place.tsx:100
 msgid "<0>Make sure you have enabled your location!</0><1>This way we can show you more information about your destination.</1><2>Give us permission through your browser settings!</2>"
 msgstr "<0>Βεβαιώσου ότι έχεις ενεργοποιήσει την τοποθεσία σου!</0><1>Έτσι θα μπορούμε να σου δείξουμε περισσότερες πληροφορίες για τον προορισμό σου.</1><2>Δώσε μας την άδεια μέσα από τις ρυθμίσεις του περιηγητή σου!</2>"
 
@@ -49,11 +49,11 @@ msgstr "Κλείσιμο"
 msgid "Directions"
 msgstr "Οδηγίες"
 
-#: src/components/ui/drawer/content/place.tsx:78
+#: src/components/ui/drawer/content/place.tsx:79
 msgid "Distance"
 msgstr "Απόσταση"
 
-#: src/components/ui/drawer/content/place.tsx:82
+#: src/components/ui/drawer/content/place.tsx:83
 msgid "Duration"
 msgstr "Διάρκεια"
 
@@ -65,11 +65,15 @@ msgstr "Ενεργοποίηση τώρα"
 msgid "Error!"
 msgstr "Σφάλμα!"
 
+#: src/components/directions-context.tsx:130
+msgid "Hm... Something went wrong trying to get directions. Please try again."
+msgstr "Χμ... Κάτι πήγε στραβά κατά την προσπάθεια να πάρεις οδηγίες. Παρακαλώ δοκίμασε ξανά."
+
 #: src/components/ui/location/unsupported-location-modal.tsx:38
 msgid "Hmm.. it seems unibus <0>is not available in your region</0>"
 msgstr "Χμμ.. φαίνεται πως το unibus <0>δεν είναι διαθέσιμο στην περιοχή σου</0>"
 
-#: src/components/ui/drawer/content/place.tsx:90
+#: src/components/ui/drawer/content/place.tsx:91
 msgid "Hmm.. it's a bit far! <0>Maybe take a bus?</0>"
 msgstr "Χμμ.. είναι λίγο μακριά! <0>Μήπως να πάρεις αστικό;</0>"
 
@@ -101,7 +105,7 @@ msgstr "Αποσύνδεση"
 msgid "No buses expected in the next 30 minutes"
 msgstr "Δεν αναμένονται λεωφορεία τα επόμενα 30 λεπτά"
 
-#: src/components/ui/search/index.tsx:310
+#: src/components/ui/search/index.tsx:319
 msgid "No results found"
 msgstr "Δεν βρέθηκαν αποτελέσματα"
 
@@ -117,7 +121,7 @@ msgstr "Πολιτική απορρήτου."
 msgid "Remove from favorites"
 msgstr "Αφαίρεση από αγαπημένα"
 
-#: src/components/ui/map/index.tsx:234
+#: src/components/ui/map/index.tsx:235
 msgid "Reset"
 msgstr "Επαναφορά"
 
@@ -219,7 +223,7 @@ msgstr "Καλώς ήρθες!"
 msgid "What is this?"
 msgstr "Τι είναι αυτό;"
 
-#: src/components/ui/search/index.tsx:248
+#: src/components/ui/search/index.tsx:257
 msgid "Where to?"
 msgstr "Πού θες να πας;"
 

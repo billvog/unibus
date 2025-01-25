@@ -99,7 +99,7 @@ const BusStopContent = ({
     }
 
     window.dispatchEvent(
-      new CustomEvent<MapFlyToDetail>("map:fly-to", {
+      new CustomEvent<MapFlyToDetail>(Events.MapFlyTo, {
         detail: {
           coordinates: {
             longitude: selectedStop.location.x,
@@ -143,7 +143,7 @@ const BusStopContent = ({
       );
 
       window.dispatchEvent(
-        new CustomEvent<MapFlyToDetail>("map:fly-to", {
+        new CustomEvent<MapFlyToDetail>(Events.MapFlyTo, {
           detail: {
             coordinates,
           },
