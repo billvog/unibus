@@ -4,6 +4,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { type Coordinates } from "@mapbox/mapbox-sdk/lib/classes/mapi-request";
 import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
 import * as Sentry from "@sentry/nextjs";
+import { useMutation } from "@tanstack/react-query";
 import { CircleEllipsis, CircleX } from "lucide-react";
 import React, { useState } from "react";
 import { useDebounce } from "use-debounce";
@@ -57,8 +58,6 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
   const [query, setQuery] = React.useState("");
   const [debouncedQuery] = useDebounce(query, QUERY_DEBOUNCE);
 
-  const [isMapboxLoading, setIsMapboxLoading] = React.useState(false);
-
   const [searchFeatures, setSearchFeatures] = React.useState<GeocodeFeature[]>(
     [],
   );
@@ -88,9 +87,34 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
 
   const hasResults = React.useMemo(() => results.length > 0, [results.length]);
 
+  const searchPlaces = useMutation({
+    mutationFn: async (location: Coordinates | undefined) => {
+      const response = await mbxGeocodingClient
+        .forwardGeocode({
+          query: debouncedQuery,
+          mode: "mapbox.places",
+          countries: ["GR"],
+          language: [i18n.locale],
+          proximity: location ?? "ip",
+          session_token: searchSessionToken,
+          limit: 5,
+        })
+        .send();
+
+      return response.body;
+    },
+    onSuccess: (data) => {
+      setSearchFeatures(data.features);
+    },
+    onError: (error) => {
+      // Send error to Sentry
+      Sentry.captureException(error);
+    },
+  });
+
   const isLoading = React.useMemo(
-    () => searchQuery.isLoading || isMapboxLoading,
-    [searchQuery.isLoading, isMapboxLoading],
+    () => searchQuery.isLoading || searchPlaces.isPending,
+    [searchQuery.isLoading, searchPlaces.isPending],
   );
 
   // Focus input on "/" key press
@@ -123,25 +147,7 @@ const Search = ({ onBusStopClick: handleBusStopClick }: SearchProps) => {
       ? [initialUserLocation.longitude, initialUserLocation.latitude]
       : undefined;
 
-    setIsMapboxLoading(true);
-
-    mbxGeocodingClient
-      .forwardGeocode({
-        query: debouncedQuery,
-        mode: "mapbox.places",
-        countries: ["GR"],
-        language: [i18n.locale],
-        proximity: location ?? "ip",
-        session_token: searchSessionToken,
-        limit: 5,
-      })
-      .send()
-      .then((response) => setSearchFeatures(response.body.features))
-      .catch((error) => {
-        // Send error to Sentry
-        Sentry.captureException(error);
-      })
-      .finally(() => setIsMapboxLoading(false));
+    searchPlaces.mutate(location);
   }, [initialUserLocation, debouncedQuery, i18n.locale]);
 
   const openSearch = React.useCallback(() => {

@@ -7,6 +7,7 @@ import {
   type DirectionsWaypoint,
 } from "@mapbox/mapbox-sdk/services/directions";
 import * as Sentry from "@sentry/nextjs";
+import { type UseMutateAsyncFunction, useMutation } from "@tanstack/react-query";
 import * as turf from "@turf/distance";
 import { type LineString, type MultiLineString } from "geojson";
 import React, { createContext, useContext } from "react";
@@ -20,20 +21,23 @@ import { generateRandomId } from "@web/lib/utils/random-id";
 import { type Coordinates } from "@web/types/coordinates";
 import { type MapFlyToDetail } from "@web/types/events";
 
-
 type DirectionsGeometry = MultiLineString | LineString;
 type DirectionsManeuver = {
   id: string;
 } & Maneuver;
 
-interface DirectionsContextType {
+type DirectionsContextType = {
   directions: DirectionsResponse<DirectionsGeometry> | null;
   maneuvers: DirectionsManeuver[];
   activeManeuverId: string | null;
   activeManeuver: DirectionsManeuver | null;
   resetDirections: () => void;
-  getDirections: (waypoints: DirectionsWaypoint[]) => Promise<void>;
-}
+  getDirections: UseMutateAsyncFunction<
+    DirectionsResponse<MultiLineString | LineString>,
+    Error,
+    DirectionsWaypoint[]
+  >;
+};
 
 const DirectionsContext = createContext<DirectionsContextType | null>({
   directions: null,
@@ -101,33 +105,33 @@ export function DirectionsProvider({
     [maneuvers, activeManeuverId],
   );
 
+  const { mutateAsync: getDirections } = useMutation({
+    mutationFn: async (waypoints: DirectionsWaypoint[]) => {
+      const response = await mbxDirectionsClient
+        .getDirections({
+          waypoints,
+          profile: "walking",
+          geometries: "geojson",
+          language: i18n.locale,
+          steps: true,
+        })
+        .send();
+      return response.body;
+    },
+    onSuccess: (data) => {
+      setDirections(data);
+    },
+    onError: (error) => {
+      Sentry.captureException(error);
+      toast.error(
+        t`Hm... Something went wrong trying to get directions. Try again later.`,
+      );
+    },
+  });
+
   const resetDirections = React.useCallback(() => {
     setDirections(null);
   }, []);
-
-  const getDirections = React.useCallback(
-    async (waypoints: DirectionsWaypoint[]) => {
-      try {
-        const response = await mbxDirectionsClient
-          .getDirections({
-            waypoints,
-            profile: "walking",
-            geometries: "geojson",
-            language: i18n.locale,
-            steps: true,
-          })
-          .send();
-
-        setDirections(response.body);
-      } catch (error) {
-        Sentry.captureException(error);
-        toast.error(
-          t`Hm... Something went wrong trying to get directions. Try again later.`,
-        );
-      }
-    },
-    [i18n.locale],
-  );
 
   // Reset directions when selected stop or place changes.
   React.useEffect(() => {
