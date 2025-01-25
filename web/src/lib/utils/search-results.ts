@@ -2,7 +2,6 @@ import { type DbSearchedBusStop } from "@api/types/models";
 import { type GeocodeFeature } from "@mapbox/mapbox-sdk/services/geocoding";
 import Fuse, { type IFuseOptions } from "fuse.js";
 
-
 type FuseItem = GeocodeFeature | DbSearchedBusStop;
 
 export type SearchItem = (

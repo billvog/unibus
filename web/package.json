@@ -8,6 +8,7 @@
     "dev": "next dev",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
     "start": "next start",
+    "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "lingui:extract": "lingui extract --clean"
   },

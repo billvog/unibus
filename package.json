@@ -9,6 +9,7 @@
     "lint": "turbo lint --",
     "lint:api": "turbo --filter=@repo/api lint --",
     "lint:web": "turbo --filter=@repo/web lint --",
+    "format": "turbo format --",
     "typecheck": "turbo typecheck --",
     "typecheck:api": "turbo --filter=@repo/api typecheck --",
     "typecheck:web": "turbo --filter=@repo/web typecheck --",

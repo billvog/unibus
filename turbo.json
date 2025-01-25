@@ -30,6 +30,12 @@
         "SKIP_ENV_VALIDATION"
       ]
     },
+    "format": {
+      "dependsOn": [
+        "^format"
+      ],
+      "cache": false
+    },
     "typecheck": {
       "dependsOn": [
         "^typecheck"
