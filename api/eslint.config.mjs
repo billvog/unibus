@@ -23,7 +23,7 @@ export default [
       "**/dist",
       "**/compiled",
       "**/build",
-      "eslint.config.mjs",
+      "*.config.{js,mjs,cjs,ts}",
       "trpc-api-export/dist",
     ],
   },
