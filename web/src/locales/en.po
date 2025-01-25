@@ -25,7 +25,7 @@ msgstr "{seconds, plural, one {second} other {seconds}}"
 msgid "{walkingTime, plural, one {# minute} other {# minutes}}"
 msgstr "{walkingTime, plural, one {# minute} other {# minutes}}"
 
-#: src/components/ui/drawer/content/place.tsx:99
+#: src/components/ui/drawer/content/place.tsx:100
 msgid "<0>Make sure you have enabled your location!</0><1>This way we can show you more information about your destination.</1><2>Give us permission through your browser settings!</2>"
 msgstr "<0>Make sure you have enabled your location!</0><1>This way we can show you more information about your destination.</1><2>Give us permission through your browser settings!</2>"
 
@@ -49,11 +49,11 @@ msgstr "Close"
 msgid "Directions"
 msgstr "Directions"
 
-#: src/components/ui/drawer/content/place.tsx:78
+#: src/components/ui/drawer/content/place.tsx:79
 msgid "Distance"
 msgstr "Distance"
 
-#: src/components/ui/drawer/content/place.tsx:82
+#: src/components/ui/drawer/content/place.tsx:83
 msgid "Duration"
 msgstr "Duration"
 
@@ -65,11 +65,15 @@ msgstr "Enable now"
 msgid "Error!"
 msgstr "Error!"
 
+#: src/components/directions-context.tsx:130
+msgid "Hm... Something went wrong trying to get directions. Please try again."
+msgstr "Hm... Something went wrong trying to get directions. Please try again."
+
 #: src/components/ui/location/unsupported-location-modal.tsx:38
 msgid "Hmm.. it seems unibus <0>is not available in your region</0>"
 msgstr "Hmm.. it seems unibus <0>is not available in your region</0>"
 
-#: src/components/ui/drawer/content/place.tsx:90
+#: src/components/ui/drawer/content/place.tsx:91
 msgid "Hmm.. it's a bit far! <0>Maybe take a bus?</0>"
 msgstr "Hmm.. it's a bit far! <0>Maybe take a bus?</0>"
 
@@ -101,7 +105,7 @@ msgstr "Logout"
 msgid "No buses expected in the next 30 minutes"
 msgstr "No buses expected in the next 30 minutes"
 
-#: src/components/ui/search/index.tsx:310
+#: src/components/ui/search/index.tsx:319
 msgid "No results found"
 msgstr "No results found"
 
@@ -117,7 +121,7 @@ msgstr "Privacy policy."
 msgid "Remove from favorites"
 msgstr "Remove from favorites"
 
-#: src/components/ui/map/index.tsx:234
+#: src/components/ui/map/index.tsx:235
 msgid "Reset"
 msgstr "Reset"
 
@@ -219,7 +223,7 @@ msgstr "Welcome!"
 msgid "What is this?"
 msgstr "What is this?"
 
-#: src/components/ui/search/index.tsx:248
+#: src/components/ui/search/index.tsx:257
 msgid "Where to?"
 msgstr "Where to?"
 

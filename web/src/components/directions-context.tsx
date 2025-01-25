@@ -7,7 +7,10 @@ import {
   type DirectionsWaypoint,
 } from "@mapbox/mapbox-sdk/services/directions";
 import * as Sentry from "@sentry/nextjs";
-import { type UseMutateAsyncFunction, useMutation } from "@tanstack/react-query";
+import {
+  type UseMutateAsyncFunction,
+  useMutation,
+} from "@tanstack/react-query";
 import * as turf from "@turf/distance";
 import { type LineString, type MultiLineString } from "geojson";
 import React, { createContext, useContext } from "react";
@@ -124,7 +127,7 @@ export function DirectionsProvider({
     onError: (error) => {
       Sentry.captureException(error);
       toast.error(
-        t`Hm... Something went wrong trying to get directions. Try again later.`,
+        t`Hm... Something went wrong trying to get directions. Please try again.`,
       );
     },
   });
