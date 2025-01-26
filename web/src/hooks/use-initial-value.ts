@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useState, useEffect, useRef } from "react";
 
 /**
  * A hook that captures the initial non-null value and preserves it throughout component lifecycle.
@@ -17,13 +19,15 @@ import { useState, useEffect } from "react";
  * ```
  */
 export const useInitialValue = <T>(currentValue: T | null) => {
+  const isInitialized = useRef(false);
   const [initialValue, setInitialValue] = useState<T | null>(null);
 
   useEffect(() => {
-    if (currentValue && !initialValue) {
+    if (currentValue && !isInitialized.current) {
       setInitialValue(currentValue);
+      isInitialized.current = true;
     }
-  }, [currentValue, initialValue]);
+  }, [currentValue]);
 
   return initialValue;
 };
