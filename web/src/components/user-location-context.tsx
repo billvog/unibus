@@ -4,6 +4,7 @@ import React, { createContext, useContext } from "react";
 import { toast } from "sonner";
 
 import { useGeolocation } from "@web/hooks/use-geolocation";
+import { useInitialValue } from "@web/hooks/use-initial-value";
 import { usePersistedState } from "@web/hooks/use-persisted-state";
 import { trpc } from "@web/lib/trpc";
 import { type Coordinates } from "@web/types/coordinates";
@@ -33,16 +34,17 @@ export function UserLocationProvider({
   const [showedError, setShowedError] = React.useState(false);
 
   const geolocation = useGeolocation();
+  const initialLocation = useInitialValue(geolocation.position);
 
   const { data: hasSupportedAgency } = trpc.hasSupportedAgency.useQuery(
     {
       location: {
-        x: geolocation.position?.longitude ?? 0,
-        y: geolocation.position?.latitude ?? 0,
+        x: initialLocation?.longitude ?? 0,
+        y: initialLocation?.latitude ?? 0,
       },
     },
     {
-      enabled: isEnabled && geolocation.position !== null,
+      enabled: isEnabled && initialLocation !== null,
     }
   );
 
