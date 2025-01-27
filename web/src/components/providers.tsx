@@ -84,12 +84,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <I18nProvider>
-      <QueryClientProvider client={queryClient}>
-        <trpc.Provider client={trpcClient} queryClient={queryClient}>
-          <UserProvider>
-            <UserLocationProvider>
-              <PostHogProvider client={posthog}>
+    <PostHogProvider client={posthog}>
+      <I18nProvider>
+        <QueryClientProvider client={queryClient}>
+          <trpc.Provider client={trpcClient} queryClient={queryClient}>
+            <UserProvider>
+              <UserLocationProvider>
                 <BusStopProvider>
                   <PlaceProvider>
                     <DirectionsProvider>
@@ -98,11 +98,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                     </DirectionsProvider>
                   </PlaceProvider>
                 </BusStopProvider>
-              </PostHogProvider>
-            </UserLocationProvider>
-          </UserProvider>
-        </trpc.Provider>
-      </QueryClientProvider>
-    </I18nProvider>
+              </UserLocationProvider>
+            </UserProvider>
+          </trpc.Provider>
+        </QueryClientProvider>
+      </I18nProvider>
+    </PostHogProvider>
   );
 }
