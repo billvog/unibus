@@ -1,3 +1,5 @@
+"use client";
+
 import { type Properties } from "posthog-js";
 import { usePostHog } from "posthog-js/react";
 import { useEffect } from "react";
