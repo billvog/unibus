@@ -44,7 +44,15 @@ const BusStopSchedule = ({
 
   React.useEffect(() => {
     const currentHour = new Date().getHours();
-    document.getElementById(`bus-stop-time-${currentHour}`)?.scrollIntoView();
+    setTimeout(() => {
+      const element = document.getElementById(`bus-stop-time-${currentHour}`);
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 100);
   }, []);
 
   return (
@@ -80,7 +88,7 @@ const BusStopSchedule = ({
           <div
             key={hour}
             id={`bus-stop-time-${hour}`}
-            className="flex flex-col gap-1"
+            className="flex scroll-mt-4 flex-col gap-1"
           >
             <h3 className="text-2xl font-black leading-relaxed after:ml-0.5 after:align-super after:text-xs after:content-['00']">
               {hour}
