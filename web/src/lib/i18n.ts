@@ -50,12 +50,19 @@ export async function dynamicActivate(locale: string) {
 export function detectedLocale() {
   const DEFAULT_FALLBACK = () => DEFAULT_LOCALE;
 
-  const detected =
+  let detected =
     detect(fromCookie(Cookies.Language), fromNavigator(), DEFAULT_FALLBACK) ??
     DEFAULT_LOCALE;
 
   // Convert potential "en-US" format to "en"
-  return detected.split("-")[0] ?? detected;
+  detected = detected.split("-")[0] ?? detected;
+
+  // If detected locale isn't supported, return default
+  if (!locales.some((l) => l.code === detected)) {
+    return DEFAULT_LOCALE;
+  }
+
+  return detected;
 }
 
 /**
