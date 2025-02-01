@@ -29,6 +29,8 @@ const BusStopSchedule = ({
   const { i18n } = useLingui();
   const days = useMemo(() => getDaysInLocale(i18n.locale), [i18n]);
 
+  const hasScrolled = React.useRef(false);
+
   const groupedTrips = React.useMemo(() => {
     const grouped = new Map<number, DbBusStopTime[]>();
     busStopTrips.forEach((trip) => {
@@ -42,18 +44,28 @@ const BusStopSchedule = ({
     return grouped;
   }, [busStopTrips]);
 
+  // Wait query to load and scroll to current hour
   React.useEffect(() => {
-    const currentHour = new Date().getHours();
-    setTimeout(() => {
+    if (isLoading || hasScrolled.current) {
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      const currentHour = new Date().getHours();
       const element = document.getElementById(`bus-stop-time-${currentHour}`);
       if (element) {
+        hasScrolled.current = true;
         element.scrollIntoView({
           behavior: "smooth",
           block: "start",
         });
       }
     }, 100);
-  }, []);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isLoading]);
 
   return (
     <div className="flex flex-col gap-6">
